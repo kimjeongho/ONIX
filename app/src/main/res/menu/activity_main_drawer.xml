@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_customer"
+            android:title="고객센터"
+            />
+        <item
+            android:id="@+id/nav_use"
+            android:title="사용법" />
+        <item
+            android:id="@+id/nav_choice"
+            android:title="찜내역" />
+        <item
+            android:id="@+id/nav_discount"
+            android:title="할인파우치" />
+        <item
+            android:id="@+id/nav_mypage"
+            android:title="마이페이지" />
+
+        <item
+            android:id="@+id/nav_logout"
+            android:title="로그아웃" />
+
+    </group>
+
+</menu>

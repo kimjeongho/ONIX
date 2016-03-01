@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView10"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/onix_sale_pouch_grid"
+        android:layout_marginBottom="3dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_artist"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/sale_pouch_artist_data_3"
+        android:layout_marginLeft="@dimen/list_left"
+        android:layout_marginRight="@dimen/list_profile_right" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ArtistName"
+        android:id="@+id/text_artist"
+        android:layout_alignTop="@+id/image_artist"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"
+        android:id="@+id/textView11"
+        android:layout_alignTop="@+id/text_artist"
+        android:layout_toRightOf="@+id/text_artist"
+        android:layout_toEndOf="@+id/text_artist" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ShopName"
+        android:id="@+id/text_shop"
+        android:layout_alignTop="@+id/textView11"
+        android:layout_toRightOf="@+id/textView11"
+        android:layout_toEndOf="@+id/textView11" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time Test"
+        android:id="@+id/text_time"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/image_artist"
+        android:layout_toEndOf="@+id/image_artist" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="까지"
+        android:id="@+id/textView13"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/text_time"
+        android:layout_toEndOf="@+id/text_time" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DiscountTest"
+        android:id="@+id/text_discount"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/textView13"
+        android:layout_toEndOf="@+id/textView13" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="할인 제공"
+        android:id="@+id/textView14"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/text_discount"
+        android:layout_toEndOf="@+id/text_discount" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Year"
+        android:id="@+id/text_year"
+        android:layout_below="@+id/image_artist"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Month"
+        android:id="@+id/text_month"
+        android:layout_alignTop="@+id/text_year"
+        android:layout_toRightOf="@+id/text_year"
+        android:layout_toEndOf="@+id/text_year" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Day"
+        android:id="@+id/text_day"
+        android:layout_alignTop="@+id/text_month"
+        android:layout_toRightOf="@+id/text_month"
+        android:layout_toEndOf="@+id/text_month" />
+
+</RelativeLayout>

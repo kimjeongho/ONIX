@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.didimdol.skt.kimjh.onix">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Artist.DetailArtistActivity"/>
+        <activity android:name=".Shop.DetailShopActivity" />
+        <activity android:name=".Board.BoardWriteActivity" />
+        <activity android:name=".Board.BoardReadActivity" />
+        <activity
+            android:name=".Menu.MenuLogin.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Menu.MenuCustomer.CustomerActivity" />
+        <activity android:name=".Menu.InstructionActivity" />
+        <activity android:name=".Menu.ChoiceActivity" />
+        <activity android:name=".Menu.MenuDiscount.DiscountActivity" />
+        <activity android:name=".Menu.PushActivity" />
+        <activity android:name=".Menu.ArtistDiscountPageActivity" />
+        <activity android:name=".Menu.MenuLogin.JoinActivity" />
+        <activity android:name=".Menu.MenuLogin.JoinUserActivity" />
+        <activity android:name=".Menu.MenuCustomer.NoticeActivity" />
+        <activity android:name=".Menu.MenuCustomer.TermsActivity"></activity>
+    </application>
+
+</manifest>

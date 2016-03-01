@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="search">
+        <item>추천순</item>
+        <item>거리순</item>
+        <item>이름순</item>
+
+    </string-array>
+
+    <string-array name="header">
+        <item>말머리 선택</item>
+        <item>QnA</item>
+        <item>커뮤니티</item>
+    </string-array>
+
+
+</resources>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:gravity="center_horizontal">
+
+    <FrameLayout
+        android:layout_width="142dp"
+        android:layout_height="70dp"
+        android:id="@+id/linearLayout"
+        android:background="#441c1c1c"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/relativeLayout"
+        android:layout_toStartOf="@+id/relativeLayout"
+        android:layout_marginBottom="1dp"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이용시간"
+            android:id="@+id/textView2"
+            android:textSize="13sp"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="142dp"
+        android:layout_height="70dp"
+        android:background="#221c1c1c"
+        android:layout_alignTop="@+id/linearLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/relativeLayout"
+        android:layout_marginBottom="1dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="평일"
+            android:textSize="13sp"
+            android:id="@+id/text_weekday"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주말"
+            android:textSize="13sp"
+            android:id="@+id/text_weekend"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="연중무휴"
+            android:textSize="13sp"
+            android:id="@+id/text_etc"
+            android:layout_below="@+id/text_weekend"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="142dp"
+        android:layout_height="70dp"
+        android:id="@+id/linearLayout2"
+        android:background="#441c1c1c"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignLeft="@+id/linearLayout"
+        android:layout_alignStart="@+id/linearLayout"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소"
+            android:textSize="13sp"
+            android:id="@+id/textView3"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="142dp"
+        android:layout_height="70dp"
+        android:background="#221c1c1c"
+        android:layout_below="@+id/linearLayout"
+        android:layout_toRightOf="@+id/linearLayout2"
+        android:layout_toEndOf="@+id/linearLayout2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소"
+            android:id="@+id/text_address"
+            android:textSize="13sp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="11dp"
+            android:layout_marginRight="11dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
