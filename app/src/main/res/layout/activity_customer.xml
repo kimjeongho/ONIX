@@ -5,11 +5,29 @@
     android:layout_height="match_parent"
     
     tools:context=".Menu.MenuCustomer.CustomerActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF000000"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/onix_home"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/onix_maintitle"
+        android:layout_marginLeft="@dimen/onix_title_left" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/toolbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/relativeLayout2">

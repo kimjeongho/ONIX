@@ -1,3 +1,4 @@
+/*
 package com.didimdol.skt.kimjh.onix.Artist;
 
 import android.support.v4.view.PagerAdapter;
@@ -10,9 +11,11 @@ import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * Created by kimjh on 2016-02-24.
- */
+ *//*
+
 public class ArtistPagerAdapter extends PagerAdapter {
     List<DetailArtistData> items = new ArrayList<DetailArtistData>();
     List<View> scrappedView = new ArrayList<View>();
@@ -57,3 +60,4 @@ public class ArtistPagerAdapter extends PagerAdapter {
         return view == object;
     }
 }
+*/

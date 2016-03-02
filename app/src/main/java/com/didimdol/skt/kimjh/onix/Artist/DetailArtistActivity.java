@@ -27,7 +27,7 @@ import java.util.List;
 public class DetailArtistActivity extends AppCompatActivity {
 
     private SliderLayout mDemoSlider;
-    ArtistPagerAdapter photoAdapter;
+//    ArtistPagerAdapter photoAdapter;
     RecyclerView recyclerView;
     DetailArtistAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -56,7 +56,7 @@ public class DetailArtistActivity extends AppCompatActivity {
         });
 //        pager.setPageMargin(10);
 // pageslide-----------------------------------------------------------------------------------------
-        photoAdapter = new ArtistPagerAdapter();
+//        photoAdapter = new ArtistPagerAdapter();
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
         HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
         file_maps.put("Hannibal", R.drawable.dummy_1);

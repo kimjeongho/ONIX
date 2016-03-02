@@ -30,7 +30,6 @@
         <activity android:name=".Menu.ChoiceActivity" />
         <activity android:name=".Menu.MenuDiscount.DiscountActivity" />
         <activity android:name=".Menu.PushActivity" />
-        <activity android:name=".Menu.ArtistDiscountPageActivity" />
         <activity android:name=".Menu.MenuLogin.JoinActivity" />
         <activity android:name=".Menu.MenuLogin.JoinUserActivity" />
         <activity android:name=".Menu.MenuCustomer.NoticeActivity" />

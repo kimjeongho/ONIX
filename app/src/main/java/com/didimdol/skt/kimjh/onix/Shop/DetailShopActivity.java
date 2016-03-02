@@ -10,7 +10,6 @@ import android.widget.ImageView;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.didimdol.skt.kimjh.onix.Artist.ArtistPagerAdapter;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTiemData;
