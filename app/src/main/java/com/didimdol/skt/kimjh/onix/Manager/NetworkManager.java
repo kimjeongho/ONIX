@@ -1,7 +1,10 @@
 package com.didimdol.skt.kimjh.onix.Manager;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
@@ -16,10 +19,25 @@ import com.didimdol.skt.kimjh.onix.DataClass.NailTypeData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopLocationData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTiemData;
+import com.didimdol.skt.kimjh.onix.MyApplication;
+import com.didimdol.skt.kimjh.onix.PersistentCookieStore;
 import com.didimdol.skt.kimjh.onix.R;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Cache;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.JavaNetCookieJar;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by kimjh on 2016-02-22.
@@ -34,24 +52,102 @@ public class NetworkManager {
         return instance;
     }
 
-    private NetworkManager() {
+    OkHttpClient mClient; // okHttpclient 가져옴
+    private static final int MAX_CACHE_SIZE = 10 * 1024 * 1024;
 
+    private NetworkManager() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        Context context = MyApplication.getContext();
+        File cachefile = new File(context.getExternalCacheDir(),"mycache");
+        if(!cachefile.exists()){
+            cachefile.mkdirs();
+        }
+
+        Cache cache = new Cache(cachefile, MAX_CACHE_SIZE);
+        builder.cache(cache);
+
+        CookieManager cookieManager = new CookieManager(new PersistentCookieStore(context), CookiePolicy.ACCEPT_ALL);
+        builder.cookieJar(new JavaNetCookieJar(cookieManager));
+
+        mClient = builder.build();
     }
 
     public interface OnResultListener<T> {
-        public void onSuccess(T result);
+        public void onSuccess(Request request, T result);
+        public void onFailure(Request request, int code, Throwable cause);
+    }
 
-        public void onFailure(int code);
+    private static final int MESSAGE_SUCCESS = 0;
+    private static final int MESSAGE_FALURE = 1;
+
+    static class NetworkHandler extends Handler{
+        public NetworkHandler(Looper looper){
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            CallbackObject object = (CallbackObject)msg.obj;
+            Request request = object.request;
+            OnResultListener listener = object.listener;
+            switch (msg.what){
+                case MESSAGE_SUCCESS:
+                    listener.onSuccess(request,object.result);
+                    break;
+                case MESSAGE_FALURE:
+                    listener.onFailure(request, -1, object.exception);
+                    break;
+            }
+
+        }
     }
 
     Handler mHandler = new Handler(Looper.getMainLooper());
+
+    static class CallbackObject<T>{
+        Request request;
+        T result;
+        IOException exception;
+        OnResultListener<T> listener;
+    }
+
+    private static final String URL_FORMAT = "http://";
+    public Request getArtistDetailData(Context context, int id, final OnResultListener<DetailArtistData> listener){
+        String url = String.format(URL_FORMAT, URLEncoder.encode("utf-8"),id);
+
+        final CallbackObject<DetailArtistData> callbackObject = new CallbackObject<DetailArtistData>();
+
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+            }
+        });
+
+
+        return request;
+    }
+
 
     //아티스트 상세 페이지-----------------------------------------------------------------------------------------------------------------
     public void getArtistDetailData(int id, final OnResultListener<DetailArtistData> listener) {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                listener.onSuccess(daInitData());
+                listener.onSuccess(null,daInitData());
             }
         }, 1000);
     }
@@ -89,7 +185,7 @@ public class NetworkManager {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                listener.onSuccess(dsInitData());
+                listener.onSuccess(null,dsInitData());
             }
         }, 1000);
     }
@@ -141,7 +237,7 @@ public class NetworkManager {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                listener.onSuccess(atInitData());
+                listener.onSuccess(null,atInitData());
             }
         }, 1000);
     }
@@ -173,7 +269,7 @@ public class NetworkManager {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                listener.onSuccess(shInitData());
+                listener.onSuccess(null,shInitData());
             }
         }, 1000);
     }
@@ -204,7 +300,7 @@ public class NetworkManager {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                listener.onSuccess(bdInitData());
+                listener.onSuccess(null,bdInitData());
             }
         }, 1000);
     }
@@ -251,7 +347,7 @@ public void getBoardReadData(int id, final OnResultListener<List<BoardData>> lis
     mHandler.postDelayed(new Runnable() {
         @Override
         public void run() {
-            listener.onSuccess(brInitData());
+            listener.onSuccess(null,brInitData());
         }
     }, 1000);
 }
@@ -284,7 +380,7 @@ public void getChoiceData(int id, final OnResultListener<List<ChoiceData>> liste
     mHandler.postDelayed(new Runnable() {
         @Override
         public void run() {
-            listener.onSuccess(chInitData());
+            listener.onSuccess(null,chInitData());
         }
     }, 1000);
 }
@@ -339,7 +435,7 @@ public void getDiscountData(int id, final OnResultListener<List<DiscountData>> l
     mHandler.postDelayed(new Runnable() {
         @Override
         public void run() {
-            listener.onSuccess(dcInitData());
+            listener.onSuccess(null,dcInitData());
         }
     }, 1000);
 }
