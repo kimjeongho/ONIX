@@ -11,8 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
+import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,13 +30,7 @@ public class ShopFragment extends Fragment {
     }
 
     ListView listView;
-    ShopAdapter shopAdapter;
-    static final int[] ICON_IDS_SHOP ={
-            R.drawable.onix_shop_main_list_data_1,
-            R.drawable.onix_shop_main_list_data_2,
-            R.drawable.onix_shop_main_list_data_3,
-            R.drawable.onix_shop_main_list_data_4
-    };
+    ShopAdapter mAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,8 +38,8 @@ public class ShopFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_shop, container, false);
         listView = (ListView)v.findViewById(R.id.listView);
-        shopAdapter = new ShopAdapter();
-        listView.setAdapter(shopAdapter);
+        mAdapter = new ShopAdapter();
+        listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,15 +56,19 @@ public class ShopFragment extends Fragment {
     }
 
     private void initData() {
-        for (int i=0; i< ICON_IDS_SHOP.length; i++)
-        {
-            ShopData sd = new ShopData();
-            sd.shopName = "NICK NAME"+i;
-            sd.iconid = ICON_IDS_SHOP[i];
-            sd.shopChoice = "Choice"+i;
-            sd.location = "3km";
-            shopAdapter.add(sd);
-        }
+        NetworkManager.getInstance().getShopData(4, new NetworkManager.OnResultListener<List<ShopData>>() {
+            @Override
+            public void onSuccess(List<ShopData> result) {
+                for (ShopData sd : result) {
+                    mAdapter.add(sd);
+                }
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
     }
 
 }

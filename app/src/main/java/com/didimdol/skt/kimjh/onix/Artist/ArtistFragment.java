@@ -13,7 +13,10 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
+import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,13 +30,8 @@ public class ArtistFragment extends Fragment {
     }
 
     ListView listView;
-    ArtistAdapter artistAdapter;
-    static final int[] ICON_IDS = {
-            R.drawable.dummy_1,
-            R.drawable.dummy_2,
-            R.drawable.dummy_3,
-            R.drawable.dummy_4
-    };
+    ArtistAdapter mAdapter;
+
 
 
     @Override
@@ -46,9 +44,9 @@ public class ArtistFragment extends Fragment {
 
         listView = (ListView)v.findViewById(R.id.listView);
 
-        artistAdapter = new ArtistAdapter();
+        mAdapter = new ArtistAdapter();
 
-        listView.setAdapter(artistAdapter);
+        listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -83,16 +81,19 @@ public class ArtistFragment extends Fragment {
     }
 
     private void initData() {
-        for (int i=0; i<ICON_IDS.length; i++)
-        {
-            ArtistData ad = new ArtistData();
-            ad.artistName = "NICK NAME"+i;
-            ad.iconid = ICON_IDS[i];
-            ad.artistChoice = "Choice"+i;
-            ad.location = "3km";
-            ad.choiceId=R.drawable.onix_sale;
-            artistAdapter.add(ad);
-        }
+        NetworkManager.getInstance().getArtistData(4, new NetworkManager.OnResultListener<List<ArtistData>>() {
+            @Override
+            public void onSuccess(List<ArtistData> result) {
+                for (ArtistData ad : result) {
+                    mAdapter.add(ad);
+                }
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
     }
 
 }

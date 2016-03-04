@@ -5,8 +5,8 @@ package com.didimdol.skt.kimjh.onix.DataClass;
  */
 public class DiscountData {
     //public String DiscountImage;
-    public int iconid;
-
+//    public int iconid;
+    public String discountImage;
     public String artistName;
     public String shopName;
     public String discountTime;

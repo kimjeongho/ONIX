@@ -39,13 +39,13 @@ public class BoardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        BoardWriterView view;
+        BoardView view;
         if(convertView == null){
-            view = new BoardWriterView(parent.getContext());
+            view = new BoardView(parent.getContext());
         } else {
-            view = (BoardWriterView)convertView;
+            view = (BoardView)convertView;
         }
-        view.setBoardWriteItem(items.get(position));
+        view.setBoardItem(items.get(position));
         return view;
 
     }

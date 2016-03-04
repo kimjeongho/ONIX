@@ -17,7 +17,10 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
 import com.didimdol.skt.kimjh.onix.DataClass.NailTypeData;
+import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
+import com.didimdol.skt.kimjh.onix.OnArtistItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
+import com.didimdol.skt.kimjh.onix.Shop.DetailShopActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,12 +36,6 @@ public class DetailArtistActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     EditText inputView;
     List<ArtistCommentData> commentDatas;
-
-    final static String[] NAILTYPE= {"A타입","B타입","C타입","젤네일"};
-
-    final static int[] NAILPRICE = {25000,35000,40000,10000};
-
-    final static String[] COMMENT_ID = {"김정호","김상일","이영석","박유현","최유빈"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +54,7 @@ public class DetailArtistActivity extends AppCompatActivity {
 //        pager.setPageMargin(10);
 // pageslide-----------------------------------------------------------------------------------------
 //        photoAdapter = new ArtistPagerAdapter();
-        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
+       /* mDemoSlider = (SliderLayout)findViewById(R.id.slider);
         HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
         file_maps.put("Hannibal", R.drawable.dummy_1);
         file_maps.put("Big Bang Theory", R.drawable.dummy_2);
@@ -72,7 +69,7 @@ public class DetailArtistActivity extends AppCompatActivity {
             mDemoSlider.addSlider(textSliderView);
             mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
             mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        }
+        }*/
         // pageslide-----------------------------------------------------------------------------------------
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
@@ -81,7 +78,7 @@ public class DetailArtistActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         inputView = (EditText)findViewById(R.id.edit_message);
 
-        Button btn = (Button)findViewById(R.id.btn_ok);
+        Button btn = (Button) findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,36 +93,34 @@ public class DetailArtistActivity extends AppCompatActivity {
             }
         });
 
+        mAdapter.setOnItemClickListener(new OnArtistItemClickListener() {
+            @Override
+            public void onShopClick(View view, int position) {
+                Toast.makeText(DetailArtistActivity.this,"shopclick",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onChoiceClick(View view, int position) {
+                Toast.makeText(DetailArtistActivity.this,"choiceclick",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         initData();
-
-    }
-
-    @Override
-    protected void onStop() {
-        mDemoSlider.stopAutoCycle();
-        super.onStop();
     }
 
     private void initData() {
-        DetailArtistData da = new DetailArtistData();   //artistprofile
-        da.artistImage = R.mipmap.ic_launcher;
-        da.artistName = "test";
-        da.shopName = "shoptest";
-        da.artistContent = "content Test";
-        da.nailType = new ArrayList<NailTypeData>();
-        for(int i=0; i<NAILTYPE.length ;i++){
-            NailTypeData nd = new NailTypeData();   // nail type
-            nd.nailPrice = Integer.parseInt(""+NAILPRICE[i]);
-            nd.nailType = NAILTYPE[i];
-            da.nailType.add(nd);}
-        da.artistComment = new ArrayList<ArtistCommentData>();
-       for (int i= 0 ; i<5 ; i++){
-        ArtistCommentData cd = new ArtistCommentData();     //comment type
-        cd.userId = COMMENT_ID[i];
-        cd.userComment = "댓글 테스트";
-           da.artistComment.add(cd);}
-        mAdapter.put(da);
+        NetworkManager.getInstance().getArtistDetailData(1, new NetworkManager.OnResultListener<DetailArtistData>() {
+            @Override
+            public void onSuccess(DetailArtistData result) {
+                mAdapter.put(result);
+            }
 
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
     }
+
+
 }

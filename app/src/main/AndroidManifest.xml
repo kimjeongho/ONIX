@@ -27,13 +27,19 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Menu.MenuCustomer.CustomerActivity" />
         <activity android:name=".Menu.InstructionActivity" />
-        <activity android:name=".Menu.ChoiceActivity" />
+        <activity android:name=".Menu.MenuChoice.ChoiceActivity" />
         <activity android:name=".Menu.MenuDiscount.DiscountActivity" />
         <activity android:name=".Menu.PushActivity" />
         <activity android:name=".Menu.MenuLogin.JoinActivity" />
         <activity android:name=".Menu.MenuLogin.JoinUserActivity" />
         <activity android:name=".Menu.MenuCustomer.NoticeActivity" />
         <activity android:name=".Menu.MenuCustomer.TermsActivity"></activity>
+
+
+        <meta-data android:name="com.didimdol.skt.kimjh.onix.MyGlideModule"
+            android:value="GlideModule"/>
     </application>
+
+
 
 </manifest>

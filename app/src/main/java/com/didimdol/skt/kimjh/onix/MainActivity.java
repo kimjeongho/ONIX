@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.didimdol.skt.kimjh.onix.Menu.ChoiceActivity;
+import com.didimdol.skt.kimjh.onix.Menu.MenuChoice.ChoiceActivity;
 import com.didimdol.skt.kimjh.onix.Menu.MenuDiscount.DiscountActivity;
 import com.didimdol.skt.kimjh.onix.Menu.InstructionActivity;
 import com.didimdol.skt.kimjh.onix.Menu.MenuCustomer.CustomerActivity;

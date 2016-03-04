@@ -25,59 +25,11 @@
         android:layout_alignParentStart="true"
         android:background="@drawable/onix_maintitle"
         android:layout_marginLeft="@dimen/onix_title_left" />
-
-    <com.daimajia.slider.library.SliderLayout
-        android:id="@+id/slider"
-        android:layout_width="match_parent"
-        android:layout_height="235dp"
-        custom:pager_animation="Default"
-        custom:auto_cycle="false"
-        custom:pager_animation_span="0"
-        custom:indicator_visibility="visible"
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        />
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/slider"
-        android:weightSum="2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout">
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="샵으로가기"
-            android:id="@+id/btn_shop"
-            android:layout_below="@+id/test"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_weight="1" />
-
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="찜하기"
-            android:id="@+id/btn_choice"
-            android:layout_below="@+id/pager"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_weight="1" />
-    </LinearLayout>
-
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/recycler"
-        android:layout_below="@id/linearLayout"
+        android:layout_below="@+id/toolbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/edit_message" />

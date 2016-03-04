@@ -4,7 +4,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="235dp"
         android:id="@+id/image_shop"
         android:layout_gravity="center_horizontal|top" />
 
@@ -59,10 +59,11 @@
     </RelativeLayout>
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView9"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
+        android:id="@+id/image_discount"
         android:layout_gravity="right|top"
-        android:background="@drawable/onix_sale"/>
+        />
+    <!--android:background="@drawable/onix_sale"-->
 
 </FrameLayout>

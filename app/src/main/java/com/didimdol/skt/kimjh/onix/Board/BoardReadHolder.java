@@ -1,10 +1,12 @@
 package com.didimdol.skt.kimjh.onix.Board;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardData;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -33,7 +35,12 @@ public class BoardReadHolder extends RecyclerView.ViewHolder {
     public void setBoardReadItem(BoardData data){
         this.data = data;
         boardTitle.setText(data.boardTitle);
-        userImage.setImageResource(data.iconid);
+//        userImage.setImageResource(data.iconid);
+        if(!TextUtils.isEmpty(data.boardImage))  {
+            Glide.with(itemView.getContext())
+                    .load(data.boardImage)
+                    .into(userImage);
+        }
         userName.setText(data.boardName);
         userCategory.setText(data.boardCategory);
         userTime.setText(data.boardTime);

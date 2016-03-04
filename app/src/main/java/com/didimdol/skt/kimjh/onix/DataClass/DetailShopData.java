@@ -7,11 +7,11 @@ import java.util.List;
  * Created by kimjh on 2016-02-22.
  */
 public class DetailShopData {
-    public int shopPhotos;
+    public String shopPhotos;
     public List<ArtistListData> artistListDatas = new ArrayList<ArtistListData>();
     public String shopTitle;
 //    public String address ;
-    public List<ShopTiemData> shopTimeDatas = new ArrayList<ShopTiemData>();
-    public List<ShopLocationData> shopLocation = new ArrayList<ShopLocationData>();
+    public ShopTiemData shopTimeDatas;
+    public ShopLocationData shopLocation;
 }
 

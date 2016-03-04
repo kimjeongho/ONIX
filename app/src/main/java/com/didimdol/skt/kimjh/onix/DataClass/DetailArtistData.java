@@ -7,11 +7,11 @@ import java.util.List;
  * Created by kimjh on 2016-02-22.
  */
 public class DetailArtistData {
-    public int artistPhotos;
-//    public String artistPhotos;
+//    public int artistPhotos;
+    public String artistPhotos;
 
-    public int artistImage;
-//    public String artistImage;
+//    public int artistImage;
+    public String artistImage;
 
     public String artistName;
     public String shopName;

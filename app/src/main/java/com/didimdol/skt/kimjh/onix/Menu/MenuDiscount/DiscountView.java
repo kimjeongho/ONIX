@@ -1,10 +1,12 @@
 package com.didimdol.skt.kimjh.onix.Menu.MenuDiscount;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.didimdol.skt.kimjh.onix.DataClass.DiscountData;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -42,7 +44,11 @@ public class DiscountView extends FrameLayout {
 
     public void setDiscountItem(DiscountData data){
         this.discountData = data;
-        artistImage.setImageResource(data.iconid);
+        if(!TextUtils.isEmpty(data.discountImage))  {
+            Glide.with(getContext())
+                    .load(data.discountImage)
+                    .into(artistImage);
+        }
         artistNameView.setText(data.artistName);
         shopNameView.setText(data.shopName);
         discountTimeView.setText(data.discountTime);

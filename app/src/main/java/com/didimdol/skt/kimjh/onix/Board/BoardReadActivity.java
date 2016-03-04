@@ -11,11 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.didimdol.skt.kimjh.onix.Artist.DetailArtistAdapter;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardData;
-import com.didimdol.skt.kimjh.onix.DataClass.BoardReadData;
+import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
 
 import java.util.ArrayList;
@@ -29,7 +27,7 @@ public class BoardReadActivity extends AppCompatActivity {
     EditText inputView;
     List<BoardCommentData> commentDatas;
 
-    final static String[] COMMENT_ID = {"김정호","김상일","이영석","박유현","최유빈"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,13 +68,18 @@ public class BoardReadActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        BoardData bd = new BoardData();
-        bd.boardTitle = "제목 테스트";
-        bd.boardName = "홍길동";
-        bd.boardCategory = "QnA";
-        bd.boardTime = "05:00";
-        bd.iconid = R.drawable.onix_board_detail_img;
-        bd.boardContent = "sjdfhlskhdlshgklhsadlkghslkhglkashdglkdhasl;kghasl;hkdgl;akshl;hdglaksdhlgkhalsdkghadl;shkgl;hkasdl;gh";
-        mAdapter.put(bd);
+        NetworkManager.getInstance().getBoardReadData(1, new NetworkManager.OnResultListener<List<BoardData>>() {
+            @Override
+            public void onSuccess(List<BoardData> result) {
+                for (BoardData bd : result) {
+                    mAdapter.put(bd);
+                }
+            }
+
+            @Override
+            public void onFailure(int code) {
+
+            }
+        });
     }
 }

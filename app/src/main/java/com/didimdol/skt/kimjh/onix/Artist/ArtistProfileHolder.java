@@ -1,10 +1,12 @@
 package com.didimdol.skt.kimjh.onix.Artist;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -28,7 +30,11 @@ public class ArtistProfileHolder extends RecyclerView.ViewHolder {
 
     public void setArtistProfileItem(DetailArtistData data){
         this.data = data;
-        artistImageView.setImageResource(data.artistImage);
+        if(!TextUtils.isEmpty(data.artistImage))  {
+            Glide.with(itemView.getContext())
+                    .load(data.artistImage)
+                    .into(artistImageView);
+        }
         artistNameView.setText(data.artistName);
         shopNameView.setText(data.shopName);
         artistContent.setText(data.artistContent);

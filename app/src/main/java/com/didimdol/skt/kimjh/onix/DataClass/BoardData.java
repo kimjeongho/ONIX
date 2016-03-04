@@ -7,7 +7,8 @@ import java.util.List;
  * Created by kimjh on 2016-02-22.
  */
 public class BoardData {
-    public int iconid;
+//    public int iconid;
+    public String boardImage;
     public String boardTitle;
     public String boardName;
     public String boardTime;

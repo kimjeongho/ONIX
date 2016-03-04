@@ -5,7 +5,8 @@ package com.didimdol.skt.kimjh.onix.DataClass;
  */
 //샵페이지 아티스트 리스트 데이터
 public class ArtistListData {
-    public int artistListImage;
+//    public int artistListImage;
+    public String artistListImage;
     public String artistName;
     public String shopName;
     public String artistSort;

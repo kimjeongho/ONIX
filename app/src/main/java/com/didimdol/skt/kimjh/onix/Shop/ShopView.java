@@ -1,10 +1,12 @@
 package com.didimdol.skt.kimjh.onix.Shop;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
 import com.didimdol.skt.kimjh.onix.R;
@@ -33,7 +35,11 @@ public class ShopView extends FrameLayout {
 
     public void setShopData(ShopData data) {
         this.shopData = data;
-        shopView.setImageResource(data.iconid);
+        if(!TextUtils.isEmpty(data.shopImage))  {
+            Glide.with(getContext())
+                    .load(data.shopImage)
+                    .into(shopView);
+        }
         shopNameView.setText(data. shopName);
         shopChoiceView.setText(data. shopChoice);
         locationView.setText(data.location);
