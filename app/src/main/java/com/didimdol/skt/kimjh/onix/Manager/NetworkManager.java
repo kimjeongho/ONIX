@@ -1,39 +1,59 @@
 package com.didimdol.skt.kimjh.onix.Manager;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentData;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistListData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalSuccess;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistDetailResult;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalResult;
+import com.didimdol.skt.kimjh.onix.DataClass.BoardTotalSuccess;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardData;
 import com.didimdol.skt.kimjh.onix.DataClass.ChoiceData;
-import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
 import com.didimdol.skt.kimjh.onix.DataClass.DiscountData;
-import com.didimdol.skt.kimjh.onix.DataClass.NailTypeData;
-import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopLocationData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTiemData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalResult;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalSuccess;
 import com.didimdol.skt.kimjh.onix.MyApplication;
 import com.didimdol.skt.kimjh.onix.PersistentCookieStore;
 import com.didimdol.skt.kimjh.onix.R;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.URLEncoder;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManagerFactory;
 
 import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Dispatcher;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -71,11 +91,79 @@ public class NetworkManager {
 
         mClient = builder.build();
     }
+    static void disableCertificateValidation(Context context, OkHttpClient.Builder builder) {
+
+        try {
+            CertificateFactory cf = CertificateFactory.getInstance("X.509");
+            InputStream caInput = context.getResources().openRawResource(R.raw.site);
+            Certificate ca;
+            try {
+                ca = cf.generateCertificate(caInput);
+                System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
+            } finally {
+                caInput.close();
+            }
+            String keyStoreType = KeyStore.getDefaultType();
+            KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+            keyStore.load(null, null);
+            keyStore.setCertificateEntry("ca", ca);
+
+            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+            tmf.init(keyStore);
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, tmf.getTrustManagers(), null);
+            HostnameVerifier hv = new HostnameVerifier() {
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+            sc.init(null, tmf.getTrustManagers(), null);
+            builder.sslSocketFactory(sc.getSocketFactory());
+            builder.hostnameVerifier(hv);
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cancelAll() {
+        mClient.dispatcher().cancelAll();
+    }
+
+    public void cancelTag(Object tag) {
+        Dispatcher dispatcher = mClient.dispatcher();
+        List<Call> calls = dispatcher.queuedCalls();
+        for (Call call : calls) {
+            if (call.request().tag().equals(tag)) {
+                call.cancel();
+            }
+        }
+        calls = dispatcher.runningCalls();
+        for (Call call : calls) {
+            if (call.request().tag().equals(tag)) {
+                call.cancel();
+            }
+        }
+    }
 
     public interface OnResultListener<T> {
         public void onSuccess(Request request, T result);
         public void onFailure(Request request, int code, Throwable cause);
     }
+
+    /*public interface OnResultListener<T> {
+        public void onSuccess(T result);
+        public void onFailure(int code);
+    }*/
 
     private static final int MESSAGE_SUCCESS = 0;
     private static final int MESSAGE_FALURE = 1;
@@ -103,7 +191,7 @@ public class NetworkManager {
         }
     }
 
-    Handler mHandler = new Handler(Looper.getMainLooper());
+    Handler mHandler = new NetworkHandler(Looper.getMainLooper());
 
     static class CallbackObject<T>{
         Request request;
@@ -111,12 +199,93 @@ public class NetworkManager {
         IOException exception;
         OnResultListener<T> listener;
     }
+//아티스트 리스트 페이지------------------------------------------------------------------------------------------------------------------------------------
+    private static final String URL_ARTIST_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists?page=%s&condition=%s&search=%s";
+    public Request getArtistTotalDataResult(Context context, int page, String condition, String search, final OnResultListener<ArtistTotalSuccess> listener){
+        String url = null;
+        try {
+            url = String.format(URL_ARTIST_LIST,page, URLEncoder.encode(condition, "utf-8"), URLEncoder.encode(search,"utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        final CallbackObject<ArtistTotalSuccess> callbackObject = new CallbackObject<ArtistTotalSuccess>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
 
-    private static final String URL_FORMAT = "http://";
-    public Request getArtistDetailData(Context context, int id, final OnResultListener<DetailArtistData> listener){
-        String url = String.format(URL_FORMAT, URLEncoder.encode("utf-8"),id);
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                ArtistTotalResult result = gson.fromJson(response.body().charStream(), ArtistTotalResult.class);
+                callbackObject.result = result.successResult;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return  request;
+    }
+    //아티스트 리스트 페이지------------------------------------------------------------------------------------------------------------------------------------
 
-        final CallbackObject<DetailArtistData> callbackObject = new CallbackObject<DetailArtistData>();
+    //샵 리스트 페이지----------------------------------------------------------------------------------------------------------------------------------------
+
+    private static final String URL_SHOP_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/shops/?page=%s&search=%s&condition=%s";
+    public Request getShopTotalDataResult(Context context, int page, String search, String condition, final OnResultListener<ShopTotalSuccess> listener){
+        String url = null;
+        try {
+            url = String.format(URL_SHOP_LIST,page, URLEncoder.encode(search, "utf-8"), URLEncoder.encode(condition,"utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        final CallbackObject<ShopTotalSuccess> callbackObject = new CallbackObject<ShopTotalSuccess>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                ShopTotalResult result = gson.fromJson(response.body().charStream(), ShopTotalResult.class);
+                callbackObject.result = result.successResult;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    //샵 리스트 페이지----------------------------------------------------------------------------------------------------------------------------------------
+    //-----------게시판 메인--------------------------------------------------------------------------------------------------------------------------
+    private static final String URL_TOTAL_BOARD = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/boards/postBoard_id=%s/posts?page=%s&search=%s";
+    public Request getBoardTotalDataResult(Context context, int postBoard_id, int page, String search, final OnResultListener<BoardTotalSuccess>){
+
+    }
+
+
+    //-----------게시판 메인---------------------------------------------------------------------------------------------------------------------------
+//-----------샵에서 아티스트 페이지 클릭 했을시 동작------------------------------------------------------------------------------------------
+    private static final String URL_DETAIL_ARTIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists/%s";
+    public Request getArtistDetailDataResult(Context context, int id, final OnResultListener<ArtistTotalData> listener){
+        String url = String.format(URL_DETAIL_ARTIST,id);
+
+        final CallbackObject<ArtistTotalData> callbackObject = new CallbackObject<ArtistTotalData>();
 
         Request request = new Request.Builder().url(url)
                 .tag(context)
@@ -133,17 +302,23 @@ public class NetworkManager {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                ArtistDetailResult result = gson.fromJson(response.body().charStream(), ArtistDetailResult.class);
+                callbackObject.result = result.successResult;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
 
             }
         });
 
-
         return request;
     }
 
+    //-----------샵에서 아티스트 페이지 클릭 했을시 동작------------------------------------------------------------------------------------------
+
 
     //아티스트 상세 페이지-----------------------------------------------------------------------------------------------------------------
-    public void getArtistDetailData(int id, final OnResultListener<DetailArtistData> listener) {
+   /* public void getArtistDetailData(int id, final OnResultListener<DetailArtistData> listener) {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -153,12 +328,12 @@ public class NetworkManager {
     }
 
     final static String[] NAILTYPE = {"A타입", "B타입", "C타입", "젤네일"};
-
-    final static int[] NAILPRICE = {25000, 35000, 40000, 10000};
+    final static String[] PHOTOS = {"https://s-media-cache-ak0.pinimg.com/236x/43/4b/30/434b30ea9695f44a2ddf4772d5f1bf9c.jpg",""};
+    final static String[] NAILPRICE = {"25000", "35000", "40000", "10000"};
 
     private DetailArtistData daInitData() {
         DetailArtistData da = new DetailArtistData();   //artistprofile
-        da.artistPhotos = "https://s-media-cache-ak0.pinimg.com/236x/43/4b/30/434b30ea9695f44a2ddf4772d5f1bf9c.jpg";
+        da.artistPhotos = Arrays.asList(PHOTOS);
         da.artistImage = "https://s-media-cache-ak0.pinimg.com/236x/43/4b/30/434b30ea9695f44a2ddf4772d5f1bf9c.jpg";
         da.artistName = "test";
         da.shopName = "shoptest";
@@ -166,21 +341,21 @@ public class NetworkManager {
         da.nailType = new ArrayList<NailTypeData>();
         for (int i = 0; i < NAILTYPE.length; i++) {
             NailTypeData nd = new NailTypeData();   // nail type
-            nd.nailPrice = Integer.parseInt("" + NAILPRICE[i]);
+            nd.nailPrice =  NAILPRICE[i];
             nd.nailType = NAILTYPE[i];
             da.nailType.add(nd);
         }
         da.artistComment = new ArrayList<ArtistCommentData>();
         ArtistCommentData cd = new ArtistCommentData();     //comment type
-        cd.userId = "가나다";
+        cd.userName = "가나다";
         cd.userComment = "댓글 테스트";
         da.artistComment.add(cd);
         return da;
     }
 
-    //아티스트 상세 페이지-----------------------------------------------------------------------------------------------------------------
+    //아티스트 상세 페이지-----------------------------------------------------------------------------------------------------------------*/
 
-    //샵 상세 페이지 ----------------------------------------------------------------------------------------------------------------------
+    /*//샵 상세 페이지 ----------------------------------------------------------------------------------------------------------------------
     public void getShopDetailData(int id, final OnResultListener<DetailShopData> listener) {
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -194,14 +369,14 @@ public class NetworkManager {
             "http://webneel.com/daily/sites/default/files/images/daily/05-2014/3-face-paint.jpg",
             "http://visual-makeover.com/wp-content/uploads/2011/03/Round-Face-Shape.jpg"
     };
-
+    final static String[] PHOTOS = {"https://s-media-cache-ak0.pinimg.com/236x/43/4b/30/434b30ea9695f44a2ddf4772d5f1bf9c.jpg",""};
     private DetailShopData dsInitData() {
         DetailShopData sd = new DetailShopData();
-        sd.shopPhotos = "https://s-media-cache-ak0.pinimg.com/236x/43/4b/30/434b30ea9695f44a2ddf4772d5f1bf9c.jpg";
+        sd.shopPhotos = Arrays.asList(PHOTOS);
         sd.shopTitle = "네일샵";
         for (int i = 0; i < ARTISTPROFILEIMAGE.length; i++) {
-            ArtistListData ad = new ArtistListData();
-            ad.artistChoice = Integer.parseInt("" + 100);
+            ShopArtistListData ad = new ShopArtistListData();
+            ad.artistChoice = String.valueOf(Integer.parseInt("" + 100));
             ad.artistContent = "잘하겠습니다";
             ad.artistListImage = ARTISTPROFILEIMAGE[i];
             if (i == 0) {
@@ -216,24 +391,24 @@ public class NetworkManager {
             sd.artistListDatas.add(ad);
         }
         sd.shopTimeDatas = new ShopTiemData();
-        /*td.shopWeekDay = "09:00 ~ 21:00";
+        *//*td.shopWeekDay = "09:00 ~ 21:00";
         td.shopWeekEnd = "09:00 ~ 21:00";
         td.shopWeekEtc = "연중무휴";
-        td.shopAddress = "서울시 동작구 상도4동";*/
+        td.shopAddress = "서울시 동작구 상도4동";*//*
         sd.shopTimeDatas.shopWeekDay = "09:00 ~ 21:00";
         sd.shopTimeDatas.shopWeekEnd = "09:00 ~ 21:00";
         sd.shopTimeDatas.shopWeekEtc = "연중무휴";
         sd.shopTimeDatas.shopAddress = "서울시 동작구 상도4동";
         sd.shopLocation = new ShopLocationData();
-        /*sd.shopLocation.shopLatitude = 123;
-        sd.shopLocation.shopLongitude = 123;*/
+        *//*sd.shopLocation.shopLatitude = 123;
+        sd.shopLocation.shopLongitude = 123;*//*
         return sd;
 
     }
 
-    //샵 상세 페이지 ----------------------------------------------------------------------------------------------------------------------
+    //샵 상세 페이지 ----------------------------------------------------------------------------------------------------------------------*/
 //아티스트 리스트 페이지 ----------------------------------------------------------------------------------------------------------------------
-    public void getArtistData(int page, final OnResultListener<List<ArtistData>> listener) {
+    public void getArtistData(int page, final OnResultListener<List<ArtistTotalData>> listener) {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -249,23 +424,23 @@ public class NetworkManager {
             "http://slodive.com/wp-content/uploads/2013/02/pretty-nail-designs/brown-nail.jpg"
     };
 
-    private List<ArtistData> atInitData() {
-        List<ArtistData> list = new ArrayList<>();
+    private List<ArtistTotalData> atInitData() {
+        List<ArtistTotalData> list = new ArrayList<>();
         for (int i = 0; i < ICON_IDS.length; i++) {
-            ArtistData ad = new ArtistData();
+            ArtistTotalData ad = new ArtistTotalData();
             ad.artistName = "NICK NAME" + i;
             ad.artistDiscount = "http://image.lottedfs.com/image/event/info/body_img_10086100060000800007_1.jpg";
             ad.artistImage = ICON_IDS[i];
             ad.artistChoice = "Choice" + i;
-            ad.location = "3km";
+//            ad.location = "3km";
             list.add(ad);
         }
         return list;
     }
 
     //아티스트 리스트 페이지 ----------------------------------------------------------------------------------------------------------------------
-//샵 리스트 페이지 ----------------------------------------------------------------------------------------------------------------------
-    public void getShopData(int page, final OnResultListener<List<ShopData>> listener) {
+/*//샵 리스트 페이지 ----------------------------------------------------------------------------------------------------------------------
+    public void getShopData(int page, final OnResultListener<List<ShopTotalData>> listener) {
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -281,10 +456,10 @@ public class NetworkManager {
             "http://slodive.com/wp-content/uploads/2013/02/pretty-nail-designs/brown-nail.jpg"
     };
 
-    private List<ShopData> shInitData() {
-        List<ShopData> list = new ArrayList<>();
+    private List<ShopTotalData> shInitData() {
+        List<ShopTotalData> list = new ArrayList<>();
         for (int i = 0; i < ICON_IDS_SHOP.length; i++) {
-            ShopData sd = new ShopData();
+            ShopTotalData sd = new ShopTotalData();
             sd.shopName = "NICK NAME" + i;
             sd.shopImage = ICON_IDS_SHOP[i];
             sd.shopChoice = "Choice" + i;
@@ -294,7 +469,7 @@ public class NetworkManager {
         return list;
     }
 
-    //샵 리스트 페이지 ----------------------------------------------------------------------------------------------------------------------
+    //샵 리스트 페이지 ----------------------------------------------------------------------------------------------------------------------*/
 //게시판 리스트 페이지 ----------------------------------------------------------------------------------------------------------------------
     public void getBoardData(int id, final OnResultListener<List<BoardData>> listener) {
         mHandler.postDelayed(new Runnable() {
@@ -376,7 +551,7 @@ public void getBoardReadData(int id, final OnResultListener<List<BoardData>> lis
 
 
 //찜내역 읽기 페이지 ----------------------------------------------------------------------------------------------------------------------
-public void getChoiceData(int id, final OnResultListener<List<ChoiceData>> listener) {
+/*public void getChoiceData(int id, final OnResultListener<List<ChoiceData>> listener) {
     mHandler.postDelayed(new Runnable() {
         @Override
         public void run() {
@@ -404,7 +579,7 @@ public void getChoiceData(int id, final OnResultListener<List<ChoiceData>> liste
     private List<ChoiceData> chInitData() {
         List<ChoiceData> list = new ArrayList<>();
         for (int i=0; i<ICON_CHOICE_SHOP.length; i++) {
-            ShopData sd = new ShopData();
+            ShopTotalData sd = new ShopTotalData();
             sd.shopName = "NICK NAME"+i;
             sd.shopImage = ICON_CHOICE_SHOP[i];
             sd.shopChoice = "Choice"+i;
@@ -414,14 +589,14 @@ public void getChoiceData(int id, final OnResultListener<List<ChoiceData>> liste
 
         for (int i=0; i<ICON_CHOICE_ARTIST.length; i++)
         {
-            ArtistData ad = new ArtistData();
+            ArtistTotalData ad = new ArtistTotalData();
             ad.artistName = "NICK NAME"+i;
 //            ad.artistImage = ICON_IDS[i];
             ad.artistDiscount="https://s-media-cache-ak0.pinimg.com/236x/43/4b/30/434b30ea9695f44a2ddf4772d5f1bf9c.jpg";
             ad.artistImage = ICON_CHOICE_ARTIST[i];
             ad.artistChoice = "Choice"+i;
-            ad.location = "3km";
-            ad.choiceId="1";
+           *//* ad.location = "3km";
+            ad.choiceId="1";*//*
             list.add(ad);
 
         }
@@ -429,7 +604,7 @@ public void getChoiceData(int id, final OnResultListener<List<ChoiceData>> liste
     }
 
 
-//찜내역 읽기 페이지 ----------------------------------------------------------------------------------------------------------------------
+//찜내역 읽기 페이지 ----------------------------------------------------------------------------------------------------------------------*/
 //할인파우치 페이지------------------------------------------------------------------------------------------------------------------------
 public void getDiscountData(int id, final OnResultListener<List<DiscountData>> listener) {
     mHandler.postDelayed(new Runnable() {

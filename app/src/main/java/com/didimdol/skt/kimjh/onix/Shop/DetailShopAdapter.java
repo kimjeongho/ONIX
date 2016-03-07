@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.OnShopItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -14,9 +14,15 @@ import com.didimdol.skt.kimjh.onix.R;
  * Created by kimjh on 2016-02-27.
  */
 public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnShopItemClickListener {
-    DetailShopData data;
+//    DetailShopData data;
+    ShopTotalData data;
 
-    public void put(DetailShopData data) {
+   /* public void put(DetailShopData data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }*/
+
+    public void put(ShopTotalData data) {
         this.data = data;
         notifyDataSetChanged();
     }
@@ -122,10 +128,10 @@ public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             //get(position-1) 아티스트 데이터는 0부터 시작이지만 position0 번째가 shopname이 있으므로 -1을 해주어야 아이템이 0번째부터 보일수 있다.
             return;
         } else if (position == data.artistListDatas.size() + 2) {
-            ((ShopTimeHolder) holder).setTimeItme(data.shopTimeDatas);
+            ((ShopTimeHolder) holder).setTimeItme(data);
             return;
         }else {
-            ((ShopLocationHolder)holder).setMapView(data.shopLocation);
+            ((ShopLocationHolder)holder).setMapView(data);
             return;
         }
     }

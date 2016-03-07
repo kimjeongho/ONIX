@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTiemData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.R;
 
 /**
@@ -15,7 +16,7 @@ public class ShopTimeHolder extends RecyclerView.ViewHolder {
     TextView weekDayView;
     TextView weekEtcView;
     TextView shopAddressView;
-    ShopTiemData data;
+    ShopTotalData data;
 
     public ShopTimeHolder(View itemView) {
         super(itemView);
@@ -25,11 +26,9 @@ public class ShopTimeHolder extends RecyclerView.ViewHolder {
         shopAddressView= (TextView)itemView.findViewById(R.id.text_address);
     }
 
-    public void setTimeItme(ShopTiemData data){
+    public void setTimeItme(ShopTotalData data){
         this.data = data;
-        weekDayView.setText(data.shopWeekDay);
-        weekEndView.setText(data.shopWeekEnd);
-        weekEtcView.setText(data.shopWeekEtc);
+        weekDayView.setText(data.useTime);
         shopAddressView.setText(data.shopAddress);
     }
 }

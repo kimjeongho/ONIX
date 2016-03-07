@@ -1,5 +1,6 @@
 package com.didimdol.skt.kimjh.onix.Artist;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +16,7 @@ import android.widget.Toast;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentData;
-import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.NailTypeData;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.OnArtistItemClickListener;
@@ -25,6 +26,8 @@ import com.didimdol.skt.kimjh.onix.Shop.DetailShopActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Request;
 
 
 public class DetailArtistActivity extends AppCompatActivity {
@@ -37,12 +40,20 @@ public class DetailArtistActivity extends AppCompatActivity {
     EditText inputView;
     List<ArtistCommentData> commentDatas;
 
+    public static final String PARAM_TOTAL_ARTIST = "total";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_artist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //serializable------------------------------------------------------------------------------------------
+        Intent intent = getIntent();
+        ArtistTotalData data =  (ArtistTotalData)intent.getSerializableExtra(PARAM_TOTAL_ARTIST);
+
+        //serializable------------------------------------------------------------------------------------------
 
         ImageView onixHome = (ImageView)findViewById(R.id.onix_home);
         onixHome.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +96,7 @@ public class DetailArtistActivity extends AppCompatActivity {
                 String text = inputView.getText().toString();
                 if(!TextUtils.isEmpty(text)){
                     commentDatas = new ArrayList<ArtistCommentData>();
-                    commentDatas.add(new ArtistCommentData("홍길동", text));
+                    commentDatas.add(new ArtistCommentData("홍길동",text,""));
                     mAdapter.addAll(commentDatas);  // commentDatas를 메소드 인자로 보낸다.
                     inputView.setText("");
                     recyclerView.smoothScrollToPosition(mAdapter.getItemCount()-1);
@@ -104,12 +115,12 @@ public class DetailArtistActivity extends AppCompatActivity {
                 Toast.makeText(DetailArtistActivity.this,"choiceclick",Toast.LENGTH_SHORT).show();
             }
         });
-
+        mAdapter.put(data);
         initData();
     }
 
     private void initData() {
-        NetworkManager.getInstance().getArtistDetailData(1, new NetworkManager.OnResultListener<DetailArtistData>() {
+       /* NetworkManager.getInstance().getArtistDetailData(1, new NetworkManager.OnResultListener<DetailArtistData>() {
             @Override
             public void onSuccess(DetailArtistData result) {
                 mAdapter.put(result);
@@ -119,7 +130,20 @@ public class DetailArtistActivity extends AppCompatActivity {
             public void onFailure(int code) {
 
             }
-        });
+        });*/
+        /*NetworkManager.getInstance().getArtistDetailDataResult(this, 1, new NetworkManager.OnResultListener<DetailArtistData>() {
+            @Override
+            public void onSuccess(Request request, DetailArtistData result) {
+                mAdapter.put(result);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });*/
+
+
     }
 
 

@@ -10,20 +10,23 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardData;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
 
 import java.util.List;
 
+import okhttp3.Request;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class BoardFragment extends Fragment {
 
+    Spinner searchSpinner;
 
     public BoardFragment() {
         // Required empty public constructor
@@ -71,14 +74,14 @@ public class BoardFragment extends Fragment {
     private void initData() {
         NetworkManager.getInstance().getBoardData(1, new NetworkManager.OnResultListener<List<BoardData>>() {
             @Override
-            public void onSuccess(List<BoardData> result) {
+            public void onSuccess(Request request, List<BoardData> result) {
                 for (BoardData bd : result) {
                     mAdapter.add(bd);
                 }
             }
 
             @Override
-            public void onFailure(int code) {
+            public void onFailure(Request request,int code, Throwable cause) {
 
             }
         });

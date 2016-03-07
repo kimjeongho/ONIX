@@ -19,6 +19,8 @@ import com.didimdol.skt.kimjh.onix.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Request;
+
 public class BoardReadActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
@@ -70,14 +72,14 @@ public class BoardReadActivity extends AppCompatActivity {
     private void initData() {
         NetworkManager.getInstance().getBoardReadData(1, new NetworkManager.OnResultListener<List<BoardData>>() {
             @Override
-            public void onSuccess(List<BoardData> result) {
+            public void onSuccess(Request request, List<BoardData> result) {
                 for (BoardData bd : result) {
                     mAdapter.put(bd);
                 }
             }
 
             @Override
-            public void onFailure(int code) {
+            public void onFailure(Request request,int code, Throwable cause) {
 
             }
         });

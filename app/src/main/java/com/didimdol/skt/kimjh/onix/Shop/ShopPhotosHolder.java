@@ -6,8 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.OnShopItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -50,10 +50,10 @@ public class ShopPhotosHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setShopPhotosItem(DetailShopData data){
-        if(!TextUtils.isEmpty(data.shopPhotos))  {
+    public void setShopPhotosItem(ShopTotalData data){
+        if(!TextUtils.isEmpty(data.shopPhotos.get(0)))  {
             Glide.with(itemView.getContext())
-                    .load(data.shopPhotos)
+                    .load(data.shopPhotos.get(0))
                     .into(shopPhotos);
         }
     }

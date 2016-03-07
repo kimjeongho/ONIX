@@ -23,4 +23,117 @@
         android:layout_alignParentStart="true"
         android:background="@drawable/onix_maintitle"
         android:layout_marginLeft="@dimen/onix_title_left" />
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_hour_first"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:spinnerMode="dropdown"
+        android:entries="@array/hour_first"/>
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_hour_second"
+        android:layout_alignTop="@+id/spin_hour_first"
+        android:layout_toRightOf="@+id/spin_hour_first"
+        android:layout_toEndOf="@+id/spin_hour_first"
+        android:spinnerMode="dropdown"
+        android:entries="@array/hour_second"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=":"
+        android:id="@+id/textView16"
+        android:layout_alignTop="@+id/spin_hour_second"
+        android:layout_toRightOf="@+id/spin_hour_second"
+        android:layout_toEndOf="@+id/spin_hour_second" />
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_minute_first"
+        android:spinnerMode="dropdown"
+        android:layout_above="@+id/textView18"
+        android:layout_toRightOf="@+id/textView18"
+        android:layout_toEndOf="@+id/textView18"
+        android:entries="@array/minute_first"
+        />
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_minute_second"
+        android:spinnerMode="dropdown"
+        android:layout_alignTop="@+id/spin_minute_first"
+        android:layout_centerHorizontal="true"
+        android:entries="@array/minute_second"/>
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_hour_first2"
+        android:layout_below="@+id/spin_hour_first"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:spinnerMode="dropdown"
+        android:entries="@array/hour_first"/>
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_hour_second2"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/spin_hour_second"
+        android:layout_toRightOf="@+id/spin_hour_first"
+        android:layout_toEndOf="@+id/spin_hour_first"
+        android:entries="@array/hour_second"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text=":"
+        android:id="@+id/textView18"
+        android:layout_below="@+id/spin_hour_second"
+        android:layout_toRightOf="@+id/textView16"
+        android:layout_toEndOf="@+id/textView16" />
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_minute_first2"
+        android:layout_below="@+id/spin_minute_first"
+        android:layout_alignLeft="@+id/spin_minute_first"
+        android:layout_alignStart="@+id/spin_minute_first"
+        android:spinnerMode="dropdown"
+        android:entries="@array/minute_first"/>
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_minute_second2"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/spin_minute_second"
+        android:layout_alignLeft="@+id/spin_minute_second"
+        android:layout_alignStart="@+id/spin_minute_second"
+        android:entries="@array/minute_second"/>
+
+    <Spinner
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spin_discount"
+        android:spinnerMode="dropdown"
+        android:layout_below="@+id/spin_minute_second"
+        android:layout_toRightOf="@+id/spin_minute_second2"
+        android:layout_toEndOf="@+id/spin_minute_second2"
+        android:entries="@array/discount"/>
+
+
 </RelativeLayout>

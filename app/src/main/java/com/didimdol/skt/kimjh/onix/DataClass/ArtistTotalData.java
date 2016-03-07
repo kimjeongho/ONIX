@@ -1,4 +1,3 @@
-/*
 package com.didimdol.skt.kimjh.onix.DataClass;
 
 import com.google.gson.annotations.SerializedName;
@@ -7,12 +6,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-*/
 /**
  * Created by kimjh on 2016-02-22.
- *//*
+ */
+public class ArtistTotalData implements ChoiceData, Serializable {
 
-public class DetailArtistData implements Serializable{
     public String artist_id;
 
     @SerializedName("nickname")
@@ -41,30 +39,4 @@ public class DetailArtistData implements Serializable{
     @SerializedName("comments")
     public List<ArtistCommentData> artistComment = new ArrayList<ArtistCommentData>();
 
-
-*/
-/*//*
-/    public int artistPhotos;
-    public List<String> artistPhotos;
-
-//    public int artistImage;
-    @SerializedName("artist_id")
-    public String artistId;
-
-    public String artistImage;
-
-    @SerializedName("jjim_status")
-    public String jjimStatus;
-
-    @SerializedName("name")
-    public String artistName;
-    public String shopName;
-    public String artistContent;
-    @SerializedName("services")
-    public List<NailTypeData> nailType = new ArrayList<NailTypeData>();
-//    @SerializedName("commentsList")
-    public List<ArtistCommentData> artistComment = new ArrayList<ArtistCommentData>();*//*
-
-
 }
-*/

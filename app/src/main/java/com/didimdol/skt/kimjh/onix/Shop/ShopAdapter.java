@@ -4,7 +4,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalSuccess;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalSuccess;
 
 import java.util.ArrayList;
 
@@ -12,15 +14,20 @@ import java.util.ArrayList;
  * Created by kimjh on 2016-02-23.
  */
 public class ShopAdapter extends BaseAdapter {
-    ArrayList<ShopData> items = new ArrayList<ShopData>();
+    ArrayList<ShopTotalData> items = new ArrayList<ShopTotalData>();
 
     public ShopAdapter(){
     }
 
-    public void add(ShopData data){
-        items.add(data);
+    public void set(ShopTotalSuccess data){
+        items.addAll(data.shopList);
         notifyDataSetChanged();
     }
+
+   /* public void add(ShopTotalData data){
+        items.add(data);
+        notifyDataSetChanged();
+    }*/
 
     @Override
     public int getCount() {

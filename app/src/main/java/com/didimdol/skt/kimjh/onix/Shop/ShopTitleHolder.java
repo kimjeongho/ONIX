@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.R;
 
 /**
@@ -12,14 +13,14 @@ import com.didimdol.skt.kimjh.onix.R;
  */
 public class ShopTitleHolder extends RecyclerView.ViewHolder {
     TextView shopTitleView;
-    DetailShopData data;
+    ShopTotalData data;
     public ShopTitleHolder(View itemView) {
         super(itemView);
         shopTitleView = (TextView)itemView.findViewById(R.id.text_shopname);
     }
-    public void setTitleItem(DetailShopData data)
+    public void setTitleItem(ShopTotalData data)
     {
         this.data = data;
-        shopTitleView.setText(data.shopTitle);
+        shopTitleView.setText(data.shopName);
     }
 }

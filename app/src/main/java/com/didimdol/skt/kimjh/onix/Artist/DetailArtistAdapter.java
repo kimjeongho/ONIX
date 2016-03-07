@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentData;
-import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalSuccess;
 import com.didimdol.skt.kimjh.onix.OnArtistItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -17,13 +18,20 @@ import java.util.List;
  */
 public class DetailArtistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements OnArtistItemClickListener {
 //    List<DetailArtistData> items = new ArrayList<DetailArtistData>();
-    DetailArtistData data;
+//    DetailArtistData data;
+    ArtistTotalData data;
 //    List<CommentData> items = new ArrayList<CommentData>();
-    public void put(DetailArtistData data){
+   /* public void put(DetailArtistData data){
+//        items.add(data);
+        this.data = data;
+        notifyDataSetChanged();
+    } */
+public void put(ArtistTotalData data){
 //        items.add(data);
         this.data = data;
         notifyDataSetChanged();
     }
+
 
     public void addAll(List<ArtistCommentData> datas){  // Activity에서 commentDatas를 받는다 (같은 List형태)
 //        items.addAll(datas);

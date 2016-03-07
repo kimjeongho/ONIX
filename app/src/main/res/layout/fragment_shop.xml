@@ -28,9 +28,10 @@
     <Spinner
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_search"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:entries="@array/search"/>
 
 </RelativeLayout>

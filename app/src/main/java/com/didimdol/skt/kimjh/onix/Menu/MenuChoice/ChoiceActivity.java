@@ -6,14 +6,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
 import com.didimdol.skt.kimjh.onix.DataClass.ChoiceData;
-import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
-import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
 
 import java.util.List;
+
+import okhttp3.Request;
 
 public class ChoiceActivity extends AppCompatActivity {
     ChoiceAdapter mAdapter;
@@ -59,19 +58,19 @@ public class ChoiceActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        NetworkManager.getInstance().getChoiceData(4, new NetworkManager.OnResultListener<List<ChoiceData>>() {
+        /*NetworkManager.getInstance().getChoiceData(4, new NetworkManager.OnResultListener<List<ChoiceData>>() {
             @Override
-            public void onSuccess(List<ChoiceData> result) {
+            public void onSuccess(Request request, List<ChoiceData> result) {
                 for (ChoiceData cd : result) {
                     mAdapter.add(cd);
                 }
             }
 
             @Override
-            public void onFailure(int code) {
+            public void onFailure(Request request,int code, Throwable cause) {
 
             }
-        });
+        });*/
     }
 
 }

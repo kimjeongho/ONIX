@@ -5,14 +5,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.didimdol.skt.kimjh.onix.Artist.ArtistView;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ChoiceData;
-import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.Shop.ShopView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by kimjh on 2016-02-28.
@@ -53,9 +52,9 @@ public class ChoiceAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         ChoiceData data = items.get(position);
-        if(data instanceof ArtistData){
+        if(data instanceof ArtistTotalData){
             return TYPE_ARTIST;
-        } else if(data instanceof ShopData) {
+        } else if(data instanceof ShopTotalData) {
             return TYPE_SHOP;
         }
         else {
@@ -73,7 +72,7 @@ public class ChoiceAdapter extends BaseAdapter {
                 } else {
                     view = new ArtistView(parent.getContext());
                 }
-                view.setArtistData((ArtistData)items.get(position));
+                view.setArtistData((ArtistTotalData)items.get(position));
                 return view;
             }
             case TYPE_SHOP:
@@ -84,7 +83,7 @@ public class ChoiceAdapter extends BaseAdapter {
                     } else {
                         view = new ShopView(parent.getContext());
                     }
-                    view.setShopData((ShopData) items.get(position));
+                    view.setShopData((ShopTotalData) items.get(position));
                     return view;
                 }
             }

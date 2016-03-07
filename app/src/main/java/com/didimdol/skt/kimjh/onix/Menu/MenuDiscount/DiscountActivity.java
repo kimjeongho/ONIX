@@ -16,6 +16,8 @@ import com.didimdol.skt.kimjh.onix.R;
 
 import java.util.List;
 
+import okhttp3.Request;
+
 public class DiscountActivity extends AppCompatActivity {
 
     ListView listView;
@@ -43,14 +45,14 @@ public class DiscountActivity extends AppCompatActivity {
     private void initData() {
         NetworkManager.getInstance().getDiscountData(4, new NetworkManager.OnResultListener<List<DiscountData>>() {
             @Override
-            public void onSuccess(List<DiscountData> result) {
+            public void onSuccess(Request request, List<DiscountData> result) {
                 for (DiscountData dd : result) {
                     mAdapter.add(dd);
                 }
             }
 
             @Override
-            public void onFailure(int code) {
+            public void onFailure(Request request,int code, Throwable cause) {
 
             }
         });

@@ -9,25 +9,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
-import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
+import com.didimdol.skt.kimjh.onix.Artist.DetailArtistActivity;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalSuccess;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
 
 import java.util.List;
+
+import okhttp3.Request;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ShopFragment extends Fragment {
 
-
+    Spinner searchSpinner;
     public ShopFragment() {
         // Required empty public constructor
         setHasOptionsMenu(true);
     }
+
+
 
     ListView listView;
     ShopAdapter mAdapter;
@@ -43,10 +49,24 @@ public class ShopFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ShopData mData = (ShopData) listView.getItemAtPosition(position);
+                ShopTotalData mData = (ShopTotalData) listView.getItemAtPosition(position);
                 Toast.makeText(getContext(), "name: " + mData.shopName, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), DetailShopActivity.class);
+                intent.putExtra(DetailShopActivity.PARAM_TOTAL_SHOP,mData);
                 startActivity(intent);
+
+            }
+        });
+
+        searchSpinner = (Spinner)v.findViewById(R.id.spinner_search);
+        searchSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), "click: " + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -56,16 +76,28 @@ public class ShopFragment extends Fragment {
     }
 
     private void initData() {
-        NetworkManager.getInstance().getShopData(4, new NetworkManager.OnResultListener<List<ShopData>>() {
+        /*NetworkManager.getInstance().getShopData(4, new NetworkManager.OnResultListener<List<ShopTotalData>>() {
             @Override
-            public void onSuccess(List<ShopData> result) {
-                for (ShopData sd : result) {
+            public void onSuccess(Request request, List<ShopTotalData> result) {
+                for (ShopTotalData sd : result) {
                     mAdapter.add(sd);
                 }
             }
 
             @Override
-            public void onFailure(int code) {
+            public void onFailure(Request request,int code, Throwable cause) {
+
+            }
+        });*/
+
+        NetworkManager.getInstance().getShopTotalDataResult(getContext(), 5, "", "", new NetworkManager.OnResultListener<ShopTotalSuccess>() {
+            @Override
+            public void onSuccess(Request request, ShopTotalSuccess result) {
+                mAdapter.set(result);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
 
             }
         });

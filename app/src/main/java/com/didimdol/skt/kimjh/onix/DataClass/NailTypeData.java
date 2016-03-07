@@ -1,9 +1,16 @@
 package com.didimdol.skt.kimjh.onix.DataClass;
 
+
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by kimjh on 2016-02-29.
  */
-public class NailTypeData {
+public class NailTypeData implements Serializable{
+    @SerializedName("type")
     public String nailType;
-    public int nailPrice;
+    @SerializedName("price")
+    public String nailPrice;
 }

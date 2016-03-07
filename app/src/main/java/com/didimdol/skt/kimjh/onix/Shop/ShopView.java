@@ -7,8 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
-import com.didimdol.skt.kimjh.onix.DataClass.ShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.R;
 
 /**
@@ -22,7 +21,7 @@ public class ShopView extends FrameLayout {
 
     ImageView shopView;
     TextView shopNameView, shopChoiceView, locationView;
-    ShopData shopData;
+    ShopTotalData shopData;
 
 
     public void init() {
@@ -33,11 +32,11 @@ public class ShopView extends FrameLayout {
         locationView = (TextView)findViewById(R.id.text_location);
     }
 
-    public void setShopData(ShopData data) {
+    public void setShopData(ShopTotalData data) {
         this.shopData = data;
-        if(!TextUtils.isEmpty(data.shopImage))  {
+        if(!TextUtils.isEmpty(data.shopPhotos.get(0)))  {
             Glide.with(getContext())
-                    .load(data.shopImage)
+                    .load(data.shopPhotos.get(0))
                     .into(shopView);
         }
         shopNameView.setText(data. shopName);

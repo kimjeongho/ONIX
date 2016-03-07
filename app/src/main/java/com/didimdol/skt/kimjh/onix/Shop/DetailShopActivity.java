@@ -1,33 +1,31 @@
 package com.didimdol.skt.kimjh.onix.Shop;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistListData;
-import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
-import com.didimdol.skt.kimjh.onix.DataClass.ShopTiemData;
-import com.didimdol.skt.kimjh.onix.MainActivity;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.OnShopItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
 
-import java.util.HashMap;
+import okhttp3.Request;
 
 public class DetailShopActivity extends AppCompatActivity {
     private SliderLayout mDemoSlider;
     RecyclerView recyclerView;
     DetailShopAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
+    public static final String PARAM_TOTAL_SHOP = "total";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +63,13 @@ public class DetailShopActivity extends AppCompatActivity {
         }*/
         // pageslide-----------------------------------------------------------------------------------------
 
+
+
+        //serializable------------------------------------------------------------------------------------------
+        Intent intent = getIntent();
+        ShopTotalData data =  (ShopTotalData)intent.getSerializableExtra(PARAM_TOTAL_SHOP);
+
+        //serializable------------------------------------------------------------------------------------------
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
@@ -86,20 +91,21 @@ public class DetailShopActivity extends AppCompatActivity {
                 Toast.makeText(DetailShopActivity.this,"artistlistclick",Toast.LENGTH_SHORT).show();
             }
         });
+        mAdapter.put(data);
                 initData();
     }
 
     private void initData() {
-        NetworkManager.getInstance().getShopDetailData(1, new NetworkManager.OnResultListener<DetailShopData>() {
+       /* NetworkManager.getInstance().getShopDetailData(1, new NetworkManager.OnResultListener<DetailShopData>() {
             @Override
-            public void onSuccess(DetailShopData result) {
+            public void onSuccess(Request request, DetailShopData result) {
                 mAdapter.put(result);
             }
 
             @Override
-            public void onFailure(int code) {
+            public void onFailure(Request request,int code, Throwable cause) {
 
             }
-        });
+        });*/
     }
 }

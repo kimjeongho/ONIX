@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistListData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopArtistListData;
 import com.didimdol.skt.kimjh.onix.OnShopItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -21,7 +21,7 @@ public class ArtistListHolder extends RecyclerView.ViewHolder {
     TextView artistSortView;
     TextView artistContentView;
     TextView artistChoice;
-    ArtistListData data;
+    ShopArtistListData data;
 
     public OnShopItemClickListener itemClickListener;
     public void setOnShopItemClickListener(OnShopItemClickListener listener){
@@ -48,7 +48,7 @@ public class ArtistListHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void setArtistListItem(ArtistListData data){
+    public void setArtistListItem(ShopArtistListData data){
         this.data =data;
         if(!TextUtils.isEmpty(data.artistListImage))  {
             Glide.with(itemView.getContext())
@@ -56,8 +56,8 @@ public class ArtistListHolder extends RecyclerView.ViewHolder {
                     .into(artistImageView);
         }
         artistNameView.setText(data.artistName);
-        shopNameView.setText(data.shopName);
-        artistSortView.setText(data.artistSort);
+//        shopNameView.setText(data.shopName);
+//        artistSortView.setText(data.artistSort);
         artistContentView.setText(data.artistContent);
         artistChoice.setText(""+data.artistChoice);
     }

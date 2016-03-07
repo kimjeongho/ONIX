@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.didimdol.skt.kimjh.onix.DataClass.DetailArtistData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
 import com.didimdol.skt.kimjh.onix.OnArtistItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -48,10 +48,17 @@ public class ArtistPhotosHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void setArtistPhotosItem(DetailArtistData data){
-        if(!TextUtils.isEmpty(data.artistPhotos))  {
+    /*public void setArtistPhotosItem(DetailArtistData data){
+        if(!TextUtils.isEmpty(data.artistPhotos.get(0)))  {
             Glide.with(itemView.getContext())
-                    .load(data.artistPhotos)
+                    .load(data.artistPhotos.get(0))
+                    .into(artistPhotos);
+        }
+    }*/
+    public void setArtistPhotosItem(ArtistTotalData data){
+        if(!TextUtils.isEmpty(data.artistPhotos.get(0)))  {
+            Glide.with(itemView.getContext())
+                    .load(data.artistPhotos.get(0))
                     .into(artistPhotos);
         }
     }

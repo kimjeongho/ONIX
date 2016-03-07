@@ -4,7 +4,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalSuccess;
 
 import java.util.ArrayList;
 
@@ -12,13 +13,17 @@ import java.util.ArrayList;
  * Created by kimjh on 2016-02-23.
  */
 public class ArtistAdapter extends BaseAdapter {
-    ArrayList<ArtistData> items = new ArrayList<ArtistData>();
+    ArrayList<ArtistTotalData> items = new ArrayList<ArtistTotalData>();
 
     public ArtistAdapter(){
     }
 
-    public void add(ArtistData data){
+   /* public void add(ArtistTotalData data){
         items.add(data);
+        notifyDataSetChanged();
+    }*/
+    public void set(ArtistTotalSuccess data){
+        items.addAll(data.artistsList);
         notifyDataSetChanged();
     }
 

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ShopLocationData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.R;
 
 /**
@@ -17,7 +18,7 @@ public class ShopLocationHolder extends RecyclerView.ViewHolder {
     ImageView redusView;
     TextView locationLatitude;
     TextView locationLongitude;
-    ShopLocationData data;
+    ShopTotalData data;
     public ShopLocationHolder(View itemView) {
         super(itemView);
         mapView = (ImageView)itemView.findViewById(R.id.image_map);
@@ -27,10 +28,9 @@ public class ShopLocationHolder extends RecyclerView.ViewHolder {
         locationLongitude = (TextView)itemView.findViewById(R.id.longitude);
     }
 
-    public void setMapView (ShopLocationData data){
+    public void setMapView (ShopTotalData data){
         this.data = data;
-        /*locationLatitude.setText(data.shopLatitude);
-        locationLongitude.setText(data.shopLongitude);
-*/
+        locationLatitude.setText(data.latitude);
+        locationLongitude.setText(data.longitude);
     }
 }

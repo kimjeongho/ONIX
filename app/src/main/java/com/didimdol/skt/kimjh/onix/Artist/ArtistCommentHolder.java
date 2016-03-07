@@ -23,7 +23,7 @@ public class ArtistCommentHolder extends RecyclerView.ViewHolder {
 
     public void setArtistComment (ArtistCommentData data){
         this.data = data;
-        userId.setText(data.userId);
+        userId.setText(data.userName);
         userComment.setText(data.userComment);
     }
 }
