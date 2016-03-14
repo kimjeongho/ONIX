@@ -13,17 +13,20 @@ import com.didimdol.skt.kimjh.onix.R;
 public class BoardCommentHolder extends RecyclerView.ViewHolder {
     TextView userId;
     TextView userComment;
+    TextView userDate;
     BoardCommentData data;
 
     public BoardCommentHolder(View itemView) {
         super(itemView);
         userId = (TextView)itemView.findViewById(R.id.text_user);
         userComment = (TextView)itemView.findViewById(R.id.text_comment);
+        userDate = (TextView)itemView.findViewById(R.id.text_date);
     }
 
     public void setBoardComment(BoardCommentData data) {
         this.data = data;
         userId.setText(data.userId);
         userComment.setText(data.userComment);
+        userDate.setText(data.date);
     }
 }

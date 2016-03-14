@@ -12,13 +12,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.didimdol.skt.kimjh.onix.Artist.DetailArtistActivity;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopListData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
-import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalSuccess;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopListSuccess;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
-
-import java.util.List;
 
 import okhttp3.Request;
 
@@ -49,8 +47,8 @@ public class ShopFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ShopTotalData mData = (ShopTotalData) listView.getItemAtPosition(position);
-                Toast.makeText(getContext(), "name: " + mData.shopName, Toast.LENGTH_SHORT).show();
+                ShopListData mData = (ShopListData) listView.getItemAtPosition(position);
+                Toast.makeText(getContext(), "name: " + mData.shopId, Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), DetailShopActivity.class);
                 intent.putExtra(DetailShopActivity.PARAM_TOTAL_SHOP,mData);
                 startActivity(intent);
@@ -90,9 +88,9 @@ public class ShopFragment extends Fragment {
             }
         });*/
 
-        NetworkManager.getInstance().getShopTotalDataResult(getContext(), 5, "", "", new NetworkManager.OnResultListener<ShopTotalSuccess>() {
+        NetworkManager.getInstance().getShopTotalDataResult(getContext(), 5, "", "", new NetworkManager.OnResultListener<ShopListSuccess>() {
             @Override
-            public void onSuccess(Request request, ShopTotalSuccess result) {
+            public void onSuccess(Request request, ShopListSuccess result) {
                 mAdapter.set(result);
             }
 

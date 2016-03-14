@@ -51,8 +51,17 @@
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:background="@mipmap/ic_launcher"
+            android:background="@drawable/btn_camera"
             android:layout_marginRight="16dp" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:id="@+id/image_gallery"
+            android:background="@drawable/btn_gallery"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/image_camera"
+            android:layout_toStartOf="@+id/image_camera" />
 
     </RelativeLayout>
 
@@ -65,7 +74,7 @@
         android:layout_alignParentStart="true"
         android:entries="@array/header"
         android:spinnerMode="dropdown"
-        android:layout_marginLeft="16dp" />
+        android:layout_marginLeft="8dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -91,25 +100,16 @@
 
     </RelativeLayout>
 
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_below="@+id/relativeLayout5"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/relative_boardimg"
-        android:visibility="visible"
-        >
-
         <ImageView
             android:layout_width="@dimen/board_img_size"
             android:layout_height="@dimen/board_img_size"
+            android:layout_below="@+id/relativeLayout5"
             android:id="@+id/image_board"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/onix_board_detail_img"/>
-    </RelativeLayout>
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            />
 
     <EditText
         android:layout_width="wrap_content"
@@ -117,13 +117,14 @@
         android:id="@+id/edit_content"
         android:hint="내용 입력"
         android:textSize="@dimen/TitleTextSize"
-        android:layout_below="@+id/relative_boardimg"
+        android:layout_below="@+id/image_board"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="16dp"
         android:background="@null"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp" />
 
 
     <ImageView

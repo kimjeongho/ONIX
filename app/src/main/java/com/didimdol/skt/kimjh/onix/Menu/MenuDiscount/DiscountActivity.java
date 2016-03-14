@@ -1,5 +1,6 @@
 package com.didimdol.skt.kimjh.onix.Menu.MenuDiscount;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,9 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.didimdol.skt.kimjh.onix.Artist.DetailArtistActivity;
-import com.didimdol.skt.kimjh.onix.DataClass.ChoiceData;
-import com.didimdol.skt.kimjh.onix.DataClass.DiscountData;
-import com.didimdol.skt.kimjh.onix.MainActivity;
+import com.didimdol.skt.kimjh.onix.DataClass.DiscountListData;
+import com.didimdol.skt.kimjh.onix.DataClass.DiscountListSuccess;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -43,16 +43,16 @@ public class DiscountActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        NetworkManager.getInstance().getDiscountData(4, new NetworkManager.OnResultListener<List<DiscountData>>() {
+        NetworkManager.getInstance().getDiscountListDataResult(this ,4, new NetworkManager.OnResultListener<DiscountListSuccess>() {
             @Override
-            public void onSuccess(Request request, List<DiscountData> result) {
-                for (DiscountData dd : result) {
-                    mAdapter.add(dd);
-                }
+            public void onSuccess(Request request, DiscountListSuccess result) {
+
+                    mAdapter.set(result);
+
             }
 
             @Override
-            public void onFailure(Request request,int code, Throwable cause) {
+            public void onFailure(Request request, int code, Throwable cause) {
 
             }
         });

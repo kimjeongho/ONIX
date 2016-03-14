@@ -34,34 +34,15 @@
         android:layout_marginBottom="1dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="평일"
             android:textSize="13sp"
             android:id="@+id/text_weekday"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="7dp" />
+            android:layout_marginTop="10dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="주말"
-            android:textSize="13sp"
-            android:id="@+id/text_weekend"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="7dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="연중무휴"
-            android:textSize="13sp"
-            android:id="@+id/text_etc"
-            android:layout_below="@+id/text_weekend"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="4dp" />
     </RelativeLayout>
 
     <FrameLayout
@@ -92,15 +73,13 @@
         android:layout_toEndOf="@+id/linearLayout2">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="주소"
             android:id="@+id/text_address"
             android:textSize="13sp"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="11dp"
-            android:layout_marginRight="11dp" />
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.didimdol.skt.kimjh.onix.DataClass.ShopTiemData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -21,8 +20,6 @@ public class ShopTimeHolder extends RecyclerView.ViewHolder {
     public ShopTimeHolder(View itemView) {
         super(itemView);
         weekDayView = (TextView)itemView.findViewById(R.id.text_weekday);
-        weekEndView = (TextView)itemView.findViewById(R.id.text_weekend);
-        weekEtcView = (TextView)itemView.findViewById(R.id.text_etc);
         shopAddressView= (TextView)itemView.findViewById(R.id.text_address);
     }
 

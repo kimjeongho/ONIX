@@ -11,7 +11,7 @@ public class DetailShopData {
     public List<ShopArtistListData> artistListDatas = new ArrayList<ShopArtistListData>();
     public String shopTitle;
 //    public String address ;
-    public ShopTiemData shopTimeDatas;
+    public ShopTimeData shopTimeDatas;
     public ShopLocationData shopLocation;
 }
 

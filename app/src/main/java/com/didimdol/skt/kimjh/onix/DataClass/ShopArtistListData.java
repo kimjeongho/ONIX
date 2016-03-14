@@ -11,14 +11,14 @@ import java.io.Serializable;
 public class ShopArtistListData implements Serializable {
 //    public int artistListImage;
     @SerializedName("artist_id")
-    public String artistId;
+    public int artistId;
     @SerializedName("artistNickname")
     public String artistName;
     @SerializedName("intro")
     public String artistContent;
     @SerializedName("artistProfilePhoto")
     public String artistListImage;
-    @SerializedName("artistJJim_counts")
-    public String artistChoice;
+    @SerializedName("artistjjim_counts")
+    public int artistChoice;
 
 }

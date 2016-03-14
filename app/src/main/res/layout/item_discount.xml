@@ -13,13 +13,13 @@
         android:layout_marginBottom="3dp" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/artistprofile_width"
+        android:layout_height="@dimen/artistprofile_height"
         android:id="@+id/image_artist"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/sale_pouch_artist_data_3"
+        android:background="@drawable/onix_icon_48"
         android:layout_marginLeft="@dimen/list_left"
         android:layout_marginRight="@dimen/list_profile_right" />
 
@@ -62,7 +62,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="까지"
         android:id="@+id/textView13"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/text_time"
@@ -94,23 +93,5 @@
         android:layout_below="@+id/image_artist"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Month"
-        android:id="@+id/text_month"
-        android:layout_alignTop="@+id/text_year"
-        android:layout_toRightOf="@+id/text_year"
-        android:layout_toEndOf="@+id/text_year" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Day"
-        android:id="@+id/text_day"
-        android:layout_alignTop="@+id/text_month"
-        android:layout_toRightOf="@+id/text_month"
-        android:layout_toEndOf="@+id/text_month" />
 
 </RelativeLayout>

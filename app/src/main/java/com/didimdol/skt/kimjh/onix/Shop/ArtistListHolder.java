@@ -34,15 +34,15 @@ public class ArtistListHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if(itemClickListener != null){
-                    itemClickListener.onArtistListClick(v,getAdapterPosition());
+                    itemClickListener.onArtistListClick(v,data);
                 }
             }
         });
 
         artistImageView = (ImageView)itemView.findViewById(R.id.image_artist);
         artistNameView = (TextView)itemView.findViewById(R.id.text_artistname);
-        shopNameView = (TextView)itemView.findViewById(R.id.text_shopname);
-        artistSortView = (TextView)itemView.findViewById(R.id.text_sort);
+//        shopNameView = (TextView)itemView.findViewById(R.id.text_shopname);
+//        artistSortView = (TextView)itemView.findViewById(R.id.text_sort);
         artistContentView = (TextView)itemView.findViewById(R.id.text_content);
         artistChoice = (TextView)itemView.findViewById(R.id.text_artistcount);
     }

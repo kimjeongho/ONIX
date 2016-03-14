@@ -25,6 +25,7 @@
         android:layout_alignParentStart="true"
         android:background="@drawable/onix_maintitle"
         android:layout_marginLeft="@dimen/onix_title_left" />
+
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,23 +37,27 @@
    <!-- -->
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
         android:id="@+id/edit_message"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:background="@drawable/btn_enter"
         android:layout_toLeftOf="@+id/btn_ok"
-        android:layout_toStartOf="@+id/btn_ok" />
+        android:layout_toStartOf="@+id/btn_ok"
+        android:paddingLeft="10dp"
+        android:layout_marginLeft="16dp" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="등록"
+        android:layout_width="81dp"
+        android:layout_height="38dp"
         android:id="@+id/btn_ok"
+        android:background="@drawable/btn_write"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="16dp" />
 
 
 </RelativeLayout>

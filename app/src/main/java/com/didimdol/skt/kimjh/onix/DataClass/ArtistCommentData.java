@@ -9,6 +9,9 @@ import java.util.List;
  * Created by kimjh on 2016-02-22.
  */
 public class ArtistCommentData implements Serializable {
+    @SerializedName("write_id")
+    public int writeId;
+
     @SerializedName("writer")
     public String userName;
     @SerializedName("content")

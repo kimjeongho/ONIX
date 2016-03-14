@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.didimdol.skt.kimjh.onix.Menu.MenuChoice.ChoiceActivity;
@@ -23,6 +25,9 @@ import com.didimdol.skt.kimjh.onix.Menu.MenuCustomer.CustomerActivity;
 import com.didimdol.skt.kimjh.onix.Menu.MenuLogin.JoinActivity;
 import com.didimdol.skt.kimjh.onix.Menu.MenuLogin.LoginActivity;
 import com.didimdol.skt.kimjh.onix.Menu.PushActivity;
+import com.didimdol.skt.kimjh.onix.TabView.TabArtist;
+import com.didimdol.skt.kimjh.onix.TabView.TabBoard;
+import com.didimdol.skt.kimjh.onix.TabView.TabShop;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        /*MyDialogFragment f = new MyDialogFragment();
+        /*CameraDialogFragment f = new CameraDialogFragment();
         f.show(getSupportFragmentManager(), "dialog");
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);*/
         CustomDialogFragment f1 = new CustomDialogFragment();
@@ -54,9 +59,12 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(pager);
         tabLayout.removeAllTabs();
 
-        tabLayout.addTab(tabLayout.newTab().setText("Artist"), 0);
-        tabLayout.addTab(tabLayout.newTab().setText("Shop"), 1);
-        tabLayout.addTab(tabLayout.newTab().setText("Board"),2);
+        TabArtist tabArtist = new TabArtist(this);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tabArtist), 0);
+        TabShop tabShop = new TabShop(this);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tabShop), 1);
+        TabBoard tabBoard = new TabBoard(this);
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tabBoard),2);
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

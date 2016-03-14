@@ -41,9 +41,11 @@ public class BoardReadHolder extends RecyclerView.ViewHolder {
                     .load(data.boardImage)
                     .into(userImage);
         }
-        userName.setText(data.boardName);
+        userName.setText(data.writer);
         userCategory.setText(data.boardCategory);
         userTime.setText(data.boardTime);
         userContent.setText(data.boardContent);
+
+//        Double.parseDouble
     }
 }

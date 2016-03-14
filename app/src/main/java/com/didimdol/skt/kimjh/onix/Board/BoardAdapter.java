@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.didimdol.skt.kimjh.onix.DataClass.BoardData;
+import com.didimdol.skt.kimjh.onix.DataClass.BoardTotalSuccess;
 
 import java.util.ArrayList;
 
@@ -17,8 +18,13 @@ public class BoardAdapter extends BaseAdapter {
     public BoardAdapter(){
     }
 
-    public void add(BoardData data){
+   /* public void add(BoardData data){
         items.add(data);
+        notifyDataSetChanged();
+    }*/
+
+    public void set(BoardTotalSuccess data){
+        items.addAll(data.boardList);
         notifyDataSetChanged();
     }
 

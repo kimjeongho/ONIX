@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.OnShopItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
@@ -17,7 +18,7 @@ public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 //    DetailShopData data;
     ShopTotalData data;
 
-   /* public void put(DetailShopData data) {
+   /* public void set(DetailShopData data) {
         this.data = data;
         notifyDataSetChanged();
     }*/
@@ -39,24 +40,25 @@ public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         itemClickListener = listener;
     }
 
+
     @Override
-    public void onCallClick(View view, int position) {
+    public void onCallClick(View view, ShopTotalData shopTotalData) {
         if(itemClickListener != null){
-            itemClickListener.onCallClick(view, position);
+            itemClickListener.onCallClick(view, shopTotalData);
         }
     }
 
     @Override
-    public void onChoiceClick(View view, int position) {
+    public void onChoiceClick(View view, ShopTotalData shopTotalData) {
         if(itemClickListener != null){
-            itemClickListener.onChoiceClick(view, position);
+            itemClickListener.onChoiceClick(view, shopTotalData);
         }
     }
 
     @Override
-    public void onArtistListClick(View view, int position) {
+    public void onArtistListClick(View view, ShopArtistListData shopArtistListData) {
         if(itemClickListener != null){
-            itemClickListener.onArtistListClick(view, position);
+            itemClickListener.onArtistListClick(view, shopArtistListData);
         }
     }
 
@@ -141,6 +143,7 @@ public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         if (data == null) return 0;
         return 4 + data.artistListDatas.size()/*+data.shopTimeDatas.size()+data.shopLocation.size()*/;
     }
+
 
 
 }

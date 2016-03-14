@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalSuccess;
 import com.didimdol.skt.kimjh.onix.OnArtistItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -21,12 +20,12 @@ public class DetailArtistAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //    DetailArtistData data;
     ArtistTotalData data;
 //    List<CommentData> items = new ArrayList<CommentData>();
-   /* public void put(DetailArtistData data){
+   /* public void set(DetailArtistData data){
 //        items.add(data);
         this.data = data;
         notifyDataSetChanged();
     } */
-public void put(ArtistTotalData data){
+public void set(ArtistTotalData data){
 //        items.add(data);
         this.data = data;
         notifyDataSetChanged();
@@ -53,16 +52,16 @@ public void put(ArtistTotalData data){
     }
 
     @Override
-    public void onShopClick(View view, int position) {
+    public void onShopClick(View view, ArtistTotalData artistTotalData) {
         if(itemClickListener != null){
-            itemClickListener.onShopClick(view, position);
+            itemClickListener.onShopClick(view, artistTotalData);
         }
     }
 
     @Override
-    public void onChoiceClick(View view, int position) {
+    public void onChoiceClick(View view, ArtistTotalData artistTotalData) {
         if(itemClickListener != null){
-            itemClickListener.onChoiceClick(view, position);
+            itemClickListener.onChoiceClick(view, artistTotalData);
         }
     }
 

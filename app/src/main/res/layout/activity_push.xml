@@ -24,7 +24,7 @@
         android:background="@drawable/onix_maintitle"
         android:layout_marginLeft="@dimen/onix_title_left" />
 
-    <Spinner
+   <!-- <Spinner
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:id="@+id/spin_hour_first"
@@ -123,17 +123,51 @@
         android:layout_below="@+id/spin_minute_second"
         android:layout_alignLeft="@+id/spin_minute_second"
         android:layout_alignStart="@+id/spin_minute_second"
-        android:entries="@array/minute_second"/>
+        android:entries="@array/minute_second"/>-->
+
+
+
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time_start"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:timePickerMode="spinner"
+        />
+
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/time_finish"
+        android:layout_below="@+id/time_start"
+        android:layout_centerHorizontal="true"
+        android:timePickerMode="spinner"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/texttitle"
+        android:text="할인율"
+        android:layout_below="@+id/time_finish"
+        android:layout_centerHorizontal="true"/>
 
     <Spinner
-        android:layout_width="50dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:id="@+id/spin_discount"
         android:spinnerMode="dropdown"
-        android:layout_below="@+id/spin_minute_second"
-        android:layout_toRightOf="@+id/spin_minute_second2"
-        android:layout_toEndOf="@+id/spin_minute_second2"
-        android:entries="@array/discount"/>
+        android:entries="@array/discount"
+        android:layout_below="@+id/texttitle"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/push_finish"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

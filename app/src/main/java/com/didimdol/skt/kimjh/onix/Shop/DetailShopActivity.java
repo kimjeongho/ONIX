@@ -1,6 +1,10 @@
 package com.didimdol.skt.kimjh.onix.Shop;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,8 +15,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
+import com.didimdol.skt.kimjh.onix.Artist.DetailArtistActivity;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.OnShopItemClickListener;
@@ -26,6 +32,10 @@ public class DetailShopActivity extends AppCompatActivity {
     DetailShopAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
     public static final String PARAM_TOTAL_SHOP = "total";
+    public static final String PARAM_DETAIL_SHOP = "detailshop";
+    ShopTotalData shopTotalData;
+    int putData;
+    int data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +45,7 @@ public class DetailShopActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ImageView onixHome = (ImageView)findViewById(R.id.onix_home);
+        ImageView onixHome = (ImageView) findViewById(R.id.onix_home);
         onixHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,10 +57,10 @@ public class DetailShopActivity extends AppCompatActivity {
        /*
         mDemoSlider = (SliderLayout)findViewById(R.id.slider);
         HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.put("Hannibal", R.drawable.onix_shop_main_list_data_1);
-        file_maps.put("Big Bang Theory", R.drawable.onix_shop_main_list_data_2);
-        file_maps.put("House of Cards", R.drawable.onix_shop_main_list_data_3);
-        file_maps.put("Game of Thrones", R.drawable.onix_shop_main_list_data_4);
+        file_maps.set("Hannibal", R.drawable.onix_shop_main_list_data_1);
+        file_maps.set("Big Bang Theory", R.drawable.onix_shop_main_list_data_2);
+        file_maps.set("House of Cards", R.drawable.onix_shop_main_list_data_3);
+        file_maps.set("Game of Thrones", R.drawable.onix_shop_main_list_data_4);
 
         for(String name : file_maps.keySet()){
             TextSliderView textSliderView = new TextSliderView(this);
@@ -64,34 +74,52 @@ public class DetailShopActivity extends AppCompatActivity {
         // pageslide-----------------------------------------------------------------------------------------
 
 
-
         //serializable------------------------------------------------------------------------------------------
         Intent intent = getIntent();
-        ShopTotalData data =  (ShopTotalData)intent.getSerializableExtra(PARAM_TOTAL_SHOP);
-
+//        ShopTotalData data =  (ShopTotalData)intent.getSerializableExtra(PARAM_TOTAL_SHOP);
+        data = intent.getIntExtra(PARAM_TOTAL_SHOP, 0);
         //serializable------------------------------------------------------------------------------------------
-        recyclerView = (RecyclerView)findViewById(R.id.recycler);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+
+        //DetailArtistActivity------------------------------------------------------------------------------------------
+        Intent putIntent = getIntent();
+        putData = putIntent.getIntExtra(PARAM_DETAIL_SHOP, 0);
+
+        //DetailArtistActivity------------------------------------------------------------------------------------------
+        recyclerView = (RecyclerView) findViewById(R.id.recycler);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new DetailShopAdapter();
         recyclerView.setAdapter(mAdapter);
         mAdapter.setOnShopItemClickListener(new OnShopItemClickListener() {
             @Override
-            public void onCallClick(View view, int position) {
-                Toast.makeText(DetailShopActivity.this,"callclick",Toast.LENGTH_SHORT).show();
+            public void onCallClick(View view, ShopTotalData shopTotalData) {
+                Toast.makeText(DetailShopActivity.this, "callclick", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+shopTotalData.callNumber+""));
+                if (ActivityCompat.checkSelfPermission(DetailShopActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    return;
+                }
+
+                startActivity(intent);
             }
 
             @Override
-            public void onChoiceClick(View view, int position) {
+            public void onChoiceClick(View view, ShopTotalData shopTotalData) {
                 Toast.makeText(DetailShopActivity.this,"choiceclick",Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
-            public void onArtistListClick(View view, int position) {
-                Toast.makeText(DetailShopActivity.this,"artistlistclick",Toast.LENGTH_SHORT).show();
+            public void onArtistListClick(View view, ShopArtistListData shopArtistListData) {
+                Toast.makeText(DetailShopActivity.this,"choiceclick"+shopArtistListData.artistId,Toast.LENGTH_SHORT).show();
+                Intent artistIntent = new Intent(DetailShopActivity.this, DetailArtistActivity.class);
+                artistIntent.putExtra(DetailArtistActivity.PARAM_DETAIL_ARITST,shopArtistListData.artistId);
+                startActivity(artistIntent);
             }
+
+
         });
-        mAdapter.put(data);
+//        mAdapter.set(data);
                 initData();
     }
 
@@ -99,7 +127,7 @@ public class DetailShopActivity extends AppCompatActivity {
        /* NetworkManager.getInstance().getShopDetailData(1, new NetworkManager.OnResultListener<DetailShopData>() {
             @Override
             public void onSuccess(Request request, DetailShopData result) {
-                mAdapter.put(result);
+                mAdapter.set(result);
             }
 
             @Override
@@ -107,5 +135,17 @@ public class DetailShopActivity extends AppCompatActivity {
 
             }
         });*/
+
+        NetworkManager.getInstance().getShopDetailDataResult(this, data, new NetworkManager.OnResultListener<ShopTotalData>() {
+            @Override
+            public void onSuccess(Request request, ShopTotalData result) {
+                mAdapter.put(result);
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
     }
 }

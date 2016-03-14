@@ -1,5 +1,6 @@
 package com.didimdol.skt.kimjh.onix.Board;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,13 +14,11 @@ import android.widget.ImageView;
 
 import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardData;
-import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
+import com.didimdol.skt.kimjh.onix.CameraDialogFragment;
 import com.didimdol.skt.kimjh.onix.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Request;
 
 public class BoardReadActivity extends AppCompatActivity {
 
@@ -28,6 +27,8 @@ public class BoardReadActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     EditText inputView;
     List<BoardCommentData> commentDatas;
+
+    public static final String PARAM_TOTAL_BOARD = "total";
 
 
     @Override
@@ -44,12 +45,20 @@ public class BoardReadActivity extends AppCompatActivity {
             }
         });
 
+        //serializable------------------------------------------------------------------------------------------
+        Intent intent = getIntent();
+        BoardData data =  (BoardData)intent.getSerializableExtra(PARAM_TOTAL_BOARD);
+
+        //serializable------------------------------------------------------------------------------------------
+
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new BoardReadAdapter();
         recyclerView.setAdapter(mAdapter);
         inputView = (EditText)findViewById(R.id.edit_message);
+
+
 
         Button btn = (Button)findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -58,23 +67,23 @@ public class BoardReadActivity extends AppCompatActivity {
                 String text = inputView.getText().toString();
                 if(!TextUtils.isEmpty(text)){
                     commentDatas = new ArrayList<BoardCommentData>();
-                    commentDatas.add(new BoardCommentData("홍길동", text));
+                    commentDatas.add(new BoardCommentData(0,"홍길동", text));
                     mAdapter.addAll(commentDatas);  // commentDatas를 메소드 인자로 보낸다.
                     inputView.setText("");
                     recyclerView.smoothScrollToPosition(mAdapter.getItemCount()-1);
                 }
             }
         });
-
+        mAdapter.put(data);
         initData();
     }
 
     private void initData() {
-        NetworkManager.getInstance().getBoardReadData(1, new NetworkManager.OnResultListener<List<BoardData>>() {
+       /* NetworkManager.getInstance().getBoardReadData(1, new NetworkManager.OnResultListener<List<BoardData>>() {
             @Override
             public void onSuccess(Request request, List<BoardData> result) {
                 for (BoardData bd : result) {
-                    mAdapter.put(bd);
+                    mAdapter.set(bd);
                 }
             }
 
@@ -82,6 +91,6 @@ public class BoardReadActivity extends AppCompatActivity {
             public void onFailure(Request request,int code, Throwable cause) {
 
             }
-        });
+        });*/
     }
 }

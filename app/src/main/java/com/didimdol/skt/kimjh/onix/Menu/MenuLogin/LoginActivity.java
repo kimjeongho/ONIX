@@ -22,9 +22,6 @@ public class LoginActivity extends AppCompatActivity {
         String userEmail = userEmailView.getText().toString();
         String userPassword = userPasswordView.getText().toString();
 
-        loginData.userEmail = userEmail;
-        loginData.userPassword = userPassword;
-
         /*ActionBar actionBar = getActionBar();
 
         actionBar.hide();*/

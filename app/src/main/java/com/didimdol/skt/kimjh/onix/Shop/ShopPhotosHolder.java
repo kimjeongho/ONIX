@@ -19,7 +19,7 @@ public class ShopPhotosHolder extends RecyclerView.ViewHolder {
     ImageView callBtn;
     ImageView shopChoiceBtn;
 
-    public OnShopItemClickListener itemClickListener, itemClickListener2;
+    public OnShopItemClickListener itemClickListener;
     public void setOnShopItemClickListener(OnShopItemClickListener listener){
         itemClickListener = listener;
     }
@@ -34,7 +34,7 @@ public class ShopPhotosHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if (itemClickListener != null) {
-                    itemClickListener.onCallClick(v, getAdapterPosition());
+                    itemClickListener.onCallClick(v, mData);
                 }
             }
         });
@@ -43,21 +43,25 @@ public class ShopPhotosHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if(itemClickListener != null){
-                    itemClickListener.onChoiceClick(v, getAdapterPosition());
-
+                    itemClickListener.onChoiceClick(v, mData);
                 }
             }
         });
     }
 
+    ShopTotalData mData;
     public void setShopPhotosItem(ShopTotalData data){
+        mData = data;
         if(!TextUtils.isEmpty(data.shopPhotos.get(0)))  {
             Glide.with(itemView.getContext())
                     .load(data.shopPhotos.get(0))
                     .into(shopPhotos);
         }
+        if(mData.choiceSort == 1){
+            shopChoiceBtn.setImageResource(R.drawable.btn_like_it_pre);
+        } else {
+            shopChoiceBtn.setImageResource(R.drawable.btn_like_it_nor);
+        }
     }
-
-
 
 }

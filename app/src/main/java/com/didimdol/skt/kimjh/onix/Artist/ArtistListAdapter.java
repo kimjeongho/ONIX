@@ -4,25 +4,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
-import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalSuccess;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistListSuccess;
 
 import java.util.ArrayList;
 
 /**
  * Created by kimjh on 2016-02-23.
  */
-public class ArtistAdapter extends BaseAdapter {
-    ArrayList<ArtistTotalData> items = new ArrayList<ArtistTotalData>();
+public class ArtistListAdapter extends BaseAdapter {
+    ArrayList<ArtistListData> items = new ArrayList<ArtistListData>();
 
-    public ArtistAdapter(){
+    public ArtistListAdapter(){
     }
 
    /* public void add(ArtistTotalData data){
         items.add(data);
         notifyDataSetChanged();
     }*/
-    public void set(ArtistTotalSuccess data){
+    public void set(ArtistListSuccess data){
         items.addAll(data.artistsList);
         notifyDataSetChanged();
     }
@@ -44,11 +45,11 @@ public class ArtistAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ArtistView view;
+        ArtistListView view;
         if(convertView == null){
-            view = new ArtistView(parent.getContext());
+            view = new ArtistListView(parent.getContext());
         } else {
-            view = (ArtistView)convertView;
+            view = (ArtistListView)convertView;
         }
         view.setArtistData(items.get(position));
         return view;

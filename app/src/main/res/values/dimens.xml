@@ -12,10 +12,16 @@
     <dimen name="TitleBarSize">45dp</dimen>
     <dimen name="TitleTextSize">17dp</dimen>
     <dimen name="list_left">38dp</dimen>
-    <dimen name="list_profile_right" >19dp</dimen>
+    <dimen name="list_profile_right">19dp</dimen>
     <dimen name="onix_title_left">16dp</dimen>
     <dimen name="board_img_size">212dp</dimen>
     <dimen name="spinner_width">81dp</dimen>
+    <dimen name="spinner_board_width">100dp</dimen>
     <dimen name="spinner_height">38dp</dimen>
     <dimen name="board_text_size">11sp</dimen>
+    <dimen name="artistprofile_width">64dp</dimen>
+    <dimen name="artistprofile_height">64dp</dimen>
+    <dimen name="tablayout_size">0dp</dimen>
+    <dimen name="search_margin_left">16dp</dimen>
+
 </resources>

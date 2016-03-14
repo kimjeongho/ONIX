@@ -4,7 +4,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.didimdol.skt.kimjh.onix.DataClass.DiscountData;
+import com.didimdol.skt.kimjh.onix.DataClass.DiscountListData;
+import com.didimdol.skt.kimjh.onix.DataClass.DiscountListSuccess;
 
 import java.util.ArrayList;
 
@@ -12,14 +13,20 @@ import java.util.ArrayList;
  * Created by kimjh on 2016-02-28.
  */
 public class DiscountAdapter extends BaseAdapter {
-    ArrayList<DiscountData> items = new ArrayList<DiscountData>();
+    ArrayList<DiscountListData> items = new ArrayList<DiscountListData>();
 
     public DiscountAdapter() {
 
     }
 
-    public void add(DiscountData data) {
+    /*public void add(DiscountListData data) {
         items.add(data);
+        notifyDataSetChanged();
+    }*/
+
+
+    public void set(DiscountListSuccess data){
+        items.addAll(data.discountList);
         notifyDataSetChanged();
     }
 

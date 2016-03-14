@@ -128,6 +128,13 @@
         android:textSize="14sp"
         android:layout_below="@+id/text_content"
         android:layout_alignLeft="@+id/text_content"
-        android:layout_alignStart="@+id/text_content" />
+        android:layout_alignStart="@+id/text_content"
+        android:layout_marginBottom="6dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/comment_line"
+        android:layout_below="@+id/textView17"/>
 
 </RelativeLayout>

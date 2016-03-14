@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.didimdol.skt.kimjh.onix">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -11,15 +15,16 @@
         android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".Artist.DetailArtistActivity"/>
+        <activity android:name=".Artist.DetailArtistActivity" />
         <activity android:name=".Shop.DetailShopActivity" />
         <activity android:name=".Board.BoardWriteActivity" />
         <activity android:name=".Board.BoardReadActivity" />
@@ -34,13 +39,15 @@
         <activity android:name=".Menu.MenuLogin.JoinActivity" />
         <activity android:name=".Menu.MenuLogin.JoinUserActivity" />
         <activity android:name=".Menu.MenuCustomer.NoticeActivity" />
-        <activity android:name=".Menu.MenuCustomer.TermsActivity"></activity>
+        <activity android:name=".Menu.MenuCustomer.TermsActivity" />
 
+        <meta-data
+            android:name="com.didimdol.skt.kimjh.onix.MyGlideModule"
+            android:value="GlideModule" />
 
-        <meta-data android:name="com.didimdol.skt.kimjh.onix.MyGlideModule"
-            android:value="GlideModule"/>
+        <activity android:name=".SplashActivity">
+
+        </activity>
     </application>
-
-
 
 </manifest>

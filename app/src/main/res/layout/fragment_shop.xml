@@ -5,33 +5,41 @@
     tools:context=".Shop.ShopFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:id="@+id/relativeLayout">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_search"
+            android:paddingLeft="10dp"
+            android:background="@drawable/search"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/spinner_search"
+            android:layout_toStartOf="@+id/spinner_search" />
+
+        <Spinner
+            android:layout_width="@dimen/spinner_width"
+            android:layout_height="@dimen/spinner_height"
+            android:id="@+id/spinner_search"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            style="@style/spinnerstyle"
+            android:spinnerMode="dropdown"
+            android:entries="@array/search"
+            android:layout_marginRight="16dp" />
+
+    </RelativeLayout>
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:divider="#777"
-        android:dividerHeight="0px"
-        android:layout_below="@+id/editText2" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/spinner"
-        android:layout_toStartOf="@+id/spinner" />
-
-    <Spinner
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner_search"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:spinnerMode="dropdown"
-        android:entries="@array/search"/>
+        android:dividerHeight="3px"
+        android:layout_below="@+id/relativeLayout" />
 
 </RelativeLayout>

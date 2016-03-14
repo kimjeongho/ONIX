@@ -17,6 +17,8 @@ public class ArtistPhotosHolder extends RecyclerView.ViewHolder {
     ImageView artistPhotos;
     ImageView shopBtn;
     ImageView artistChoiceBtn;
+    private boolean check = false;
+    ArtistTotalData artistTotalData;
 
     public OnArtistItemClickListener itemClickListener;
     public void setOnArtistItemClickListener(OnArtistItemClickListener listener){
@@ -33,7 +35,7 @@ public class ArtistPhotosHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if(itemClickListener != null){
-                    itemClickListener.onShopClick(v, getAdapterPosition());
+                    itemClickListener.onShopClick(v, mData);
                 }
             }
         });
@@ -42,25 +44,25 @@ public class ArtistPhotosHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 if(itemClickListener != null){
-                    itemClickListener.onChoiceClick(v, getAdapterPosition());
+                    itemClickListener.onChoiceClick(v, mData);
                 }
             }
         });
     }
-
-    /*public void setArtistPhotosItem(DetailArtistData data){
-        if(!TextUtils.isEmpty(data.artistPhotos.get(0)))  {
-            Glide.with(itemView.getContext())
-                    .load(data.artistPhotos.get(0))
-                    .into(artistPhotos);
-        }
-    }*/
+    ArtistTotalData mData;
     public void setArtistPhotosItem(ArtistTotalData data){
+        mData = data;
         if(!TextUtils.isEmpty(data.artistPhotos.get(0)))  {
             Glide.with(itemView.getContext())
                     .load(data.artistPhotos.get(0))
                     .into(artistPhotos);
         }
+        if(mData.choiceSort == 1){
+            artistChoiceBtn.setImageResource(R.drawable.btn_like_it_pre);
+        } else {
+            artistChoiceBtn.setImageResource(R.drawable.btn_like_it_nor);
+        }
+
     }
 
 

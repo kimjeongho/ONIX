@@ -47,6 +47,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/listView_choice"
         android:layout_below="@+id/relativeLayout3"
+        android:divider="#777"
+        android:dividerHeight="0px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

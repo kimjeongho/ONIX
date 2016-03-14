@@ -6,9 +6,9 @@ import java.util.List;
 /**
  * Created by kimjh on 2016-03-07.
  */
-public class ArtistTotalSuccess {
-    public String page;
-    public String listPerPage;
+public class ShopListSuccess {
     public String message;
-    public List<ArtistTotalData> artistsList = new ArrayList<ArtistTotalData>();
+    public int page;
+    public int listPerPage;
+    public List<ShopListData> shopList = new ArrayList<ShopListData>();
 }

@@ -47,8 +47,8 @@ public class ArtistProfileHolder extends RecyclerView.ViewHolder {
                     .into(artistImageView);
         }
         artistNameView.setText(data.artistName);
-        /*shopNameView.setText(data.shopName);
-        artistContent.setText(data.artistContent);*/
+        shopNameView.setText(data.shopName);
+        artistContent.setText(data.artistContent);
     }
 
 }

@@ -43,10 +43,10 @@ public class BoardView extends FrameLayout {
                     .load(data.boardImage)
                     .into(boardView);
         }
-        boardNameView.setText(boardData.boardName);
-        boardCategoryView.setText(boardData.boardCategory);
-        boardTimeView.setText(boardData.boardTime);
-        boardTitleView.setText(boardData.boardTitle);
-        boardContentView.setText(boardData.boardContent);
+        boardNameView.setText(data.writer);
+        boardCategoryView.setText(data.boardCategory);
+        boardTimeView.setText(data.boardTime);
+        boardTitleView.setText(data.boardTitle);
+        boardContentView.setText(data.boardContent);
     }
 }

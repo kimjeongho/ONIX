@@ -11,23 +11,30 @@ import java.util.List;
  */
 public class ArtistTotalData implements ChoiceData, Serializable {
 
-    public String artist_id;
+    public String message;
 
-    @SerializedName("nickname")
+    @SerializedName("artist_id")
+    public int artistId;
+
+    @SerializedName("artistNickname")
     public String artistName;
 
-    @SerializedName("artistJJim_counts")
-    public String artistChoice;         //찜 목록수
-
-    @SerializedName("jjim_status")
-    public String choiceSort;   // 찜상태 0 or 1
+    /*@SerializedName("discount")
+    public String discountText;*/
 
     @SerializedName("discount")
-    public String discountText;
+    public int artistDiscount; // 할인율
 
-    public String artistDiscount; // 할인율
+    @SerializedName("jjim_status")
+    public int choiceSort;   // 찜상태 0 or 1
 
+    @SerializedName("intro")
+    public String artistContent;    //소개글
+
+    @SerializedName("shop_id")
     public String shopId; // 샵 아이디
+
+    public String shopName;
 
     @SerializedName("artistProfilePhoto")
     public String artistImage;  //아티스트 프로필 이미지

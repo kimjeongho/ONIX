@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by kimjh on 2016-02-29.
  */
 public class NailTypeData implements Serializable{
-    @SerializedName("type")
+    @SerializedName("service_type")
     public String nailType;
     @SerializedName("price")
     public String nailPrice;

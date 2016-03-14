@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.didimdol.skt.kimjh.onix.DataClass.DiscountData;
+import com.didimdol.skt.kimjh.onix.DataClass.DiscountListData;
 import com.didimdol.skt.kimjh.onix.R;
 
 /**
@@ -23,7 +23,7 @@ public class DiscountView extends FrameLayout {
     TextView yearView;
     TextView monthView;
     TextView dayView;
-    DiscountData discountData;
+    DiscountListData discountData;
 
     public DiscountView(Context context) {
         super(context);
@@ -38,11 +38,11 @@ public class DiscountView extends FrameLayout {
         discountTimeView = (TextView)findViewById(R.id.text_time);
         discountView = (TextView)findViewById(R.id.text_discount);
         yearView = (TextView)findViewById(R.id.text_year);
-        monthView = (TextView)findViewById(R.id.text_month);
-        dayView = (TextView)findViewById(R.id.text_day);
+       /* monthView = (TextView)findViewById(R.id.text_month);
+        dayView = (TextView)findViewById(R.id.text_day);*/
     }
 
-    public void setDiscountItem(DiscountData data){
+    public void setDiscountItem(DiscountListData data){
         this.discountData = data;
         if(!TextUtils.isEmpty(data.discountImage))  {
             Glide.with(getContext())
@@ -52,10 +52,10 @@ public class DiscountView extends FrameLayout {
         artistNameView.setText(data.artistName);
         shopNameView.setText(data.shopName);
         discountTimeView.setText(data.discountTime);
-        discountView.setText(data.discountPercent);
+        discountView.setText(data.discountPercent+"%");
         yearView.setText(data.discountYear);
-        monthView.setText(data.discountMonth);
-        dayView.setText(data.discountDay);
+       /* monthView.setText(data.discountMonth);
+        dayView.setText(data.discountDay);*/
     }
 
 
