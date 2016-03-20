@@ -32,6 +32,8 @@ public void set(ArtistTotalData data){
     }
 
 
+
+
     public void addAll(List<ArtistCommentData> datas){  // Activity에서 commentDatas를 받는다 (같은 List형태)
 //        items.addAll(datas);
         data.artistComment.addAll(datas);

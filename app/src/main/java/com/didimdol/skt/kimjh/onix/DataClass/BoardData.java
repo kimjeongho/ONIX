@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class BoardData implements Serializable {
 //    public int iconid;
+
     @SerializedName("post_id")
     public int postId;
 
@@ -36,7 +37,7 @@ public class BoardData implements Serializable {
     public String boardImage;
 
 
-
+/*
     @SerializedName("replies")
-    public List<BoardCommentData> boardCommentDatas = new ArrayList<BoardCommentData>();
+    public List<BoardCommentData> boardCommentDatas = new ArrayList<BoardCommentData>();*/
 }

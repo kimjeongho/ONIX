@@ -161,13 +161,46 @@
         android:layout_below="@+id/texttitle"
         android:layout_centerHorizontal="true"/>
 
-    <ImageView
+   <!-- <ImageView
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/push_finish"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true" />-->
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="페이스북"
+        android:id="@+id/facebook_btn"
+        android:layout_below="@+id/spin_discount"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/facebook_btn"
+        android:id="@+id/facebook_btn_test"
+        android:layout_below="@+id/spin_discount"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="부터"
+        android:id="@+id/textView16"
+        android:layout_above="@+id/time_finish"
+        android:layout_toRightOf="@+id/time_start"
+        android:layout_toEndOf="@+id/time_start" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="까지"
+        android:id="@+id/textView18"
+        android:layout_alignBottom="@+id/time_finish"
+        android:layout_toRightOf="@+id/time_finish"
+        android:layout_toEndOf="@+id/time_finish" />
+
 
 
 </RelativeLayout>

@@ -3,13 +3,16 @@
     <string-array name="search">
         <item>추천순</item>
         <item>거리순</item>
-        <item>이름순</item>
+    </string-array>
+
+    <string-array name="search_artist">
+        <item>추천순</item>
+        <item>할인순</item>
     </string-array>
 
     <string-array name="category">
         <item>QnA</item>
         <item>커뮤니티</item>
-
     </string-array>
 
     <string-array name="header">

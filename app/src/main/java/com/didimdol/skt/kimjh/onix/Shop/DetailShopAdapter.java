@@ -62,6 +62,12 @@ public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
     }
 
+    @Override
+    public void onShopMapClick(View view, ShopTotalData shopTotalData) {
+        if(itemClickListener != null){
+            itemClickListener.onShopMapClick(view, shopTotalData);
+        }
+    }
 
 
     //---------------------------------------------------------------------------------------------------
@@ -109,7 +115,9 @@ public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 return new ShopTimeHolder(view);
             case VIEW_TYPE_SHOPLOCATION:
                 view = inflater.inflate(R.layout.view_ds_map, parent, false);
-                return new ShopLocationHolder(view);
+                ShopLocationHolder holderLocation = new ShopLocationHolder(view);
+                holderLocation.setOnShopItemClickListener(this);
+                return holderLocation;
            /* case VIEW_TYPE_SHOPLOCATION:
                 view = inflater.inflate(R.layout.view_ds_map, parent, false);
                 return new ShopLocationHolder(view);*/

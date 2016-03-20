@@ -32,7 +32,7 @@ public class ArtistTotalData implements ChoiceData, Serializable {
     public String artistContent;    //소개글
 
     @SerializedName("shop_id")
-    public String shopId; // 샵 아이디
+    public int shopId; // 샵 아이디
 
     public String shopName;
 

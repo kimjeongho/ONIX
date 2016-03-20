@@ -39,6 +39,25 @@ public class PropertyManager {
         return mPrefs.getString(FIELD_USER_ID,"");
     }
 
+    boolean isLogin = false;
+
+    public void setLogin(boolean isLogin) {
+        this.isLogin = isLogin;
+    }
+
+    public boolean isLogin() {
+        return isLogin;
+    }
+
+    String email = "";
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public void setPassword(String password){
         mEditor.putString(FIELD_PASSWORD, password);
         mEditor.commit();   //값 저장
@@ -46,6 +65,18 @@ public class PropertyManager {
 
     public String getPassword(){
         return mPrefs.getString(FIELD_PASSWORD,"");
+    }
+
+    //registrationToken
+    private static final String REG_ID = "regToken";
+
+    public void setRegistrationToken(String regId){
+        mEditor.putString(REG_ID, regId);
+        mEditor.commit();
+    }
+
+    public String getRegistrationToken(){
+        return mPrefs.getString(REG_ID, "");
     }
 
 }

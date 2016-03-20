@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
+import com.didimdol.skt.kimjh.onix.Menu.MenuChoice.ChoiceActivity;
 import com.didimdol.skt.kimjh.onix.OnArtistItemClickListener;
 import com.didimdol.skt.kimjh.onix.OnChoiceItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
@@ -59,8 +60,10 @@ public class ArtistListView extends FrameLayout {
                     .into(artistView);
         }
 
-        if(data.artistDiscount !=0){
-            artistDiscountview.setImageResource(R.drawable.onix_sale);
+        if(data.artistDiscount > 0){
+            artistDiscountview.setVisibility(VISIBLE);
+        } else {
+            artistDiscountview.setVisibility(GONE);
         }
         artistNameView.setText(data.artistName);
         artistChoiceView.setText(data.artistChoice);

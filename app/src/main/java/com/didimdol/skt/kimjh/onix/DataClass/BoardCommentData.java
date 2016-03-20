@@ -9,9 +9,11 @@ import java.io.Serializable;
  */
 public class BoardCommentData implements Serializable{
 
+    @SerializedName("board_id")
+    public int boardTypeId;
+
     @SerializedName("register_date")
     public String date;
-
 
     @SerializedName("write_id")
     public int boardCategory;
@@ -22,13 +24,4 @@ public class BoardCommentData implements Serializable{
     @SerializedName("content")
     public String userComment;
 
-    public BoardCommentData(){
-
-    }
-
-    public BoardCommentData(int boardCategory, String userId, String userComment){
-        this.boardCategory = boardCategory;
-        this.userId = userId;
-        this.userComment = userComment;
-    }
 }

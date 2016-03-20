@@ -45,11 +45,8 @@ public class NoticeActivity extends AppCompatActivity {
     private void initData() {
         for (int i = 0; i<2; i++){
             for (int j = 0; j<1; j++){
-                if(i==0){
                     mAdapter.put("dd"+i,"22"+j);
-                }else {
-                    mAdapter.put("group" + i, "공지 사항 테스트........................." + j);
-                }
+
             }
         }
     }

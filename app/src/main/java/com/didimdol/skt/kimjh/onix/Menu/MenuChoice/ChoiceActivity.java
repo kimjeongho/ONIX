@@ -29,6 +29,7 @@ public class ChoiceActivity extends AppCompatActivity {
     ChoiceAdapter mAdapter;
     ListView listView;
     ArtistListView artistListView;
+    ArtistListData data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +57,16 @@ public class ChoiceActivity extends AppCompatActivity {
                /* Toast.makeText(ChoiceActivity.this,""+position,Toast.LENGTH_SHORT).show();
                 int type = position;*/
                 ChoiceData data = mAdapter.items.get(position);
-                if(data instanceof ArtistListData){
+                if (data instanceof ArtistListData) {
                     ArtistListData mData = (ArtistListData) listView.getItemAtPosition(position);
                     Intent intent = new Intent(ChoiceActivity.this, DetailArtistActivity.class);
                     intent.putExtra(DetailArtistActivity.PARAM_TOTAL_ARTIST, mData.artistId);
                     startActivity(intent);
-                } else if(data instanceof ShopListData){
+                } else if (data instanceof ShopListData) {
                     ShopListData mData = (ShopListData) listView.getItemAtPosition(position);
                     Toast.makeText(ChoiceActivity.this, "name: " + mData.shopId, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ChoiceActivity.this, DetailShopActivity.class);
-                    intent.putExtra(DetailShopActivity.PARAM_TOTAL_SHOP,mData);
+                    intent.putExtra(DetailShopActivity.PARAM_TOTAL_SHOP, mData.shopId);
                     startActivity(intent);
                 }
 
@@ -74,7 +75,12 @@ public class ChoiceActivity extends AppCompatActivity {
         });
         listView.setAdapter(mAdapter);
 
+        initData();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         initData();
     }
 
@@ -95,6 +101,7 @@ public class ChoiceActivity extends AppCompatActivity {
         NetworkManager.getInstance().getChoiceDataResult(this, 1, new NetworkManager.OnResultListener<ChoiceSuccess>() {
             @Override
             public void onSuccess(Request request, ChoiceSuccess result) {
+                mAdapter.clear(result);
                 mAdapter.set(result);
             }
 

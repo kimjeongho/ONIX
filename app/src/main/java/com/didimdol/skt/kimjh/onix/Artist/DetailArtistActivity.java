@@ -41,11 +41,11 @@ public class DetailArtistActivity extends AppCompatActivity {
     List<ArtistCommentData> commentDatas;
     int putData;
     int data;
-    String commentText;
+
 
 
     public static final String PARAM_TOTAL_ARTIST = "total";
-    public static final String PARAM_DETAIL_ARITST = "detailArtist";
+//    public static final String PARAM_DETAIL_ARITST = "detailArtist";
     private boolean check = false;
 
     @Override
@@ -62,8 +62,8 @@ public class DetailArtistActivity extends AppCompatActivity {
         //serializable------------------------------------------------------------------------------------------
 
         //shopPageExtra-----------------------------------------------------------------------------------------
-        Intent putIntent = getIntent();
-        putData = putIntent.getIntExtra(PARAM_DETAIL_ARITST, 0);
+        /*Intent putIntent = getIntent();
+        putData = putIntent.getIntExtra(PARAM_DETAIL_ARITST, 0);*/
 
         //shopPageExtra-----------------------------------------------------------------------------------------
 
@@ -76,7 +76,7 @@ public class DetailArtistActivity extends AppCompatActivity {
         });
 //        pager.setPageMargin(10);
 // pageslide-----------------------------------------------------------------------------------------
-//        photoAdapter = new ArtistPagerAdapter();
+//
        /* mDemoSlider = (SliderLayout)findViewById(R.id.slider);
         HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
         file_maps.set("Hannibal", R.drawable.dummy_1);
@@ -113,6 +113,7 @@ public class DetailArtistActivity extends AppCompatActivity {
                     inputView.setText("");
                     recyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
                 }*/
+
                 commentInitData();  // network
 
             }
@@ -121,9 +122,8 @@ public class DetailArtistActivity extends AppCompatActivity {
         mAdapter.setOnItemClickListener(new OnArtistItemClickListener() {
             @Override
             public void onShopClick(View view, ArtistTotalData artistTotalData) {
-                Toast.makeText(DetailArtistActivity.this, "shopclick" + artistTotalData.shopId, Toast.LENGTH_SHORT).show();
                 Intent shopIntent = new Intent(DetailArtistActivity.this, DetailShopActivity.class);
-                shopIntent.putExtra(DetailShopActivity.PARAM_DETAIL_SHOP, artistTotalData.shopId);
+                shopIntent.putExtra(DetailShopActivity.PARAM_TOTAL_SHOP, artistTotalData.shopId);
                 startActivity(shopIntent);
             }
 
@@ -153,23 +153,24 @@ public class DetailArtistActivity extends AppCompatActivity {
     }
 
     private void commentInitData() {
-        commentText = inputView.getText().toString();
+        String commentText = inputView.getText().toString();
         if (!TextUtils.isEmpty(commentText)) {
             NetworkManager.getInstance().setArtistCommentResult(this, data, commentText, new NetworkManager.OnResultListener<ArtistCommentResult>() {
                 @Override
                 public void onSuccess(Request request, ArtistCommentResult result) {
                     if (result.failResult == null) {
                         Toast.makeText(DetailArtistActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
-                        if (!TextUtils.isEmpty(commentText)) {
+                        /*if (!TextUtils.isEmpty(DetailArtistActivity.this.commentText)) {
                             inputView.setText("");
-                        }
+                        }*/
+                        inputView.setText("");
                         initData();
                     }
                 }
 
                 @Override
                 public void onFailure(Request request, int code, Throwable cause) {
-
+                    Toast.makeText(DetailArtistActivity.this, "fail ", Toast.LENGTH_SHORT).show();
                 }
             });
         }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="272dp"
+    android:layout_height="285dp"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:orientation="vertical"
+    android:id="@+id/headerView"
+    android:gravity="bottom">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#000000"
+        android:id="@+id/menu_home"
+        android:textColor="#FFFFFF"
+        android:src="@drawable/btn_home" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+    <ImageView
+        android:layout_width="272dp"
+        android:layout_height="240dp"
+        android:background="@drawable/profile_bg_2"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="logintest"
+            android:textColor="#000000"
+            android:id="@+id/text_email"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="65dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

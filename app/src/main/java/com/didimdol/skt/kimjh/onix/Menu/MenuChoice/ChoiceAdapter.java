@@ -38,6 +38,10 @@ public class ChoiceAdapter extends BaseAdapter implements OnChoiceItemClickListe
         notifyDataSetChanged();
     }
 
+    public void clear(ChoiceSuccess data){
+        items.clear();
+    }
+
 
     @Override
     public int getCount() {

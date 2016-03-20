@@ -16,11 +16,13 @@ public class ShopListData implements ChoiceData, Serializable {
     public String shopName;   //샵이름
 
     @SerializedName("shop_jjim_counts")
-    public int shopChoice;         //찜 목록수
+    public String shopChoice;         //찜 목록수
 
     public double longitude;
 
     public double latitude;
+
+    public double distance;
 
     @SerializedName("mainPhoto")
     public String shopImage;          //샵 대표 이미지

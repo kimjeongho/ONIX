@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.didimdol.skt.kimjh.onix.Shop.ShopMapActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF000000"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/onix_home"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/onix_maintitle"
+        android:layout_marginLeft="@dimen/onix_title_left" />
+
+    <com.skp.Tmap.TMapView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id = "@+id/shop_map"
+        android:layout_below="@id/toolbar"></com.skp.Tmap.TMapView>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_expand"
+        android:background="@drawable/btn_map_expand"
+        android:layout_alignBottom="@+id/shop_map"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="16dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/image_redus"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/image_expand"
+        android:layout_alignStart="@+id/image_expand"
+        android:background="@drawable/btn_map_reduce"
+        android:layout_marginBottom="10dp" />
+
+</RelativeLayout>

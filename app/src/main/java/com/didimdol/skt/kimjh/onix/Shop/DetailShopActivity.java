@@ -16,7 +16,10 @@ import android.widget.Toast;
 
 import com.daimajia.slider.library.SliderLayout;
 import com.didimdol.skt.kimjh.onix.Artist.DetailArtistActivity;
+import com.didimdol.skt.kimjh.onix.Board.BoardReadActivity;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
+import com.didimdol.skt.kimjh.onix.DataClass.ChoiceMinusResult;
+import com.didimdol.skt.kimjh.onix.DataClass.ChoicePlusResult;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
@@ -32,7 +35,8 @@ public class DetailShopActivity extends AppCompatActivity {
     DetailShopAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
     public static final String PARAM_TOTAL_SHOP = "total";
-    public static final String PARAM_DETAIL_SHOP = "detailshop";
+    public static final int SHOP_TYPE = 3;
+//    public static final String PARAM_DETAIL_SHOP = "detailshop";
     ShopTotalData shopTotalData;
     int putData;
     int data;
@@ -81,8 +85,8 @@ public class DetailShopActivity extends AppCompatActivity {
         //serializable------------------------------------------------------------------------------------------
 
         //DetailArtistActivity------------------------------------------------------------------------------------------
-        Intent putIntent = getIntent();
-        putData = putIntent.getIntExtra(PARAM_DETAIL_SHOP, 0);
+        /*Intent putIntent = getIntent();
+        putData = putIntent.getIntExtra(PARAM_DETAIL_SHOP, 0);*/
 
         //DetailArtistActivity------------------------------------------------------------------------------------------
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
@@ -106,6 +110,13 @@ public class DetailShopActivity extends AppCompatActivity {
             @Override
             public void onChoiceClick(View view, ShopTotalData shopTotalData) {
                 Toast.makeText(DetailShopActivity.this,"choiceclick",Toast.LENGTH_SHORT).show();
+                if (shopTotalData.choiceSort == 0) {      //??
+                    // post
+                    postInitData();
+                } else {
+                    // delete
+                    deleteInitData();
+                }
 
             }
 
@@ -113,14 +124,61 @@ public class DetailShopActivity extends AppCompatActivity {
             public void onArtistListClick(View view, ShopArtistListData shopArtistListData) {
                 Toast.makeText(DetailShopActivity.this,"choiceclick"+shopArtistListData.artistId,Toast.LENGTH_SHORT).show();
                 Intent artistIntent = new Intent(DetailShopActivity.this, DetailArtistActivity.class);
-                artistIntent.putExtra(DetailArtistActivity.PARAM_DETAIL_ARITST,shopArtistListData.artistId);
+                artistIntent.putExtra(DetailArtistActivity.PARAM_TOTAL_ARTIST,shopArtistListData.artistId);
                 startActivity(artistIntent);
+            }
+
+            @Override
+            public void onShopMapClick(View view, ShopTotalData shopTotalData) {
+                Intent mapIntent = new Intent(DetailShopActivity.this, ShopMapActivity.class);
+//                mapIntent.putExtra(ShopMapActivity.PARAM_LATITUDE,shopTotalData.latitude);
+//                mapIntent.putExtra(ShopMapActivity.PARAM_LONGITUDE,shopTotalData.longitude);
+                mapIntent.putExtra(ShopMapActivity.PARAM_LOCATION,shopTotalData);
+                startActivity(mapIntent);
             }
 
 
         });
 //        mAdapter.set(data);
                 initData();
+    }
+
+    private void postInitData() {
+        NetworkManager.getInstance().setChoicePlusResult(this, data, 3, new NetworkManager.OnResultListener<ChoicePlusResult>() {
+            //context artistId, targetId
+            @Override
+            public void onSuccess(Request request, ChoicePlusResult result) {
+                if (result.failResult == null) {
+                    Toast.makeText(DetailShopActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
+                    initData();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
+    }
+
+    private void deleteInitData() {
+        NetworkManager.getInstance().setChoiceMinusResult(this, data, SHOP_TYPE, new NetworkManager.OnResultListener<ChoiceMinusResult>() {
+            @Override
+            public void onSuccess(Request request, ChoiceMinusResult result) {
+                if (result.failResult == null) {
+                    Toast.makeText(DetailShopActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
+
+                    initData();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
     }
 
     private void initData() {

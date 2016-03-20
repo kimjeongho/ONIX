@@ -24,6 +24,11 @@ public class ShopAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void clear(ShopListSuccess data){
+        items.clear();
+        notifyDataSetChanged();
+    }
+
    /* public void add(ShopTotalData data){
         items.add(data);
         notifyDataSetChanged();

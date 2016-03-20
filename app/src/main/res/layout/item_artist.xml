@@ -30,8 +30,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+
             android:text="LikeCount"
+            android:textSize="15sp"
+            android:textStyle="bold"
             android:id="@+id/text_like"
             android:textColor="#FFFFFF"
             android:layout_alignParentBottom="true"
@@ -66,6 +68,8 @@
         android:layout_height="77dp"
         android:id="@+id/image_discount"
         android:layout_gravity="right|top"
+        android:background="@drawable/onix_sale"
+        android:visibility="gone"
         />
     <!--android:background="@drawable/onix_sale"-->
 

@@ -1,10 +1,11 @@
 package com.didimdol.skt.kimjh.onix;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +15,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.didimdol.skt.kimjh.onix.DataClass.LogoutResult;
+import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
+import com.didimdol.skt.kimjh.onix.Manager.PropertyManager;
 import com.didimdol.skt.kimjh.onix.Menu.MenuChoice.ChoiceActivity;
 import com.didimdol.skt.kimjh.onix.Menu.MenuDiscount.DiscountActivity;
 import com.didimdol.skt.kimjh.onix.Menu.InstructionActivity;
@@ -28,6 +35,9 @@ import com.didimdol.skt.kimjh.onix.Menu.PushActivity;
 import com.didimdol.skt.kimjh.onix.TabView.TabArtist;
 import com.didimdol.skt.kimjh.onix.TabView.TabBoard;
 import com.didimdol.skt.kimjh.onix.TabView.TabShop;
+import com.facebook.login.LoginManager;
+
+import okhttp3.Request;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,6 +46,16 @@ public class MainActivity extends AppCompatActivity
     MyPagerAdapter mAdapter;
     ImageView menuHome;
     ImageView homeView;
+    LoginManager loginManager;
+    View headerView;
+    View mainPage;
+    View loginPage;
+    TextView emailView;
+
+    LocationManager mLM;    // androidLocationManager
+    String gpsProvider = LocationManager.GPS_PROVIDER;  // GPS로 검색
+    String netProvider = LocationManager.NETWORK_PROVIDER;  //네트워크로 검색
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +65,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        /*CameraDialogFragment f = new CameraDialogFragment();
-        f.show(getSupportFragmentManager(), "dialog");
-        tabLayout = (TabLayout)findViewById(R.id.tab_layout);*/
-        CustomDialogFragment f1 = new CustomDialogFragment();
-        f1.show(getSupportFragmentManager(), "dialog");
+        mLM = (LocationManager)getSystemService(Context.LOCATION_SERVICE);  //android location_service 생성
         tabLayout = (TabLayout)findViewById(R.id.tab_layout);
-
         pager = (ViewPager)findViewById(R.id.pagerView);
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(mAdapter);
@@ -60,10 +75,13 @@ public class MainActivity extends AppCompatActivity
         tabLayout.removeAllTabs();
 
         TabArtist tabArtist = new TabArtist(this);
+        tabArtist.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tabLayout.addTab(tabLayout.newTab().setCustomView(tabArtist), 0);
         TabShop tabShop = new TabShop(this);
+        tabShop.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tabLayout.addTab(tabLayout.newTab().setCustomView(tabShop), 1);
         TabBoard tabBoard = new TabBoard(this);
+        tabBoard.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         tabLayout.addTab(tabLayout.newTab().setCustomView(tabBoard),2);
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,14 +94,15 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-//        navigationView.getHeaderView(R.layout.nav_header_main);
-        View headerView = navigationView.getHeaderView(0);
+        navigationView.getHeaderView(R.layout.nav_header_main);
+        headerView = navigationView.getHeaderView(0);
+
 
         Button btn = (Button)headerView.findViewById(R.id.btn_login);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -103,8 +122,23 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        emailView = (TextView)headerView.findViewById(R.id.text_email);
+        mainPage = headerView.findViewById(R.id.main_page);
+        loginPage = headerView.findViewById(R.id.login_page);
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(!mLM.isProviderEnabled(gpsProvider) || !mLM.isProviderEnabled(netProvider)){
+            alertCheckGPS();
+        }
+    }
+
+    private void alertCheckGPS() {
+        LocationDialogFragment f = new LocationDialogFragment();
+        f.show(getSupportFragmentManager(), "dialog");
     }
 
     @Override
@@ -162,6 +196,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, PushActivity.class);
             startActivity(intent);
         }else if (id == R.id.nav_logout) {
+            iniData();
 
         }
 
@@ -172,4 +207,48 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        changeDrawerLayout();
+    }
+
+
+
+    private void changeDrawerLayout() {
+        if (PropertyManager.getInstance().isLogin()){
+            mainPage.setVisibility(View.GONE);
+            loginPage.setVisibility(View.VISIBLE);
+            emailView.setText(PropertyManager.getInstance().getUserId());
+            PropertyManager.getInstance().setLogin(true);
+        } else {
+           iniData();
+        }
+    }
+
+    private void iniData() {
+        NetworkManager.getInstance().setLogoutResult(this, new NetworkManager.OnResultListener<LogoutResult>() {
+            @Override
+            public void onSuccess(Request request, LogoutResult result) {
+                if (result.failResult == null) {
+//                    Toast.makeText(MainActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
+                    loginManager = LoginManager.getInstance();
+                    loginManager.logOut();
+                    PropertyManager.getInstance().setUserId("");
+                    PropertyManager.getInstance().setPassword("");
+                    PropertyManager.getInstance().setRegistrationToken("");
+                    mainPage.setVisibility(View.VISIBLE);
+                    loginPage.setVisibility(View.GONE);
+                    PropertyManager.getInstance().setLogin(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+
+            }
+        });
+    }
 }
+

@@ -113,7 +113,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/edit_content"
         android:hint="내용 입력"
         android:textSize="@dimen/TitleTextSize"
@@ -122,9 +122,12 @@
         android:layout_alignParentStart="true"
         android:layout_marginLeft="16dp"
         android:background="@null"
+        android:gravity="top|left"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="6dp" />
+        android:layout_marginTop="6dp"
+        android:layout_above="@+id/image_insert"
+        android:layout_marginRight="16dp" />
 
 
     <ImageView

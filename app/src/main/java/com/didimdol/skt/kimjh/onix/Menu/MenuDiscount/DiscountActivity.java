@@ -34,7 +34,9 @@ public class DiscountActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DiscountListData mData = (DiscountListData)listView.getItemAtPosition(position);
                 Intent intent = new Intent(DiscountActivity.this, DetailArtistActivity.class);
+                intent.putExtra(DetailArtistActivity.PARAM_TOTAL_ARTIST,mData.artistId);
                 startActivity(intent);
             }
         });
@@ -43,12 +45,11 @@ public class DiscountActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        NetworkManager.getInstance().getDiscountListDataResult(this ,4, new NetworkManager.OnResultListener<DiscountListSuccess>() {
+        NetworkManager.getInstance().getDiscountListDataResult(this ,1, new NetworkManager.OnResultListener<DiscountListSuccess>() {
             @Override
             public void onSuccess(Request request, DiscountListSuccess result) {
 
                     mAdapter.set(result);
-
             }
 
             @Override

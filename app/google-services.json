@@ -1,0 +1,75 @@
+{
+  "project_info": {
+    "project_id": "onix-1245",
+    "project_number": "53989477006",
+    "name": "ONIX"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53989477006:android:a9d0f5f042250717",
+        "client_id": "android:com.didimdol.skt.kimjh.gcmpj",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.didimdol.skt.kimjh.gcmpj",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53989477006:android:0b5816f3122a39a0",
+        "client_id": "android:com.didimdol.skt.kimjh.onix",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "com.didimdol.skt.kimjh.onix",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 2,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}

@@ -28,6 +28,11 @@ public class BoardAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void clear(BoardTotalSuccess data){
+        items.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return items.size();

@@ -10,6 +10,9 @@ import com.didimdol.skt.kimjh.onix.DataClass.ArtistListSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistDetailResult;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistListResult;
+import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentReadResult;
+import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentReadSuccess;
+import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentResult;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardTotalResult;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardTotalSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardWriteResult;
@@ -20,6 +23,10 @@ import com.didimdol.skt.kimjh.onix.DataClass.ChoicePlusResult;
 import com.didimdol.skt.kimjh.onix.DataClass.DiscountListResult;
 import com.didimdol.skt.kimjh.onix.DataClass.DiscountListSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.JoinResult;
+import com.didimdol.skt.kimjh.onix.DataClass.LoginFacebookResult;
+import com.didimdol.skt.kimjh.onix.DataClass.LoginResult;
+import com.didimdol.skt.kimjh.onix.DataClass.LogoutResult;
+import com.didimdol.skt.kimjh.onix.DataClass.LogoutSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopDetailResult;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopListResult;
@@ -208,13 +215,18 @@ public class NetworkManager {
         OnResultListener<T> listener;
     }
 //아티스트 리스트 페이지------------------------------------------------------------------------------------------------------------------------------------
-    private static final String URL_ARTIST_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists?page=%s&condition=%s&search=%s";
+    private static final String URL_ARTIST_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists?page=%s";
     public Request getArtistListDataResult(Context context, int page, int condition, String search, final OnResultListener<ArtistListSuccess> listener){
         String url = null;
-        try {
-            url = String.format(URL_ARTIST_LIST,page, condition, URLEncoder.encode(search,"utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        url = String.format(URL_ARTIST_LIST,page);
+        if (condition == 0) {
+            try {
+                url += "&search=" + URLEncoder.encode(search,"utf-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            url += "&condition=" + condition;
         }
         final CallbackObject<ArtistListSuccess> callbackObject = new CallbackObject<ArtistListSuccess>();
         Request request = new Request.Builder().url(url)
@@ -243,6 +255,7 @@ public class NetworkManager {
     }
     //아티스트 리스트 페이지------------------------------------------------------------------------------------------------------------------------------------
 
+/*
     //샵 리스트 페이지----------------------------------------------------------------------------------------------------------------------------------------
 
     private static final String URL_SHOP_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/shops/?page=%s&search=%s&condition=%s";
@@ -280,16 +293,92 @@ public class NetworkManager {
     }
 
     //샵 리스트 페이지----------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+    //샵 리스트 페이지(post)----------------------------------------------------------------------------------------------------------------------------------------
+
+    private static final String URL_SHOP_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/shops";
+    public Request getShopTotalDataResult(Context context, int page, int condition,String search, double latitude, double longitude, final OnResultListener<ShopListSuccess> listener){
+        String url = URL_SHOP_LIST;
+        final CallbackObject<ShopListSuccess> callbackObject = new CallbackObject<ShopListSuccess>();
+
+        RequestBody body = new FormBody.Builder()
+                .add("page", String.valueOf(page))
+                .add("search", search)
+                .add("condition", String.valueOf(condition))
+                .add("userLatitude", String.valueOf(latitude))
+                .add("userLongitude", String.valueOf(longitude))
+                .build();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .post(body)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                ShopListResult result = gson.fromJson(response.body().charStream(), ShopListResult.class);
+                callbackObject.result = result.successResult;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+    //샵 리스트 페이지(post)----------------------------------------------------------------------------------------------------------------------------------------
+    //---------게시판 댓글 보기-----------------------------------------------------------------------------------------------------------------------
+    private static final String URL_BOARD_COMMENT_READ = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/boards/%s/posts/%s/replies?repliespage=%s";
+    public Request getBoardCommentDataResult(Context context, int condition, int postid, int replepage, final OnResultListener<BoardCommentReadSuccess> listener){
+        String url = String.format(URL_BOARD_COMMENT_READ,condition, postid, replepage);
+        final CallbackObject<BoardCommentReadSuccess> callbackObject = new CallbackObject<BoardCommentReadSuccess>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                String text = response.body().string();
+                BoardCommentReadResult result = gson.fromJson(text, BoardCommentReadResult.class);
+                callbackObject.result = result.successResult;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+
+        return request;
+    }
+    //---------게시판 댓글 보기-----------------------------------------------------------------------------------------------------------------------
+
+
     //-----------게시판 메인--------------------------------------------------------------------------------------------------------------------------
-    private static final String URL_BOARD_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/boards/%s/posts?page=%s&search=%s";
-    public Request getBoardTotalDataResult(Context context,int id,int page, String search, final OnResultListener<BoardTotalSuccess> listener){
+    private static final String URL_BOARD_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/boards/%s/posts?page=%s&search=%s";//
+    public Request getBoardTotalDataResult(Context context,int condition, int page, String search, final OnResultListener<BoardTotalSuccess> listener){
         String url = null;
+
         try {
-            url = String.format(URL_BOARD_LIST, id,page,URLEncoder.encode(search,"utf-8"));
+            url = String.format(URL_BOARD_LIST,condition,page,URLEncoder.encode(search,"utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
         final CallbackObject<BoardTotalSuccess> callbackObject = new CallbackObject<BoardTotalSuccess>();
         Request request = new Request.Builder().url(url)
                 .tag(context)
@@ -394,7 +483,7 @@ public class NetworkManager {
     //----------아티스트에서 샵 바로가기 페이지 클릭 했을시 동작----------------------------------------------------------------------------------
 
     //----------찜목록 확인-----------------------------------------------------------------------------------------------------------------------
-    private static final String URL_CHOICE_VIEW = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/jjims?user_type=2&page=%s";
+    private static final String URL_CHOICE_VIEW = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/jjims?page=%s";
     public Request getChoiceDataResult(Context context, int page, OnResultListener<ChoiceSuccess> listener){
         String url = String.format(URL_CHOICE_VIEW,page);
 
@@ -431,7 +520,7 @@ public class NetworkManager {
     //----------할인 파우치 확인-----------------------------------------------------------------------------------------------------------------------
     private static final String URL_DISCOUNT_LIST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/salepushes?page=%s";
     public Request getDiscountListDataResult(Context context, int page, final OnResultListener<DiscountListSuccess> listener){
-        String url = String.format(URL_DISCOUNT_LIST,page);
+        String url = String.format(URL_DISCOUNT_LIST, page);
 
         final CallbackObject<DiscountListSuccess> callbackObject = new CallbackObject<DiscountListSuccess>();
         Request request = new Request.Builder().url(url)
@@ -460,20 +549,20 @@ public class NetworkManager {
     }
     //----------할인 파우치 확인-----------------------------------------------------------------------------------------------------------------------
    //-----------게시판 글 쓰기--------------------------------------------------------------------------------------------------------------------------
-//    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
     private static final String URL_BOARD_WRITE = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/boards/%s/posts";
-    public Request setBoardWrite(Context context, int boardId, String title, String content, File photo, final  OnResultListener<BoardWriteResult> listener){
-        String url = String.format(URL_BOARD_WRITE,boardId);
+    public Request setBoardWrite(Context context, int condition, String title, String content, File photo, final  OnResultListener<BoardWriteResult> listener){
+        String url = String.format(URL_BOARD_WRITE,condition);
         final CallbackObject<BoardWriteResult> callbackObject = new CallbackObject<BoardWriteResult>();
 
-        RequestBody body = new MultipartBody.Builder()
+
+        MultipartBody.Builder builder =  new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("title", title)
-                .addFormDataPart("content", content)
-//                .addFormDataPart("photo", String.valueOf(photo))
-//                .addFormDataPart("photo_url", photo.getName(), RequestBody.create(MEDIA_TYPE_PNG, photo))
-                .build();
-
+                .addFormDataPart("content", content);
+        if (photo != null) {
+            builder.addFormDataPart("photo", photo.getName(), RequestBody.create(MediaType.parse("image/jpeg"), photo));
+        }   // 객체로 요청하므로 반드시 check!
+        RequestBody body = builder.build();
         Request request = new Request.Builder().url(url)
                 .tag(context)
                 .post(body)
@@ -501,6 +590,49 @@ public class NetworkManager {
         return request;
     }
    //-----------게시판 글 쓰기--------------------------------------------------------------------------------------------------------------------------
+
+    //-----------게시판 글 쓰기(test)--------------------------------------------------------------------------------------------------------------------------
+    private static final String URL_BOARD_WRITE_TEST = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/boards/%s/posts";
+    public Request setBoardWriteTest(Context context, int condition, String title, String content, final  OnResultListener<BoardWriteResult> listener){
+        String url = String.format(URL_BOARD_WRITE_TEST,condition);
+        final CallbackObject<BoardWriteResult> callbackObject = new CallbackObject<>();
+
+       /* RequestBody body = new FormBody.Builder()
+                .add("title", title)
+                .add("content", content)
+                .build();*/
+        MultipartBody.Builder builder =  new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("title", title)
+                .addFormDataPart("content", content);
+        RequestBody body = builder.build();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                BoardWriteResult result = gson.fromJson(response.body().charStream(), BoardWriteResult.class);
+                callbackObject.result = result;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+    //-----------게시판 글 쓰기(test)--------------------------------------------------------------------------------------------------------------------------
 
     //----------아티스트 한줄평 쓰기-----------------------------------------------------------------------------------------------------------------------
     private static final String URL_ARTIST_COMMENT = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists/%s/comments";
@@ -541,6 +673,162 @@ public class NetworkManager {
     }
 
     //----------아티스트 한줄평 쓰기-----------------------------------------------------------------------------------------------------------------------
+
+    //----------게시판 한줄평 쓰기-----------------------------------------------------------------------------------------------------------------------
+    private static final String URL_BOARD_COMMENT = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/boards/%s/posts/%s/replies";
+    public Request setBoardCommentResult(Context context, int condition,int boardId, String comment, final OnResultListener<BoardCommentResult> listener){
+        String url = String.format(URL_BOARD_COMMENT,condition,boardId);
+        final CallbackObject<BoardCommentResult> callbackObject = new CallbackObject<BoardCommentResult>();
+
+        RequestBody body = new FormBody.Builder()
+                /*.add("artist_id", String.valueOf(artistId))*/
+                .add("content", comment)
+                .build();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .post(body)
+                .build();
+
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                BoardCommentResult result = gson.fromJson(response.body().charStream(), BoardCommentResult.class);
+                callbackObject.result = result;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+
+        return request;
+    }
+
+    //----------게시판 한줄평 쓰기-----------------------------------------------------------------------------------------------------------------------
+    //---------페이스북 로그인---------------------------------------------------------------------------------------------------------------------------
+    private static  final String URL_FACEBOOK_LOGIN = "https://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/auth/facebook";
+    public Request setLoginFacebookResult(Context context, String facebookToken, String token ,final OnResultListener<LoginFacebookResult> listener){
+        String url = URL_FACEBOOK_LOGIN;
+        final CallbackObject<LoginFacebookResult> callbackObject = new CallbackObject<LoginFacebookResult>();
+
+        RequestBody body = new FormBody.Builder()
+                .add("access_token", facebookToken)
+                .add("registration_token", token)
+                .build();
+
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .post(body)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                LoginFacebookResult result = gson.fromJson(response.body().charStream(), LoginFacebookResult.class);
+                callbackObject.result = result;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return request;
+    }
+
+    //---------페이스북 로그인---------------------------------------------------------------------------------------------------------------------------
+    //----------로그아웃--------------------------------------------------------------------------------------------------------------------------------
+    private  static final String URL_LOGOUT = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/auth/logout";
+    public Request setLogoutResult(Context context, final OnResultListener<LogoutResult> listener){
+        String url = URL_LOGOUT;
+        final CallbackObject<LogoutResult> callbackObject = new CallbackObject<LogoutResult>();
+
+        RequestBody body = new FormBody.Builder()
+                .build();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .post(body)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                LogoutResult result = gson.fromJson(response.body().charStream(), LogoutResult.class);
+                callbackObject.result = result;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+
+        return request;
+
+    }
+    //----------로그아웃--------------------------------------------------------------------------------------------------------------------------------
+
+
+    //----------로그인-----------------------------------------------------------------------------------------------------------------------------------
+    private static final String URL_LOGIN = "https://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/auth/local";
+    public Request setLogInResult(Context context, String email, String password, String token, int type, final OnResultListener<LoginResult> listener){
+        String url = URL_LOGIN;
+        final CallbackObject<LoginResult> callbackObject = new CallbackObject<LoginResult>();
+
+        RequestBody body = new FormBody.Builder()
+                .add("email_id", email)
+                .add("password", password)
+                .add("registration_token", token)
+                .add("user_type", String.valueOf(type))
+                .build();
+
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .post(body)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                LoginResult result = gson.fromJson(response.body().charStream(), LoginResult.class);
+                callbackObject.result = result;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+
+        return request;
+    }
+    //----------로그인-----------------------------------------------------------------------------------------------------------------------------------
     //----------로컬 회원가입 확인-----------------------------------------------------------------------------------------------------------------------
     private static final String URL_JOIN = "https://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/customers";
     public Request setJoinResult(Context context, String email, String password, final OnResultListener<JoinResult> listener){

@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:background="@drawable/onix_login_bg"
     tools:context=".Menu.MenuLogin.LoginActivity">
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="233dp"
         android:id="@+id/relativeLayout">
@@ -22,38 +21,44 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="38dp"
+        android:layout_marginTop="233dp"
         android:id="@+id/choiceLayout"
         android:layout_below="@+id/relativeLayout"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView3"
-            android:src="@drawable/btn_artist_nor"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="39dp"
-            android:layout_marginEnd="39dp" />
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView4"
-            android:src="@drawable/btn_user_nor"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="32dp"
-            android:layout_marginStart="32dp" />
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_user"
+                android:background="@drawable/typeuser"
+                android:button="@null"
+                android:checked="true" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_artist"
+                android:background="@drawable/typeartist"
+                android:button="@null"
+                android:layout_marginLeft="5dp"
+                android:checked="false" />
+        </RadioGroup>
     </RelativeLayout>
 
     <LinearLayout
@@ -65,43 +70,44 @@
         android:layout_alignParentStart="true">
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:id="@+id/edit_email"
+            android:paddingLeft="10dp"
             android:hint="이메일을 입력하세요"
+            android:background="@drawable/btn_enter"
             android:layout_gravity="center_horizontal" />
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:id="@+id/edit_password"
             android:inputType="textPassword"
+            android:paddingLeft="10dp"
             android:hint="비밀번호를 입력하세요"
+            android:background="@drawable/btn_enter"
             android:layout_gravity="center_horizontal" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:text="이메일로 로그인"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_email_login"
             android:id="@+id/btn_email"
             android:layout_gravity="center_horizontal" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:text="facebook 로그인"
-            android:id="@+id/btn_facebook"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/image_facebook"
+            android:background="@drawable/btn_facebook_login"
             android:layout_gravity="center_horizontal" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="250dp"
-            android:layout_height="50dp"
-            android:text="회원가입하기"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_join"
             android:id="@+id/btn_join"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal" />z
 
     </LinearLayout>
 

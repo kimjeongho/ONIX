@@ -24,7 +24,7 @@
             android:layout_height="@dimen/spinner_height"
             android:id="@+id/spinner_search"
             android:spinnerMode="dropdown"
-            android:entries="@array/search"
+            android:entries="@array/search_artist"
             android:layout_marginRight="16dp"
             android:layout_alignTop="@+id/edit_search"
             android:layout_alignParentRight="true"

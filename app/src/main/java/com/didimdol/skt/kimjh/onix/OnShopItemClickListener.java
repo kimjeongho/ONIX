@@ -3,6 +3,7 @@ package com.didimdol.skt.kimjh.onix;
 import android.view.View;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ShopArtistListData;
+import com.didimdol.skt.kimjh.onix.DataClass.ShopLocationData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 
 /**
@@ -13,4 +14,5 @@ public interface OnShopItemClickListener {
     public void onCallClick(View view, ShopTotalData shopTotalData);
     public void onChoiceClick(View view, ShopTotalData shopTotalData);
     public void onArtistListClick(View view, ShopArtistListData shopArtistListData);
+    public void onShopMapClick(View view, ShopTotalData shopTotalData);
 }
