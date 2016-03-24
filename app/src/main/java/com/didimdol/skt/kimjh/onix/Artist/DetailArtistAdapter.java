@@ -6,10 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentData;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentReadSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
 import com.didimdol.skt.kimjh.onix.OnArtistItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,26 +21,32 @@ public class DetailArtistAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //    List<DetailArtistData> items = new ArrayList<DetailArtistData>();
 //    DetailArtistData data;
     ArtistTotalData data;
-//    List<CommentData> items = new ArrayList<CommentData>();
+//    List<ArtistCommentData> items = new ArrayList<ArtistCommentData>();
    /* public void set(DetailArtistData data){
 //        items.add(data);
         this.data = data;
         notifyDataSetChanged();
     } */
-public void set(ArtistTotalData data){
+    public void set(ArtistTotalData data){
 //        items.add(data);
         this.data = data;
         notifyDataSetChanged();
     }
 
+    //더보기
+    public void add(ArtistCommentReadSuccess items){
+        data.artistComment.addAll(items.comments);
+        notifyDataSetChanged();
+    }
 
 
 
-    public void addAll(List<ArtistCommentData> datas){  // Activity에서 commentDatas를 받는다 (같은 List형태)
+
+   /* public void addAll(List<ArtistCommentData> datas){  // Activity에서 commentDatas를 받는다 (같은 List형태)
 //        items.addAll(datas);
         data.artistComment.addAll(datas);
         notifyDataSetChanged();
-    }
+    }*/
 
     OnArtistItemClickListener itemClickListener;
 
@@ -89,9 +97,9 @@ public void set(ArtistTotalData data){
             return VIEW_TYPE_COMMENTTITLE;
         } else if(position>data.nailType.size()+2 && position< (data.nailType.size()+1)+2+data.artistComment.size()+1){//코멘트
             return VIEW_TYPE_COMMENT;
-        } else if(position == (data.nailType.size()+1)+2+data.artistComment.size()+1){
+        } /*else if(position == (data.nailType.size()+1)+2+data.artistComment.size()+1){
             return VIEW_TYPE_MORE;
-        }
+        }*/
         return super.getItemViewType(position); //??
     }
 

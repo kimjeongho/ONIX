@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                     PropertyManager.getInstance().setUserId("");
                     PropertyManager.getInstance().setEmail("");
                     PropertyManager.getInstance().setPassword("");
-                    PropertyManager.getInstance().clear();
+//                    PropertyManager.getInstance().clear();
                     mainPage.setVisibility(View.VISIBLE);
                     loginPage.setVisibility(View.GONE);
                     PropertyManager.getInstance().setLogin(false);  //??

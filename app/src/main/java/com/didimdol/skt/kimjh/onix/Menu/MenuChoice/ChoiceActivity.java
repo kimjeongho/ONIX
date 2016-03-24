@@ -73,7 +73,7 @@ public class ChoiceActivity extends AppCompatActivity {
                 if (isLast && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
                     int itemCount = mAdapter.getCount();
                     int page = itemCount / 10;
-                    page = (itemCount % 10 > 0) ? page+1:page;
+                    page = (itemCount % 10 > 0) ? page + 1 : page;
                     getMoreItem(page);
                 }
             }
@@ -126,6 +126,7 @@ public class ChoiceActivity extends AppCompatActivity {
         NetworkManager.getInstance().getChoiceDataResult(this, page, new NetworkManager.OnResultListener<ChoiceSuccess>() {
             @Override
             public void onSuccess(Request request, ChoiceSuccess result) {
+                mAdapter.clear();
                 mAdapter.set(result);
                 isMoreData = false;
                 dialog.dismiss();
