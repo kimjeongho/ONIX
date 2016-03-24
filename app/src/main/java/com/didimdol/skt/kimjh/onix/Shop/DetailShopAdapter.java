@@ -28,6 +28,11 @@ public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         notifyDataSetChanged();
     }
 
+    /*public void clear(ShopTotalData data){
+        clear(data);
+        notifyDataSetChanged();
+    }
+*/
     private static final int VIEW_DETAIL_SHOP_PHOTOS = 0;
     private static final int VIEW_TYPE_SHOPNAME = 100;
     private static final int VIEW_TYPE_ARTIST_LIST = 200;
@@ -150,7 +155,7 @@ public class DetailShopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public int getItemCount() {
         if (data == null) return 0;
         return 4 + data.artistListDatas.size()/*+data.shopTimeDatas.size()+data.shopLocation.size()*/;
-    }
+ }
 
 
 

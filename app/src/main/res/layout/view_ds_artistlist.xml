@@ -22,7 +22,7 @@
         android:layout_below="@+id/image_artist"
         android:layout_alignLeft="@+id/image_artist"
         android:layout_alignStart="@+id/image_artist"
-        android:background="@drawable/onix_icon_48"/>
+        android:background="@drawable/onix_icon_72"/>
 
     <TextView
         android:layout_width="wrap_content"

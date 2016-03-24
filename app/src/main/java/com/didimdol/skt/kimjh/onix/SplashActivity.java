@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.didimdol.skt.kimjh.onix.GCM.RegistrationIntentService;
 import com.didimdol.skt.kimjh.onix.Manager.PropertyManager;
 import com.didimdol.skt.kimjh.onix.Menu.MenuLogin.LoginActivity;
 import com.google.android.gms.common.ConnectionResult;
@@ -32,13 +33,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
-            }
-        }, 2000);
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -86,13 +80,14 @@ public class SplashActivity extends AppCompatActivity {
 
     private void doRealStart() {
         // activity start...
-        new AsyncTask<Void, Void,Boolean>() {
+        mHandler.postDelayed(new Runnable() {
             @Override
-            protected Boolean doInBackground(Void... params) {
-//                ServerUtilities.register(SplashActivity.this, PropertyManager.getInstance().getRegistrationToken());
-                return null;
+            public void run() {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
             }
-        }.execute();
+        }, 2000);
+
     }
 
     private boolean checkPlayServices() {

@@ -38,7 +38,7 @@ public class ChoiceAdapter extends BaseAdapter implements OnChoiceItemClickListe
         notifyDataSetChanged();
     }
 
-    public void clear(ChoiceSuccess data){
+    public void clear(){
         items.clear();
     }
 

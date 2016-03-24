@@ -1,12 +1,15 @@
+/*
 package com.didimdol.skt.kimjh.onix;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+*/
 /**
  * Created by kimjh on 2016-02-24.
- */
+ *//*
+
 public class DummyContent {
     private static final long NOW = new Date().getTime();
 
@@ -32,3 +35,4 @@ public class DummyContent {
     }
 
 }
+*/

@@ -32,8 +32,7 @@
             android:layout_height="wrap_content"
 
             android:text="LikeCount"
-            android:textSize="15sp"
-            android:textStyle="bold"
+            android:textSize="13sp"
             android:id="@+id/text_like"
             android:textColor="#FFFFFF"
             android:layout_alignParentBottom="true"
@@ -49,7 +48,8 @@
             android:background="@drawable/artist_main_list_like"
             android:layout_alignBottom="@+id/text_like"
             android:layout_toLeftOf="@+id/text_like"
-            android:layout_toStartOf="@+id/text_like" />
+            android:layout_toStartOf="@+id/text_like"
+            android:layout_marginRight="5dp" />
 
         <!--<TextView
             android:layout_width="wrap_content"

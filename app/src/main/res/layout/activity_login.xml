@@ -3,8 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
     android:background="@drawable/onix_login_bg"
     tools:context=".Menu.MenuLogin.LoginActivity">
 
@@ -74,9 +72,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/edit_email"
             android:paddingLeft="10dp"
+            android:textSize="13sp"
             android:hint="이메일을 입력하세요"
             android:background="@drawable/btn_enter"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="18dp" />
 
         <EditText
             android:layout_width="250dp"
@@ -84,30 +84,35 @@
             android:id="@+id/edit_password"
             android:inputType="textPassword"
             android:paddingLeft="10dp"
+            android:textSize="13sp"
             android:hint="비밀번호를 입력하세요"
             android:background="@drawable/btn_enter"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_email_login"
             android:id="@+id/btn_email"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/image_facebook"
             android:background="@drawable/btn_facebook_login"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/btn_join"
             android:id="@+id/btn_join"
-            android:layout_gravity="center_horizontal" />z
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp" />z
 
     </LinearLayout>
 

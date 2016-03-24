@@ -16,6 +16,7 @@ import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentReadSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentResult;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardData;
+import com.didimdol.skt.kimjh.onix.MainActivity;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -46,10 +47,13 @@ public class BoardReadActivity extends AppCompatActivity {
         onixHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intentHome = new Intent(BoardReadActivity.this, MainActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intentHome);
                 finish();
             }
         });
-
         //serializable------------------------------------------------------------------------------------------
         Intent intent = getIntent();
         boardType = intent.getIntExtra(EXTRA_BOARD_TYPE, 0);
@@ -83,12 +87,11 @@ public class BoardReadActivity extends AppCompatActivity {
        initData();
     }
 
-    private void initData() {   // 게시글 보기
+    private void initData() {   // 게시글 댓글 보기
         NetworkManager.getInstance().getBoardCommentDataResult(this,boardType,data.postId, 1, new NetworkManager.OnResultListener<BoardCommentReadSuccess>() {
             @Override
             public void onSuccess(Request request, BoardCommentReadSuccess result) {
-                Toast.makeText(BoardReadActivity.this, "게시글 보기 성공: ", Toast.LENGTH_SHORT).show();
-                mAdapter.clear(result);
+                mAdapter.clear();
                 mAdapter.set(result);
             }
 
@@ -105,7 +108,7 @@ public class BoardReadActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Request request, BoardCommentResult result) {
                 if (result.failResult == null) {
-                    Toast.makeText(BoardReadActivity.this, "댓글 작성 성공 ", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(BoardReadActivity.this, "댓글 작성 성공 ", Toast.LENGTH_SHORT).show();
                     initData();
                     inputView.setText("");
                 }

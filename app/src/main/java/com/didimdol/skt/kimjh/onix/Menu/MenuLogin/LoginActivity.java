@@ -98,7 +98,6 @@ public class LoginActivity extends AppCompatActivity {
                         public void onSuccess(com.facebook.login.LoginResult loginResult) {
                             AccessToken token = AccessToken.getCurrentAccessToken();
                             initFacebookData(token.getToken());
-
                         }
 
                         @Override
@@ -132,17 +131,13 @@ public class LoginActivity extends AppCompatActivity {
         initData();
     }
 
-    //GCM
-    private void setUpIfNeed() {
-
-    }
-
     private void initFacebookData(String facebookToken) {
-        NetworkManager.getInstance().setLoginFacebookResult(this, facebookToken, "", new NetworkManager.OnResultListener<LoginFacebookResult>() {
+        final String gcmToken = PropertyManager.getInstance().getRegistrationToken();
+        NetworkManager.getInstance().setLoginFacebookResult(this, facebookToken, gcmToken, new NetworkManager.OnResultListener<LoginFacebookResult>() {
             @Override
             public void onSuccess(Request request, LoginFacebookResult result) {
                 if (result.failResult == null) {
-                    Toast.makeText(LoginActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "success: " + gcmToken, Toast.LENGTH_SHORT).show();
                     PropertyManager.getInstance().setLogin(true);
                     finish();
                 } else {
@@ -164,17 +159,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        final String gcmToken = PropertyManager.getInstance().getRegistrationToken();
         String email = emailEdit.getText().toString();
         PropertyManager.getInstance().setUserId(email);
-        PropertyManager.getInstance().setEmail(email);
+//        PropertyManager.getInstance().setEmail(email);
         String passwrod = passwordEdit.getText().toString();
         PropertyManager.getInstance().setPassword(passwrod);
         if(!TextUtils.isEmpty(email) && !TextUtils.isEmpty(passwrod)) {
-            NetworkManager.getInstance().setLogInResult(this, email, passwrod, "", loginType, new NetworkManager.OnResultListener<LoginResult>() {
+            NetworkManager.getInstance().setLogInResult(this, email, passwrod, gcmToken, loginType, new NetworkManager.OnResultListener<LoginResult>() {
                 @Override
                 public void onSuccess(Request request, LoginResult result) {
                     if (result.failResult == null) {
-                        Toast.makeText(LoginActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "success: " + gcmToken, Toast.LENGTH_SHORT).show();
                         PropertyManager.getInstance().setLogin(true);
                         finish();
 

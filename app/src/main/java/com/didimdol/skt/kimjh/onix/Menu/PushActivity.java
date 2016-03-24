@@ -4,12 +4,16 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.didimdol.skt.kimjh.onix.DataClass.LoginFacebookResult;
+import com.didimdol.skt.kimjh.onix.DataClass.PushResult;
+import com.didimdol.skt.kimjh.onix.MainActivity;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.Manager.PropertyManager;
 import com.didimdol.skt.kimjh.onix.R;
@@ -28,99 +32,102 @@ import java.util.Arrays;
 import okhttp3.Request;
 
 public class PushActivity extends AppCompatActivity {
-    CallbackManager callbackManager;
-    LoginManager loginManager;
     TimePicker startTime;
     TimePicker finishTime;
     Spinner discountView;
-    LoginButton loginButton;
+    ImageView pushBtn;
+    String start;
+    String finish;
+    int discount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_push);
 
+        ImageView onixHome = (ImageView) findViewById(R.id.onix_home);
+        onixHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentHome = new Intent(PushActivity.this, MainActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intentHome);
+                finish();
+            }
+        });
+
         discountView = (Spinner)findViewById(R.id.spin_discount);
         startTime = (TimePicker)findViewById(R.id.time_start);
         finishTime = (TimePicker)findViewById(R.id.time_finish);
 
         startTime.setIs24HourView(true);
-        finishTime.setIs24HourView(true);
-
-        callbackManager = CallbackManager.Factory.create();
-        loginManager = LoginManager.getInstance();
-        loginButton = (LoginButton)findViewById(R.id.facebook_btn_test);
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        startTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            }
-        });
-
-        Button btn  = (Button)findViewById(R.id.facebook_btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AccessToken token = AccessToken.getCurrentAccessToken();
-                if (token == null) {
-                    loginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(com.facebook.login.LoginResult loginResult) {
-                            AccessToken token = AccessToken.getCurrentAccessToken();
-                            initFacebookData(token.getToken());
-
-                        }
-
-                        @Override
-                        public void onCancel() {
-
-                        }
-
-                        @Override
-                        public void onError(FacebookException error) {
-
-                        }
-                    });
-                    loginManager.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
-                    loginManager.setDefaultAudience(DefaultAudience.FRIENDS);
-                    loginManager.logInWithReadPermissions(PushActivity.this, Arrays.asList("email"));
+            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                if (hourOfDay < 10) {
+                    start = "0" + hourOfDay + ":" + minute;
+                } else if (minute < 10) {
+                    start = hourOfDay + ":" + "0" + minute;
+                } else {
+                    start = hourOfDay + ":" + minute;
                 }
             }
         });
+
+        finishTime.setIs24HourView(true);
+       finishTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+           @Override
+           public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+               if (hourOfDay < 10){
+                   finish = "0"+hourOfDay + ":" + minute;}
+               else if (minute < 10){
+                   finish = hourOfDay + ":" + "0"+minute;
+               } else {
+                   finish = hourOfDay + ":" +minute;
+               }
+           }
+       });
+
+        discountView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                discount = Integer.parseInt((String) discountView.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        pushBtn = (ImageView)findViewById(R.id.image_push);
+        pushBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(PushActivity.this, validTime,Toast.LENGTH_SHORT).show();
+                initData(discount,start,finish);
+            }
+        });
+
     }
 
-    private void initFacebookData(String facebookToken) {
-        NetworkManager.getInstance().setLoginFacebookResult(this, facebookToken, "", new NetworkManager.OnResultListener<LoginFacebookResult>() {
+    private void initData(final int discount, final String start, final String finish) {
+
+        NetworkManager.getInstance().setPushResult(this, discount, start+"~"+finish+"까지", new NetworkManager.OnResultListener<PushResult>() {
             @Override
-            public void onSuccess(Request request, LoginFacebookResult result) {
+            public void onSuccess(Request request, PushResult result) {
                 if (result.failResult == null) {
-                    Toast.makeText(PushActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
-                    finish();
+                    Toast.makeText(PushActivity.this,"success: "+result.successResult,Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(PushActivity.this, "fail: " + result.failResult.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PushActivity.this,""+result.failResult,Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
-                Toast.makeText(PushActivity.this, "fail: " + cause, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PushActivity.this, "fail " +cause, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 }

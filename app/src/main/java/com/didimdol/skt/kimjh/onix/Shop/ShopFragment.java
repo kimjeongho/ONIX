@@ -4,10 +4,13 @@ package com.didimdol.skt.kimjh.onix.Shop;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
@@ -19,6 +22,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,6 +32,7 @@ import android.widget.Toast;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopListData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopListSuccess;
+import com.didimdol.skt.kimjh.onix.LocationDialogFragment;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -52,9 +57,16 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
         // Required empty public constructor
         setHasOptionsMenu(true);
     }
-
+    ShopView shopView;
     ListView listView;
     ShopAdapter mAdapter;
+
+    int page =1;
+    boolean isLast = false;
+
+    LocationManager mLM;    // androidLocationManager
+    String gpsProvider = LocationManager.GPS_PROVIDER;  // GPS로 검색
+    String netProvider = LocationManager.NETWORK_PROVIDER;  //네트워크로 검색
 
     Location location;
     double userLatitude;
@@ -65,6 +77,7 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_shop, container, false);
+        mLM = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);  //android location_service 생성
         listView = (ListView)v.findViewById(R.id.listView);
         mAdapter = new ShopAdapter();
         listView.setAdapter(mAdapter);
@@ -78,6 +91,29 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
 
             }
         });
+
+        //Item 확장
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (isLast && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    int itemCount = mAdapter.getCount();
+                    int page = itemCount / 10;
+                    page = (itemCount % 10 > 0) ? page + 1 : page;
+                    getMoreItem(page);
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (totalItemCount > 0 && (firstVisibleItem + visibleItemCount >= totalItemCount - 1)) {
+                    isLast = true;
+                } else {
+                    isLast = false;
+                }
+            }
+        });
+
 
         searchSpinner = (Spinner)v.findViewById(R.id.spinner_search);
         searchSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -130,14 +166,50 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
         if(savedInstanceState != null){
             isErrorProcessing = savedInstanceState.getBoolean(FIELD_ERROR_PROCESSING);
         }
-        mClient.connect();
+
+
+
         return v;
+    }
+
+    //리스트뷰 확장
+    boolean isMoreData = false;
+    ProgressDialog dialog = null;
+    private void getMoreItem(int page) {
+        if (isMoreData) return;
+        isMoreData = true;
+        NetworkManager.getInstance().getShopTotalDataResult(getContext(), page, type, "", userLatitude, userLongitude, new NetworkManager.OnResultListener<ShopListSuccess>() {
+            @Override
+            public void onSuccess(Request request, ShopListSuccess result) {
+                mAdapter.addAll(result.shopList);
+                isMoreData = false;
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+                isMoreData = false;
+                dialog.dismiss();
+            }
+        });
+        dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Loading........");
+        dialog.show();
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        if(!mLM.isProviderEnabled(gpsProvider) || !mLM.isProviderEnabled(netProvider)){
+            alertCheckGPS();
+        }
         mClient.connect();
+    }
+
+    private void alertCheckGPS() {
+        LocationDialogFragment f = new LocationDialogFragment();
+        f.show(getActivity().getSupportFragmentManager(), "dialog");
     }
 
     @Override
@@ -153,14 +225,12 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
     }
 
     private void initData(String search, int type) {
-        /*double userLatitude = location.getLatitude();
-        double userLongitude = location.getLongitude();*/
 
-        NetworkManager.getInstance().getShopTotalDataResult(getContext(), 1, type, search, userLatitude, userLongitude, new NetworkManager.OnResultListener<ShopListSuccess>() {
+        NetworkManager.getInstance().getShopTotalDataResult(getContext(), page, type, search, userLatitude, userLongitude, new NetworkManager.OnResultListener<ShopListSuccess>() {
             @Override
             public void onSuccess(Request request, ShopListSuccess result) {
-                mAdapter.clear(result);
-                mAdapter.set(result);
+                mAdapter.clear();
+                mAdapter.addAll(result.shopList);
             }
 
             @Override
@@ -219,9 +289,10 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
     };
 
     private void displayLocation(Location location) {
-        Toast.makeText(getContext(),location.getLatitude()+","+location.getLongitude(),Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(),location.getLatitude()+","+location.getLongitude(),Toast.LENGTH_SHORT).show();
         userLatitude = location.getLatitude();
         userLongitude = location.getLongitude();
+        initData("",type);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

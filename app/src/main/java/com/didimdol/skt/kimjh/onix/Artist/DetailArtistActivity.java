@@ -19,6 +19,8 @@ import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentResult;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ChoiceMinusResult;
 import com.didimdol.skt.kimjh.onix.DataClass.ChoicePlusResult;
+import com.didimdol.skt.kimjh.onix.LoginDialogFragment;
+import com.didimdol.skt.kimjh.onix.MainActivity;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.OnArtistItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
@@ -46,7 +48,6 @@ public class DetailArtistActivity extends AppCompatActivity {
 
     public static final String PARAM_TOTAL_ARTIST = "total";
 //    public static final String PARAM_DETAIL_ARITST = "detailArtist";
-    private boolean check = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,23 @@ public class DetailArtistActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //serializable------------------------------------------------------------------------------------------
+        ImageView onixHome = (ImageView) findViewById(R.id.onix_home);
+        onixHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentHome = new Intent(DetailArtistActivity.this, MainActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intentHome);
+                finish();
+            }
+        });
+
+        //artistid 값 가져옴
         Intent intent = getIntent();
-//        ArtistTotalData data =  (ArtistTotalData)intent.getSerializableExtra(PARAM_TOTAL_ARTIST);
         data = intent.getIntExtra(PARAM_TOTAL_ARTIST, 0);
+        //serializable------------------------------------------------------------------------------------------
+//        ArtistTotalData data =  (ArtistTotalData)intent.getSerializableExtra(PARAM_TOTAL_ARTIST);
         //serializable------------------------------------------------------------------------------------------
 
         //shopPageExtra-----------------------------------------------------------------------------------------
@@ -67,33 +81,7 @@ public class DetailArtistActivity extends AppCompatActivity {
 
         //shopPageExtra-----------------------------------------------------------------------------------------
 
-        ImageView onixHome = (ImageView) findViewById(R.id.onix_home);
-        onixHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-//        pager.setPageMargin(10);
-// pageslide-----------------------------------------------------------------------------------------
-//
-       /* mDemoSlider = (SliderLayout)findViewById(R.id.slider);
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.set("Hannibal", R.drawable.dummy_1);
-        file_maps.set("Big Bang Theory", R.drawable.dummy_2);
-        file_maps.set("House of Cards", R.drawable.dummy_3);
-        file_maps.set("Game of Thrones", R.drawable.dummy_4);
 
-        for(String name : file_maps.keySet()){
-            TextSliderView textSliderView = new TextSliderView(this);
-            // initialize a SliderLayout
-            textSliderView.image(file_maps.get(name));
-
-            mDemoSlider.addSlider(textSliderView);
-            mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
-            mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        }*/
-        // pageslide-----------------------------------------------------------------------------------------
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -101,25 +89,17 @@ public class DetailArtistActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         inputView = (EditText) findViewById(R.id.edit_message);
 
+        //댓글 등록
         Button btn = (Button) findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                if (!TextUtils.isEmpty(commentText)) {
-                    commentDatas = new ArrayList<ArtistCommentData>();
-                    commentDatas.add(new ArtistCommentData("홍길동", commentText, ""));
-                    mAdapter.addAll(commentDatas);  // commentDatas를 메소드 인자로 보낸다.
-                    inputView.setText("");
-                    recyclerView.smoothScrollToPosition(mAdapter.getItemCount() - 1);
-                }*/
-
                 commentInitData();  // network
-
             }
         });
 
         mAdapter.setOnItemClickListener(new OnArtistItemClickListener() {
+            //샵 바로가기 클릭
             @Override
             public void onShopClick(View view, ArtistTotalData artistTotalData) {
                 Intent shopIntent = new Intent(DetailArtistActivity.this, DetailShopActivity.class);
@@ -127,33 +107,26 @@ public class DetailArtistActivity extends AppCompatActivity {
                 startActivity(shopIntent);
             }
 
+            //찜하기 클릭
             @Override
             public void onChoiceClick(View view, ArtistTotalData artistTotalData) {
-//                if (check == false) {
-//                    Toast.makeText(DetailArtistActivity.this, "choiceclick" + artistTotalData.artistId, Toast.LENGTH_SHORT).show();
-//                    check = true;
-//                } else {
-//                    Toast.makeText(DetailArtistActivity.this, "choicecancelclick", Toast.LENGTH_SHORT).show();
-//                    check = false;
-//                }
-                if (artistTotalData.choiceSort == 0) {      //??
+                if (artistTotalData.choiceSort == 0) {      //찜하기를 눌렀으면
                     // post
                     postInitData();
                 } else {
                     // delete
                     deleteInitData();
                 }
+
             }
-
-
         });
 
 //        mAdapter.set(data);
         initData();
     }
 
-    private void commentInitData() {
-        String commentText = inputView.getText().toString();
+    private void commentInitData() {    //댓글 작성
+        String commentText= inputView.getText().toString();
         if (!TextUtils.isEmpty(commentText)) {
             NetworkManager.getInstance().setArtistCommentResult(this, data, commentText, new NetworkManager.OnResultListener<ArtistCommentResult>() {
                 @Override
@@ -182,15 +155,19 @@ public class DetailArtistActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Request request, ChoicePlusResult result) {
                 if (result.failResult == null) {
-                    Toast.makeText(DetailArtistActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(DetailArtistActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
                     initData();
+                } else {
+                   /* LoginDialogFragment f = new LoginDialogFragment();
+                    f.show(getSupportFragmentManager(),"dialog");*/
                 }
 
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
-
+                LoginDialogFragment f = new LoginDialogFragment();
+                f.show(getSupportFragmentManager(),"dialog");
             }
         });
     }

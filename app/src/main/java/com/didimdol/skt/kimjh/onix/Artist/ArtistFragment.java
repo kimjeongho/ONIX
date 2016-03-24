@@ -76,24 +76,27 @@ public class ArtistFragment extends Fragment {
             }
         });
 
-      /*  //Item 확장
+        //Item 확장
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (isLast && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
-                    getMoreItem();
+                if (isLast && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    int itemCount = mAdapter.getCount();
+                    int page = itemCount / 10;
+                    page = (itemCount % 10 > 0) ? page+1:page;
+                    getMoreItem(page);
                 }
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (totalItemCount > 0 && firstVisibleItem + visibleItemCount >= totalItemCount - 1){
+                if (totalItemCount > 0 && (firstVisibleItem + visibleItemCount >= totalItemCount - 1)) {
                     isLast = true;
                 } else {
                     isLast = false;
                 }
             }
-        });*/
+        });
 
         searchSpinner = (Spinner)v.findViewById(R.id.spinner_search);
         searchSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -147,20 +150,17 @@ public class ArtistFragment extends Fragment {
         initData("", type);
     }
 
-
-  /*  boolean isMoreData = false;
+    //리스트뷰 확장
+    boolean isMoreData = false;
     ProgressDialog dialog = null;
-    private void getMoreItem() {
-        if(isMoreData)return;
+    private void getMoreItem(int page) {
+        if (isMoreData) return;
         isMoreData = true;
-        if(mAdapter.getTotalCount() > 0 && mAdapter.getTotalCount()> mAdapter.getCount()){
-            page = mAdapter.getCount() +1;
-//            page += 1;
-            NetworkManager.getInstance().getArtistListDataResult(getContext(), 2, type*//*condition*//*, "", new NetworkManager.OnResultListener<ArtistListSuccess>() {
+            NetworkManager.getInstance().getArtistListDataResult(getContext(), page, type, "", new NetworkManager.OnResultListener<ArtistListSuccess>() {
                 @Override
                 public void onSuccess(Request request, ArtistListSuccess result) {
-                    Toast.makeText(getContext(), "success", LENGTH_SHORT).show();
-                    mAdapter.addAll(result.artistsList);
+//                    mAdapter.addAll(result.artistsList);
+                    mAdapter.set(result);
                     isMoreData = false;
                     dialog.dismiss();
                 }
@@ -172,11 +172,9 @@ public class ArtistFragment extends Fragment {
                 }
             });
             dialog = new ProgressDialog(getContext());
-            dialog.setTitle("Loading........");
+            dialog.setMessage("Loading........");
             dialog.show();
-
-        }
-    }*/
+    }
 
     private void initData(String search, int type) {
 
@@ -184,13 +182,14 @@ public class ArtistFragment extends Fragment {
             @Override
             public void onSuccess(Request request, ArtistListSuccess result) {
 //                Toast.makeText(getContext(), "success", LENGTH_SHORT).show();
-                mAdapter.clear(result);
+                mAdapter.clear();
                 mAdapter.set(result);
+//                mAdapter.addAll(result.artistsList);
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
-
+                Toast.makeText(getContext(), ""+cause, LENGTH_SHORT).show();
             }
         });
 

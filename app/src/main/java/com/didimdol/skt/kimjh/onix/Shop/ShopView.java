@@ -57,8 +57,13 @@ public class ShopView extends FrameLayout {
                     .into(shopView);
         }
         shopNameView.setText(data.shopName);
-        shopChoiceView.setText(data.shopChoice);
-        locationView.setText(Double.toString(data.distance)+"km 이내");  //내 거리와 가게 거리 계산
+        shopChoiceView.setText(data.shopChoice + "개");
+        if (data.distance > 100){
+            locationView.setVisibility(GONE);
+        } else {
+            locationView.setVisibility(VISIBLE);
+            locationView.setText(Double.toString(data.distance) + "km 이내");
+        }//내 거리와 가게 거리 계산
     }
 
 }

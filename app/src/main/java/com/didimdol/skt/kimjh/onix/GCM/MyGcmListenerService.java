@@ -44,9 +44,11 @@ public class MyGcmListenerService extends GcmListenerService {
     // [START receive_message]
     @Override
     public void onMessageReceived(String from, Bundle data) {
-        String message = data.getString("message");
+        String msgId = data.getString("msgId");
+        String title = data.getString("title");
+        String body = data.getString("body");
         Log.d(TAG, "From: " + from);
-        Log.d(TAG, "Message: " + message);
+        Log.d(TAG, "Message: " + msgId);
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
@@ -66,17 +68,13 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
+        sendNotification(title, body);
         // [END_EXCLUDE]
     }
     // [END receive_message]
 
-    /**
-     * Create and show a simple notification containing the received GCM message.
-     *
-     * @param message GCM message received.
-     */
-    private void sendNotification(String message) {
+
+    private void sendNotification(String title, String body) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -84,10 +82,10 @@ public class MyGcmListenerService extends GcmListenerService {
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setTicker("GCM Message")
-                .setSmallIcon(R.drawable.onix_icon_48)
-                .setContentTitle("GCM Message")
-                .setContentText(message)
+                .setTicker(title+": "+body)
+                .setSmallIcon(R.drawable.onix_icon_72)
+                .setContentTitle(title)
+                .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

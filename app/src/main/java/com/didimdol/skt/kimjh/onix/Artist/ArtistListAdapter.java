@@ -20,44 +20,21 @@ public class ArtistListAdapter extends BaseAdapter {
     public ArtistListAdapter(){
     }
 
-   /* public void add(ArtistTotalData data){
-        items.add(data);
-        notifyDataSetChanged();
-    }*/
-
-    public void addAll(List<ArtistListData>items){
+    /*public void addAll(List<ArtistListData>items){
         this.items.addAll(items);
         notifyDataSetChanged();
-    }
+    }*/
 
     public void set(ArtistListSuccess data){
         items.addAll(data.artistsList);
         notifyDataSetChanged();
     }
 
-    public void clear(ArtistListSuccess data){
+    public void clear(){
         items.clear();
         notifyDataSetChanged();
     }
 
-    private int totalCount;
-    private String keyword;
-
-    public int getTotalCount(){
-        return totalCount;
-    }
-
-    public void setTotalCount(int totalCount){
-        this.totalCount = totalCount;
-    }
-
-    public String getKeyword(){
-        return keyword;
-    }
-
-    public void setKeyword(String keyword){
-        this.keyword = keyword;
-    }
 
     @Override
     public int getCount() {

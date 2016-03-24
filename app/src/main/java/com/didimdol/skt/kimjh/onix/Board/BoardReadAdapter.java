@@ -27,12 +27,12 @@ public class BoardReadAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    public void set(BoardCommentReadSuccess data){  // 게시글 보기
+    public void set(BoardCommentReadSuccess data){  // 게시글 댓글 보기
         items.addAll(data.replies);
         notifyDataSetChanged();
     }
 
-    public void clear(BoardCommentReadSuccess data){    // 게시글 지운후 다시 띄우기
+    public void clear(){    // 게시글 지운후 다시 띄우기
         items.clear();
         notifyDataSetChanged();
     }

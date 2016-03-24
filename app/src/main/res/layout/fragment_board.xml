@@ -25,7 +25,6 @@
             android:id="@+id/spinner_category"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            style="@style/spinnerstyle"
             android:spinnerMode="dropdown"
             android:entries="@array/category"
             android:layout_marginRight="16dp" />

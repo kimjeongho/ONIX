@@ -38,13 +38,13 @@ public class ShopLocationHolder extends RecyclerView.ViewHolder {
         });
         expandView = (ImageView)itemView.findViewById(R.id.image_expand);
         redusView = (ImageView)itemView.findViewById(R.id.image_redus);
-        locationLatitude = (TextView)itemView.findViewById(R.id.latitude);
-        locationLongitude = (TextView)itemView.findViewById(R.id.longitude);
+       /* locationLatitude = (TextView)itemView.findViewById(R.id.latitude);
+        locationLongitude = (TextView)itemView.findViewById(R.id.longitude);*/
     }
 
     public void setMapView (ShopTotalData data){
         this.mData = data;
-        locationLatitude.setText(data.latitude);
-        locationLongitude.setText(data.longitude);
+      /*  locationLatitude.setText(data.latitude);
+        locationLongitude.setText(data.longitude);*/
     }
 }

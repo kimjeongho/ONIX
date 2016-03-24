@@ -75,6 +75,11 @@ public class PropertyManager {
         mEditor.commit();
     }
 
+    public void clear(){
+        mEditor.clear();
+        mEditor.commit();
+    }
+
     public String getRegistrationToken(){
         return mPrefs.getString(REG_ID, "");
     }

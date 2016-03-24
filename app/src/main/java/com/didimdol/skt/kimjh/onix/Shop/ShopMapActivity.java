@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
+import com.didimdol.skt.kimjh.onix.MainActivity;
 import com.didimdol.skt.kimjh.onix.R;
 import com.skp.Tmap.TMapView;
 
@@ -34,6 +35,10 @@ public class ShopMapActivity extends AppCompatActivity {
         onixHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intentHome = new Intent(ShopMapActivity.this, MainActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intentHome);
                 finish();
             }
         });

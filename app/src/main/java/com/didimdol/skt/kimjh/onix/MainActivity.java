@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -52,9 +55,22 @@ public class MainActivity extends AppCompatActivity
     View loginPage;
     TextView emailView;
 
-    LocationManager mLM;    // androidLocationManager
-    String gpsProvider = LocationManager.GPS_PROVIDER;  // GPS로 검색
-    String netProvider = LocationManager.NETWORK_PROVIDER;  //네트워크로 검색
+    boolean isBackPressed = false;
+    public static final int MESSAGE_BACK_KEY_TIMEOUT = 0;
+    public static final int BACK_KEY_TIME = 2000;
+
+    //backKey 2번 누를시 앱종료
+    Handler mHandler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_BACK_KEY_TIMEOUT:
+                    isBackPressed = false;
+                    return true;
+            }
+            return false;
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +80,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        mLM = (LocationManager)getSystemService(Context.LOCATION_SERVICE);  //android location_service 생성
-        tabLayout = (TabLayout)findViewById(R.id.tab_layout);
-        pager = (ViewPager)findViewById(R.id.pagerView);
+        //tabLayout...
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        pager = (ViewPager) findViewById(R.id.pagerView);
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(mAdapter);
 
@@ -82,15 +97,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout.addTab(tabLayout.newTab().setCustomView(tabShop), 1);
         TabBoard tabBoard = new TabBoard(this);
         tabBoard.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        tabLayout.addTab(tabLayout.newTab().setCustomView(tabBoard),2);
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
+        tabLayout.addTab(tabLayout.newTab().setCustomView(tabBoard), 2);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -98,13 +106,14 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        //네비게이션 view
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getHeaderView(R.layout.nav_header_main);
         headerView = navigationView.getHeaderView(0);
 
-
-        Button btn = (Button)headerView.findViewById(R.id.btn_login);
+        //로그인 화면 전환
+        Button btn = (Button) headerView.findViewById(R.id.btn_login);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +122,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        btn = (Button)headerView.findViewById(R.id.btn_join);
+        //회원가입 화면 전환
+        btn = (Button) headerView.findViewById(R.id.btn_join);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,23 +132,14 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        emailView = (TextView)headerView.findViewById(R.id.text_email);
+        //로그인후 사용자 email 나오는 화면
+        emailView = (TextView) headerView.findViewById(R.id.text_email);
+
+        //로그인전 headerview
         mainPage = headerView.findViewById(R.id.main_page);
+        //로그인후 headerview
         loginPage = headerView.findViewById(R.id.login_page);
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(!mLM.isProviderEnabled(gpsProvider) || !mLM.isProviderEnabled(netProvider)){
-            alertCheckGPS();
-        }
-    }
-
-    private void alertCheckGPS() {
-        LocationDialogFragment f = new LocationDialogFragment();
-        f.show(getSupportFragmentManager(), "dialog");
     }
 
     @Override
@@ -147,7 +148,17 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            //back 두번 누를시 종료
+            if (!isBackPressed) {
+                Toast.makeText(getApplicationContext(), "한번 더 누르시면 종료 됩니다.", Toast.LENGTH_SHORT).show();
+                isBackPressed = true;
+                mHandler.sendEmptyMessageDelayed(MESSAGE_BACK_KEY_TIMEOUT, BACK_KEY_TIME);
+            } else {
+                mHandler.removeMessages(MESSAGE_BACK_KEY_TIMEOUT);
+                finish();
+            }
+
         }
     }
 
@@ -195,15 +206,21 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_mypage) {
             Intent intent = new Intent(MainActivity.this, PushActivity.class);
             startActivity(intent);
-        }else if (id == R.id.nav_logout) {
-            iniData();
-
-        }
+        } else if (id == R.id.nav_logout) {
+            initData();
+        }/* else if (id == R.id.nav_nickname) {
+            Intent intent = new Intent(MainActivity.this, NickNameActivity.class);
+            startActivity(intent);
+        }*/
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        menuHome = (ImageView)findViewById(R.id.menu_home);
-
-
+        menuHome = (ImageView) findViewById(R.id.menu_home);
+        menuHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -215,19 +232,19 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     private void changeDrawerLayout() {
-        if (PropertyManager.getInstance().isLogin()){
+        //로그인이 된 상태
+        if (PropertyManager.getInstance().isLogin()) {
             mainPage.setVisibility(View.GONE);
             loginPage.setVisibility(View.VISIBLE);
             emailView.setText(PropertyManager.getInstance().getUserId());
-            PropertyManager.getInstance().setLogin(true);
-        } else {
-           iniData();
+//            emailView.setText(PropertyManager.getInstance().getEmail());
+            PropertyManager.getInstance().setLogin(true); // ??
         }
     }
 
-    private void iniData() {
+    //로그아웃 할시 네트워크 요청
+    private void initData() {
         NetworkManager.getInstance().setLogoutResult(this, new NetworkManager.OnResultListener<LogoutResult>() {
             @Override
             public void onSuccess(Request request, LogoutResult result) {
@@ -236,11 +253,12 @@ public class MainActivity extends AppCompatActivity
                     loginManager = LoginManager.getInstance();
                     loginManager.logOut();
                     PropertyManager.getInstance().setUserId("");
+                    PropertyManager.getInstance().setEmail("");
                     PropertyManager.getInstance().setPassword("");
-                    PropertyManager.getInstance().setRegistrationToken("");
+                    PropertyManager.getInstance().clear();
                     mainPage.setVisibility(View.VISIBLE);
                     loginPage.setVisibility(View.GONE);
-                    PropertyManager.getInstance().setLogin(false);
+                    PropertyManager.getInstance().setLogin(false);  //??
                 }
             }
 

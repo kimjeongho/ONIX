@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardWriteResult;
+import com.didimdol.skt.kimjh.onix.MainActivity;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.R;
 
@@ -48,6 +49,18 @@ public class BoardWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_board_write);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ImageView onixHome = (ImageView) findViewById(R.id.onix_home);
+        onixHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentHome = new Intent(BoardWriteActivity.this, MainActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intentHome);
+                finish();
+            }
+        });
 
         spinnerView = (Spinner) findViewById(R.id.spinner_header);
         spinnerView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

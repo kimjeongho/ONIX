@@ -28,7 +28,7 @@ public class BoardAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void clear(BoardTotalSuccess data){
+    public void clear(){
         items.clear();
         notifyDataSetChanged();
     }

@@ -23,6 +23,7 @@ import com.didimdol.skt.kimjh.onix.DataClass.ChoicePlusResult;
 import com.didimdol.skt.kimjh.onix.DataClass.DetailShopData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopArtistListData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
+import com.didimdol.skt.kimjh.onix.MainActivity;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
 import com.didimdol.skt.kimjh.onix.OnShopItemClickListener;
 import com.didimdol.skt.kimjh.onix.R;
@@ -30,7 +31,6 @@ import com.didimdol.skt.kimjh.onix.R;
 import okhttp3.Request;
 
 public class DetailShopActivity extends AppCompatActivity {
-    private SliderLayout mDemoSlider;
     RecyclerView recyclerView;
     DetailShopAdapter mAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -38,6 +38,7 @@ public class DetailShopActivity extends AppCompatActivity {
     public static final int SHOP_TYPE = 3;
 //    public static final String PARAM_DETAIL_SHOP = "detailshop";
     ShopTotalData shopTotalData;
+    ShopPhotosHolder shopPhotosHolder;
     int putData;
     int data;
 
@@ -53,30 +54,13 @@ public class DetailShopActivity extends AppCompatActivity {
         onixHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intentHome = new Intent(DetailShopActivity.this, MainActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intentHome);
                 finish();
             }
         });
-
-        // pageslide-----------------------------------------------------------------------------------------
-       /*
-        mDemoSlider = (SliderLayout)findViewById(R.id.slider);
-        HashMap<String,Integer> file_maps = new HashMap<String, Integer>();
-        file_maps.set("Hannibal", R.drawable.onix_shop_main_list_data_1);
-        file_maps.set("Big Bang Theory", R.drawable.onix_shop_main_list_data_2);
-        file_maps.set("House of Cards", R.drawable.onix_shop_main_list_data_3);
-        file_maps.set("Game of Thrones", R.drawable.onix_shop_main_list_data_4);
-
-        for(String name : file_maps.keySet()){
-            TextSliderView textSliderView = new TextSliderView(this);
-            // initialize a SliderLayout
-            textSliderView.image(file_maps.get(name));
-
-            mDemoSlider.addSlider(textSliderView);
-            mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Default);
-            mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
-        }*/
-        // pageslide-----------------------------------------------------------------------------------------
-
 
         //serializable------------------------------------------------------------------------------------------
         Intent intent = getIntent();
@@ -98,7 +82,7 @@ public class DetailShopActivity extends AppCompatActivity {
             @Override
             public void onCallClick(View view, ShopTotalData shopTotalData) {
                 Toast.makeText(DetailShopActivity.this, "callclick", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+shopTotalData.callNumber+""));
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + shopTotalData.callNumber + ""));
                 if (ActivityCompat.checkSelfPermission(DetailShopActivity.this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     return;
@@ -109,7 +93,7 @@ public class DetailShopActivity extends AppCompatActivity {
 
             @Override
             public void onChoiceClick(View view, ShopTotalData shopTotalData) {
-                Toast.makeText(DetailShopActivity.this,"choiceclick",Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailShopActivity.this, "choiceclick", Toast.LENGTH_SHORT).show();
                 if (shopTotalData.choiceSort == 0) {      //??
                     // post
                     postInitData();
@@ -122,9 +106,9 @@ public class DetailShopActivity extends AppCompatActivity {
 
             @Override
             public void onArtistListClick(View view, ShopArtistListData shopArtistListData) {
-                Toast.makeText(DetailShopActivity.this,"choiceclick"+shopArtistListData.artistId,Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailShopActivity.this, "choiceclick" + shopArtistListData.artistId, Toast.LENGTH_SHORT).show();
                 Intent artistIntent = new Intent(DetailShopActivity.this, DetailArtistActivity.class);
-                artistIntent.putExtra(DetailArtistActivity.PARAM_TOTAL_ARTIST,shopArtistListData.artistId);
+                artistIntent.putExtra(DetailArtistActivity.PARAM_TOTAL_ARTIST, shopArtistListData.artistId);
                 startActivity(artistIntent);
             }
 
@@ -133,11 +117,9 @@ public class DetailShopActivity extends AppCompatActivity {
                 Intent mapIntent = new Intent(DetailShopActivity.this, ShopMapActivity.class);
 //                mapIntent.putExtra(ShopMapActivity.PARAM_LATITUDE,shopTotalData.latitude);
 //                mapIntent.putExtra(ShopMapActivity.PARAM_LONGITUDE,shopTotalData.longitude);
-                mapIntent.putExtra(ShopMapActivity.PARAM_LOCATION,shopTotalData);
+                mapIntent.putExtra(ShopMapActivity.PARAM_LOCATION, shopTotalData);
                 startActivity(mapIntent);
             }
-
-
         });
 //        mAdapter.set(data);
                 initData();
@@ -197,6 +179,7 @@ public class DetailShopActivity extends AppCompatActivity {
         NetworkManager.getInstance().getShopDetailDataResult(this, data, new NetworkManager.OnResultListener<ShopTotalData>() {
             @Override
             public void onSuccess(Request request, ShopTotalData result) {
+//                mAdapter.clear(result);
                 mAdapter.put(result);
             }
 
@@ -206,4 +189,5 @@ public class DetailShopActivity extends AppCompatActivity {
             }
         });
     }
+
 }

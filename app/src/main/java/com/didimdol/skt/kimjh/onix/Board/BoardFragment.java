@@ -1,6 +1,7 @@
 package com.didimdol.skt.kimjh.onix.Board;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,6 +44,9 @@ public class BoardFragment extends Fragment {
     Spinner categorySpinner;
     EditText editSearch;
     int type = 1;
+
+    int page =1;
+    boolean isLast = false;
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,6 +67,29 @@ public class BoardFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        //Item 확장
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (isLast && scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                    int itemCount = mAdapter.getCount();
+                    int page = itemCount / 10;
+                    page = (itemCount % 10 > 0) ? page + 1 : page;
+                    getMoreItem(page);
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (totalItemCount > 0 && (firstVisibleItem + visibleItemCount >= totalItemCount - 1)) {
+                    isLast = true;
+                } else {
+                    isLast = false;
+                }
+            }
+        });
+
 
         categorySpinner = (Spinner)v.findViewById(R.id.spinner_category);
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -117,6 +145,30 @@ public class BoardFragment extends Fragment {
 
         return v;
     }
+    boolean isMoreData = false;
+    ProgressDialog dialog = null;
+    private void getMoreItem(int page) {
+        if (isMoreData) return;
+        isMoreData = true;
+        NetworkManager.getInstance().getBoardTotalDataResult(getContext(),type, page/*page*/,  "", new NetworkManager.OnResultListener<BoardTotalSuccess>() {
+            @Override
+            public void onSuccess(Request request, BoardTotalSuccess result) {
+                mAdapter.set(result);
+                isMoreData = false;
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+                Toast.makeText(getContext(),"fail",LENGTH_SHORT).show();
+                isMoreData = false;
+                dialog.dismiss();
+            }
+        });
+        dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Loading........");
+        dialog.show();
+    }
 
     @Override
     public void onResume() {
@@ -125,10 +177,10 @@ public class BoardFragment extends Fragment {
     }
 
     private void initData(String search, int type) {
-        NetworkManager.getInstance().getBoardTotalDataResult(getContext(),type, 1/*page*/,  search, new NetworkManager.OnResultListener<BoardTotalSuccess>() {
+        NetworkManager.getInstance().getBoardTotalDataResult(getContext(),type, page/*page*/,  search, new NetworkManager.OnResultListener<BoardTotalSuccess>() {
             @Override
             public void onSuccess(Request request, BoardTotalSuccess result) {
-                mAdapter.clear(result);
+                mAdapter.clear();
                 mAdapter.set(result);
             }
 

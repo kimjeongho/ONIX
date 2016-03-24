@@ -9,6 +9,7 @@ import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopListSuccess;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kimjh on 2016-02-23.
@@ -24,7 +25,12 @@ public class ShopAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public void clear(ShopListSuccess data){
+    public void addAll(List<ShopListData> items){
+        this.items.addAll(items);
+        notifyDataSetChanged();
+    }
+
+    public void clear(){
         items.clear();
         notifyDataSetChanged();
     }

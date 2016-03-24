@@ -73,12 +73,10 @@ public class ShopPhotosHolder extends RecyclerView.ViewHolder implements BaseSli
                     .into(shopPhotos);
         }*/
         HashMap<String,String> url_maps = new HashMap<String, String>();
-//        for (int i = 0; i < data.shopPhotos; i++){}
-        url_maps.put("photos", data.shopPhotos.get(0));
-        url_maps.put("photos1", data.shopPhotos.get(1));
-        url_maps.put("photos2", data.shopPhotos.get(2));
-        url_maps.put("photos3", data.shopPhotos.get(3));
-        url_maps.put("photos4", data.shopPhotos.get(4));
+        for (int i = 0; i < data.shopPhotos.size(); i++){
+            url_maps.put("photos"+i, data.shopPhotos.get(i));
+        }
+        shopPhotos.removeAllSliders();
         for(String name : url_maps.keySet()){
             TextSliderView textSliderView = new TextSliderView(itemView.getContext());
             // initialize a SliderLayout
