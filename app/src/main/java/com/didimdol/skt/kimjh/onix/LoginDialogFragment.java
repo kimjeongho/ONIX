@@ -1,6 +1,8 @@
 package com.didimdol.skt.kimjh.onix;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -14,7 +16,9 @@ import android.widget.ImageView;
  * A simple {@link Fragment} subclass.
  */
 public class LoginDialogFragment extends DialogFragment {
-
+   /* private static final String PREFS_CANCEL = "my_prefs";
+    SharedPreferences mPrefs;
+    SharedPreferences.Editor mEditor;*/
 
     public LoginDialogFragment() {
         // Required empty public constructor
@@ -23,7 +27,8 @@ public class LoginDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(STYLE_NO_TITLE, R.style.MyDialog);
+        setStyle(STYLE_NO_FRAME, R.style.MyDialog);
+
     }
 
     @Override

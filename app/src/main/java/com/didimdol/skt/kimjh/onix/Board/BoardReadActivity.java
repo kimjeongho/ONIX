@@ -123,19 +123,19 @@ public class BoardReadActivity extends AppCompatActivity {
 //                mAdapter.clear();
                 mAdapter.set(result);
                 isMoreData = false;
-                dialog.dismiss();
+//                dialog.dismiss();
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
                 Toast.makeText(BoardReadActivity.this, "" + cause, Toast.LENGTH_SHORT).show();
                 isMoreData = false;
-                dialog.dismiss();
+//                dialog.dismiss();
             }
         });
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Loading........");
-        dialog.show();
+//        dialog = new ProgressDialog(this);
+//        dialog.setMessage("Loading........");
+//        dialog.show();
     }
 
 

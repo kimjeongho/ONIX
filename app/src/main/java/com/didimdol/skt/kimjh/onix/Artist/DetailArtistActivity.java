@@ -3,6 +3,7 @@ package com.didimdol.skt.kimjh.onix.Artist;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -105,8 +106,8 @@ public class DetailArtistActivity extends AppCompatActivity {
                     int itemCount = mAdapter.data.artistComment.size();
                     int page = itemCount/10;
                     page = (itemCount % 10 > 0)? page+1:page;
-                    getMoreItem(page+1);
-                    Toast.makeText(DetailArtistActivity.this,"scroll",Toast.LENGTH_SHORT).show();
+                    getMoreItem(page + 1);
+//                    Toast.makeText(DetailArtistActivity.this,"scroll",Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -172,19 +173,19 @@ public class DetailArtistActivity extends AppCompatActivity {
                 public void onSuccess(Request request, ArtistCommentReadSuccess result) {
                     mAdapter.add(result);
                     isMoreData = false;
-                    dialog.dismiss();
+//                    dialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Request request, int code, Throwable cause) {
-                    Toast.makeText(DetailArtistActivity.this,""+cause,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailArtistActivity.this, "" + cause, Toast.LENGTH_SHORT).show();
                     isMoreData = false;
-                    dialog.dismiss();
+//                    dialog.dismiss();
                 }
             });
-        dialog = new ProgressDialog(this);
+       /* dialog = new ProgressDialog(this);
         dialog.setMessage("Loading........");
-        dialog.show();
+        dialog.show();*/
     }
 
     private void commentInitData() {    //댓글 작성
@@ -194,7 +195,7 @@ public class DetailArtistActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Request request, ArtistCommentResult result) {
                     if (result.failResult == null) {
-                        Toast.makeText(DetailArtistActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(DetailArtistActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
                         /*if (!TextUtils.isEmpty(DetailArtistActivity.this.commentText)) {
                             inputView.setText("");
                         }*/
@@ -228,8 +229,8 @@ public class DetailArtistActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
-                LoginDialogFragment f = new LoginDialogFragment();
-                f.show(getSupportFragmentManager(),"dialog");
+//                LoginDialogFragment f = new LoginDialogFragment();
+//                f.show(getSupportFragmentManager(),"dialog");
             }
         });
     }
@@ -239,8 +240,7 @@ public class DetailArtistActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Request request, ChoiceMinusResult result) {
                 if (result.failResult == null) {
-                    Toast.makeText(DetailArtistActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
-
+//                    Toast.makeText(DetailArtistActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
                     initData();
                 }
 

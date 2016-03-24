@@ -193,12 +193,13 @@ public class BoardWriteActivity extends AppCompatActivity {
             public void onSuccess(Request request, BoardWriteResult result) {
                 if (result.failResult == null) {
                     Toast.makeText(BoardWriteActivity.this, "success: " + result.successResult.message, Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
-                Toast.makeText(BoardWriteActivity.this, "fail: "+request.toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(BoardWriteActivity.this, "fail: "+request.toString(), Toast.LENGTH_SHORT).show();
             }
         });
        /* NetworkManager.getInstance().setBoardWriteTest(this, type, title, content, new NetworkManager.OnResultListener<BoardWriteResult>() {

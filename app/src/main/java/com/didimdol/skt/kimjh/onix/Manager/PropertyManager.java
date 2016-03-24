@@ -23,6 +23,7 @@ public class PropertyManager {
 
     private static final String FIELD_USER_ID = "userId";
     private static final String FIELD_PASSWORD = "password";
+    private static final String FIELD_BTN_CANCEL = "cancel";
 
     private PropertyManager(){
         Context context = MyApplication.getContext();
@@ -37,6 +38,15 @@ public class PropertyManager {
 
     public String getUserId(){
         return mPrefs.getString(FIELD_USER_ID,"");
+    }
+
+    public void setCancel(int cancel){
+        mEditor.putInt(FIELD_BTN_CANCEL, cancel);
+        mEditor.commit();
+    }
+
+    public int getCancel(){
+        return mPrefs.getInt(FIELD_BTN_CANCEL,0);
     }
 
     boolean isLogin = false;

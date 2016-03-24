@@ -147,7 +147,7 @@ public class BoardFragment extends Fragment {
         return v;
     }
     boolean isMoreData = false;
-    ProgressDialog dialog = null;
+//    ProgressDialog dialog = null;
     private void getMoreItem(int page) {
         if (isMoreData) return;
         isMoreData = true;
@@ -157,19 +157,19 @@ public class BoardFragment extends Fragment {
 //                mAdapter.clear();
                 mAdapter.set(result);
                 isMoreData = false;
-                dialog.dismiss();
+//                dialog.dismiss();
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
                 Toast.makeText(getContext(),"fail",LENGTH_SHORT).show();
                 isMoreData = false;
-                dialog.dismiss();
+//                dialog.dismiss();
             }
         });
-        dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Loading........");
-        dialog.show();
+//        dialog = new ProgressDialog(getContext());
+//        dialog.setMessage("Loading........");
+//        dialog.show();
     }
 
     @Override

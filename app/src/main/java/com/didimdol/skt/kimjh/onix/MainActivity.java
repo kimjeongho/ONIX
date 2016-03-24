@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity
                 mHandler.removeMessages(MESSAGE_BACK_KEY_TIMEOUT);
                 finish();
             }
-
+            PropertyManager.getInstance().setCancel(0);
         }
     }
 
@@ -207,7 +207,6 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, PushActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
-
             initData();
 
         } else if (id == R.id.nav_nickname) {

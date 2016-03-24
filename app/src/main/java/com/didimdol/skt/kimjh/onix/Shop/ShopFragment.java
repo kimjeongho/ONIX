@@ -34,6 +34,7 @@ import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopListSuccess;
 import com.didimdol.skt.kimjh.onix.LocationDialogFragment;
 import com.didimdol.skt.kimjh.onix.Manager.NetworkManager;
+import com.didimdol.skt.kimjh.onix.Manager.PropertyManager;
 import com.didimdol.skt.kimjh.onix.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -183,18 +184,18 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
             public void onSuccess(Request request, ShopListSuccess result) {
                 mAdapter.addAll(result.shopList);
                 isMoreData = false;
-                dialog.dismiss();
+//                dialog.dismiss();
             }
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
                 isMoreData = false;
-                dialog.dismiss();
+//                dialog.dismiss();
             }
         });
-        dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Loading........");
-        dialog.show();
+//        dialog = new ProgressDialog(getContext());
+//        dialog.setMessage("Loading........");
+//        dialog.show();
 
     }
 
@@ -202,7 +203,9 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
     public void onStart() {
         super.onStart();
         if(!mLM.isProviderEnabled(gpsProvider) || !mLM.isProviderEnabled(netProvider)){
-            alertCheckGPS();
+            if (PropertyManager.getInstance().getCancel() != 777) {
+                alertCheckGPS();
+            }
         }
         mClient.connect();
     }

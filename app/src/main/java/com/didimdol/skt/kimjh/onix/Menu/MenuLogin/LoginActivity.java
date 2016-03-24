@@ -137,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Request request, LoginFacebookResult result) {
                 if (result.failResult == null) {
-                    Toast.makeText(LoginActivity.this, "success: " + gcmToken, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "success: " + result.successResult, Toast.LENGTH_SHORT).show();
                     PropertyManager.getInstance().setLogin(true);
                     finish();
                 } else {
@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Request request, LoginResult result) {
                     if (result.failResult == null) {
-                        Toast.makeText(LoginActivity.this, "success: " + gcmToken, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "success: " + result.successResult, Toast.LENGTH_SHORT).show();
                         PropertyManager.getInstance().setLogin(true);
                         finish();
 

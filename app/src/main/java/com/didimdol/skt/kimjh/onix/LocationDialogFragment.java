@@ -1,14 +1,18 @@
 package com.didimdol.skt.kimjh.onix;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.widget.Toast;
+
+import com.didimdol.skt.kimjh.onix.Manager.PropertyManager;
 
 /**
  * Created by dongja94 on 2016-01-28.
@@ -33,6 +37,7 @@ public class LocationDialogFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
+                                PropertyManager.getInstance().setCancel(777);
                             }
                         });
        return builder.create();

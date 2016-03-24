@@ -163,18 +163,18 @@ public class ArtistFragment extends Fragment {
 //                    mAdapter.clear();
                     mAdapter.set(result);
                     isMoreData = false;
-                    dialog.dismiss();
+//                    dialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(Request request, int code, Throwable cause) {
                     isMoreData = false;
-                    dialog.dismiss();
+//                    dialog.dismiss();
                 }
             });
-            dialog = new ProgressDialog(getContext());
-            dialog.setMessage("Loading........");
-            dialog.show();
+//            dialog = new ProgressDialog(getContext());
+//            dialog.setMessage("Loading........");
+//            dialog.show();
     }
 
     private void initData(String search, int type) {
@@ -190,7 +190,7 @@ public class ArtistFragment extends Fragment {
 
             @Override
             public void onFailure(Request request, int code, Throwable cause) {
-                Toast.makeText(getContext(), ""+cause, LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), ""+cause, LENGTH_SHORT).show();
             }
         });
 
