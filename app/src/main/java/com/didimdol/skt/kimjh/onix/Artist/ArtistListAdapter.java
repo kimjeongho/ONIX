@@ -20,10 +20,10 @@ public class ArtistListAdapter extends BaseAdapter {
     public ArtistListAdapter(){
     }
 
-    /*public void addAll(List<ArtistListData>items){
+    public void addAll(List<ArtistListData>items){
         this.items.addAll(items);
         notifyDataSetChanged();
-    }*/
+    }
 
     public void set(ArtistListSuccess data){
         items.addAll(data.artistsList);

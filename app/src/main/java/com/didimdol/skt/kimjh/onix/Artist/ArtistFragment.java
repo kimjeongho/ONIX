@@ -84,7 +84,7 @@ public class ArtistFragment extends Fragment {
                     int itemCount = mAdapter.getCount();
                     int page = itemCount / 10;
                     page = (itemCount % 10 > 0) ? page+1:page;
-                    getMoreItem(page);
+                    getMoreItem(page+1);
                 }
             }
 
@@ -160,6 +160,7 @@ public class ArtistFragment extends Fragment {
                 @Override
                 public void onSuccess(Request request, ArtistListSuccess result) {
 //                    mAdapter.addAll(result.artistsList);
+//                    mAdapter.clear();
                     mAdapter.set(result);
                     isMoreData = false;
                     dialog.dismiss();

@@ -29,6 +29,7 @@ import com.didimdol.skt.kimjh.onix.R;
 import okhttp3.Request;
 
 import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -76,7 +77,7 @@ public class BoardFragment extends Fragment {
                     int itemCount = mAdapter.getCount();
                     int page = itemCount / 10;
                     page = (itemCount % 10 > 0) ? page + 1 : page;
-                    getMoreItem(page);
+                    getMoreItem(page+1);
                 }
             }
 
@@ -153,6 +154,7 @@ public class BoardFragment extends Fragment {
         NetworkManager.getInstance().getBoardTotalDataResult(getContext(),type, page/*page*/,  "", new NetworkManager.OnResultListener<BoardTotalSuccess>() {
             @Override
             public void onSuccess(Request request, BoardTotalSuccess result) {
+//                mAdapter.clear();
                 mAdapter.set(result);
                 isMoreData = false;
                 dialog.dismiss();

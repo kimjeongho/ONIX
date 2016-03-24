@@ -57,7 +57,7 @@ public class ShopView extends FrameLayout {
                     .into(shopView);
         }
         shopNameView.setText(data.shopName);
-        shopChoiceView.setText(data.shopChoice + "개");
+        shopChoiceView.setText(data.shopChoice);
         if (data.distance > 100){
             locationView.setVisibility(GONE);
         } else {

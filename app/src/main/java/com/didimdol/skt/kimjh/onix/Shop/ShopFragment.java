@@ -100,7 +100,7 @@ public class ShopFragment extends Fragment implements GoogleApiClient.Connection
                     int itemCount = mAdapter.getCount();
                     int page = itemCount / 10;
                     page = (itemCount % 10 > 0) ? page + 1 : page;
-                    getMoreItem(page);
+                    getMoreItem(page+1);
                 }
             }
 

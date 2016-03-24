@@ -207,11 +207,13 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(MainActivity.this, PushActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
+
             initData();
-        }/* else if (id == R.id.nav_nickname) {
+
+        } else if (id == R.id.nav_nickname) {
             Intent intent = new Intent(MainActivity.this, NickNameActivity.class);
             startActivity(intent);
-        }*/
+        }
 
         final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         menuHome = (ImageView) findViewById(R.id.menu_home);

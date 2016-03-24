@@ -219,7 +219,7 @@ public class NetworkManager {
         OnResultListener<T> listener;
     }
     //----------아티스트 닉네임 조회----------------------------------------------------------------------------------------------------------------------
-    private static final String URL_ARTIST_NICKNAME = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists/me";
+    private static final String URL_ARTIST_NICKNAME = "https://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists/me";
     public Request getArtistNickNameResult(Context context, final OnResultListener<NickNameSuccess> listener){
         String url = URL_ARTIST_NICKNAME;
         /*try {
@@ -232,6 +232,45 @@ public class NetworkManager {
         Request request = new Request.Builder().url(url)
                 .tag(context)
                 .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                NickNameResult result = gson.fromJson(response.body().charStream(), NickNameResult.class);
+                callbackObject.result = result.successResult;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+        return  request;
+
+
+    }
+    //----------아티스트 닉네임 조회----------------------------------------------------------------------------------------------------------------------
+
+    //----------아티스트 닉네임 변경----------------------------------------------------------------------------------------------------------------------
+    private static final String URL_ARTIST_CHANGE_NICKNAME = "https://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists/me";
+    public Request getArtistNickNameChangeResult(Context context,String nickname, final OnResultListener<NickNameSuccess> listener){
+        String url = URL_ARTIST_CHANGE_NICKNAME;
+
+        final CallbackObject<NickNameSuccess> callbackObject = new CallbackObject<NickNameSuccess>();
+        RequestBody body = new FormBody.Builder()
+                .add("nickname", nickname)
+                .build();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .put(body)
+                .build();
+
         callbackObject.request = request;
         callbackObject.listener = listener;
         mClient.newCall(request).enqueue(new Callback() {

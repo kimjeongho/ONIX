@@ -1,5 +1,6 @@
 package com.didimdol.skt.kimjh.onix.Board;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentReadSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentData;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentReadSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.BoardCommentResult;
@@ -26,10 +28,11 @@ public class BoardReadActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     BoardReadAdapter mAdapter;
-    RecyclerView.LayoutManager layoutManager;
+    LinearLayoutManager layoutManager;
     EditText inputView;
-
-
+    //댓글 확장시 사용
+    int page =1;
+    boolean isLast = false;
     BoardData data;
 
     public static final String PARAM_TOTAL_BOARD = "total";
@@ -67,6 +70,35 @@ public class BoardReadActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         inputView = (EditText) findViewById(R.id.edit_message);
 
+        //recyclerview 확장---------------------------------------------------------------------------------------------------------------------
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (isLast && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int itemCount = mAdapter.items.size();
+                    int page = itemCount/10;
+                    page = (itemCount % 10 > 0)? page+1:page;
+                    getMoreItem(page+1);
+                    Toast.makeText(BoardReadActivity.this,"scroll",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int totalItemCount = layoutManager.getItemCount();
+                int lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition();
+                if (totalItemCount > 0 && lastVisibleItemPosition != RecyclerView.NO_POSITION &&
+                        (totalItemCount - 1 <= lastVisibleItemPosition)){
+                    isLast = true;
+                } else {
+                    isLast = false;
+                }
+            }
+        });
+        //recyclerview 확장---------------------------------------------------------------------------------------------------------------------
+
 
         Button btn = (Button) findViewById(R.id.btn_ok);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +111,32 @@ public class BoardReadActivity extends AppCompatActivity {
         /*initData();*/
     }
 
+    //댓글 더보기
+    boolean isMoreData = false;
+    ProgressDialog dialog = null;
+    private void getMoreItem(int page) {
+        if(isMoreData)return;
+        isMoreData = true;
+        NetworkManager.getInstance().getBoardCommentDataResult(this, boardType, data.postId, page, new NetworkManager.OnResultListener<BoardCommentReadSuccess>() {
+            @Override
+            public void onSuccess(Request request, BoardCommentReadSuccess result) {
+//                mAdapter.clear();
+                mAdapter.set(result);
+                isMoreData = false;
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Request request, int code, Throwable cause) {
+                Toast.makeText(BoardReadActivity.this, "" + cause, Toast.LENGTH_SHORT).show();
+                isMoreData = false;
+                dialog.dismiss();
+            }
+        });
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading........");
+        dialog.show();
+    }
 
 
     @Override
@@ -88,7 +146,7 @@ public class BoardReadActivity extends AppCompatActivity {
     }
 
     private void initData() {   // 게시글 댓글 보기
-        NetworkManager.getInstance().getBoardCommentDataResult(this,boardType,data.postId, 1, new NetworkManager.OnResultListener<BoardCommentReadSuccess>() {
+        NetworkManager.getInstance().getBoardCommentDataResult(this,boardType,data.postId, page, new NetworkManager.OnResultListener<BoardCommentReadSuccess>() {
             @Override
             public void onSuccess(Request request, BoardCommentReadSuccess result) {
                 mAdapter.clear();
