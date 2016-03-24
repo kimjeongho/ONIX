@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentReadResult;
+import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentReadSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistCommentResult;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistListSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.ArtistTotalData;
@@ -26,7 +28,6 @@ import com.didimdol.skt.kimjh.onix.DataClass.JoinResult;
 import com.didimdol.skt.kimjh.onix.DataClass.LoginFacebookResult;
 import com.didimdol.skt.kimjh.onix.DataClass.LoginResult;
 import com.didimdol.skt.kimjh.onix.DataClass.LogoutResult;
-import com.didimdol.skt.kimjh.onix.DataClass.LogoutSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.NickNameResult;
 import com.didimdol.skt.kimjh.onix.DataClass.NickNameSuccess;
 import com.didimdol.skt.kimjh.onix.DataClass.PushResult;
@@ -34,7 +35,6 @@ import com.didimdol.skt.kimjh.onix.DataClass.ShopDetailResult;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopTotalData;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopListResult;
 import com.didimdol.skt.kimjh.onix.DataClass.ShopListSuccess;
-import com.didimdol.skt.kimjh.onix.Menu.PushActivity;
 import com.didimdol.skt.kimjh.onix.MyApplication;
 import com.didimdol.skt.kimjh.onix.PersistentCookieStore;
 import com.didimdol.skt.kimjh.onix.R;
@@ -378,6 +378,39 @@ public class NetworkManager {
         return request;
     }
     //샵 리스트 페이지(post)----------------------------------------------------------------------------------------------------------------------------------------
+    //아티스트 리스트 댓글 보기-----------------------------------------------------------------------------------------------------------------------------------
+    private static final String URL_ARTIST_COMMENT_READ = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/artists/%s/comments?commentpage=%s";
+    public Request getArtistCommnetDataResult(Context context, int artistId, int page, final OnResultListener<ArtistCommentReadSuccess> listener){
+        String url = String.format(URL_ARTIST_COMMENT_READ, artistId, page);
+        final CallbackObject<ArtistCommentReadSuccess> callbackObject = new CallbackObject<ArtistCommentReadSuccess>();
+        Request request = new Request.Builder().url(url)
+                .tag(context)
+                .build();
+        callbackObject.request = request;
+        callbackObject.listener = listener;
+        mClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callbackObject.exception = e;
+                Message msg = mHandler.obtainMessage(MESSAGE_FALURE, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                Gson gson = new Gson();
+                String text = response.body().string();
+                ArtistCommentReadResult result = gson.fromJson(text, ArtistCommentReadResult.class);
+                callbackObject.result = result.successResult;
+                Message msg = mHandler.obtainMessage(MESSAGE_SUCCESS, callbackObject);
+                mHandler.sendMessage(msg);
+            }
+        });
+
+        return request;
+    }
+
+    //아티스트 리스트 댓글 보기-----------------------------------------------------------------------------------------------------------------------------------
     //---------게시판 댓글 보기-----------------------------------------------------------------------------------------------------------------------
     private static final String URL_BOARD_COMMENT_READ = "http://ec2-52-79-117-152.ap-northeast-2.compute.amazonaws.com/boards/%s/posts/%s/replies?repliespage=%s";
     public Request getBoardCommentDataResult(Context context, int condition, int postid, int replepage, final OnResultListener<BoardCommentReadSuccess> listener){
